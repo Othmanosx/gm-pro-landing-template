@@ -1,5 +1,5 @@
+import Link from "next/link";
 import { LinkButton } from "../components/LinkButton";
-
 
 const CHROME_STORE_URL =
   "https://chromewebstore.google.com/detail/GM%20Pro:%20Supercharge%20Your%20Google%20Meet%20Experience/bfmgohplnhblcajmjhmcimjlikohiomh";
@@ -20,12 +20,20 @@ export const Footer = () => {
             &copy; GM Pro {new Date().getFullYear()}
           </div>
         </div>
-        <LinkButton
-          href={CHROME_STORE_URL}
-          aria-label="Get GM Pro on Chrome Web Store"
-        >
-          Get it on Chrome Web Store
-        </LinkButton>
+        <div className="items-center gap-4 row">
+          <Link
+            href="/privacy"
+            className="text-sm text-light hover:text-gray-300"
+          >
+            Privacy Policy
+          </Link>
+          <LinkButton
+            href={CHROME_STORE_URL}
+            aria-label="Get GM Pro on Chrome Web Store"
+          >
+            Get it on Chrome Web Store
+          </LinkButton>
+        </div>
       </div>
     </footer>
   );
