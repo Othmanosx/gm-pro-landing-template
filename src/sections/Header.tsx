@@ -1,13 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { useEffectOnce, useEventListener } from "usehooks-ts";
+import { useState, useEffect } from "react";
+import { useEventListener } from "usehooks-ts";
 
 import { Button } from "../components/Button";
 import { GradientText } from "../components/GradientText";
 import { LinkButton } from "../components/LinkButton";
 import { Moon, Sun } from "../svg/DarkModeIcons";
-
 
 const CHROME_STORE_URL =
   "https://chromewebstore.google.com/detail/GM%20Pro:%20Supercharge%20Your%20Google%20Meet%20Experience/bfmgohplnhblcajmjhmcimjlikohiomh";
@@ -31,7 +29,9 @@ export const Header = ({
   useEventListener("scroll", handleScroll);
 
   // Clean up stale dark mode
-  useEffectOnce(() => setReloaded(true));
+  useEffect(() => {
+    setReloaded(true);
+  }, []);
 
   const goToChromeStore = () => {
     window.open(CHROME_STORE_URL, "_blank");

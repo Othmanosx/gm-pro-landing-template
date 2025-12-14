@@ -5,8 +5,8 @@ import AOS from "aos";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { NextSeo } from "next-seo";
-import { useEffect } from "react";
-import { useDarkMode, useEffectOnce } from "usehooks-ts";
+import { useEffect, useRef } from "react";
+import { useDarkMode } from "usehooks-ts";
 
 const siteTitle = "GM Pro: Supercharge Your Google Meet Experience";
 const siteDescription =
@@ -26,15 +26,19 @@ const App = ({ Component, pageProps }: AppProps) => {
   }, [isDarkMode]);
 
   // Initialize animations
-  useEffectOnce(() => {
-    AOS.init({
-      once: true,
-      // Animations always disabled in dev mode; disabled on phones in prod
-      disable: process.env.NODE_ENV === "development" ? true : "phone",
-      duration: 700,
-      easing: "ease-out-cubic",
-    });
-  });
+  const initialized = useRef(false);
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true;
+      AOS.init({
+        once: true,
+        // Animations always disabled in dev mode; disabled on phones in prod
+        disable: process.env.NODE_ENV === "development" ? true : "phone",
+        duration: 700,
+        easing: "ease-out-cubic",
+      });
+    }
+  }, []);
 
   return (
     <>
