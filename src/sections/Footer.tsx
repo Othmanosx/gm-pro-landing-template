@@ -1,26 +1,30 @@
-import Image from "next/image";
 import { LinkButton } from "../components/LinkButton";
 
-// Built with Vivid (https://vivid.lol) ⚡️
+
+const CHROME_STORE_URL =
+  "https://chromewebstore.google.com/detail/GM%20Pro:%20Supercharge%20Your%20Google%20Meet%20Experience/bfmgohplnhblcajmjhmcimjlikohiomh";
 
 export const Footer = () => {
   return (
     <footer className="bg-extra-strong">
       <div className="items-center justify-between px-10 py-4 mx-auto sm:px-6 row max-w-7xl">
         <div className="items-center gap-4 row">
-          <Image
-            src="/images/logo.png"
-            alt="Vivid Logo"
+          <img
+            src="https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
+            alt="GM Pro Logo"
             height="40"
             width="40"
+            className="rounded-lg"
           />
-          <div className="text-sm text-light">&copy; Vivid Labs, Inc. 2022</div>
+          <div className="text-sm text-light">
+            &copy; GM Pro {new Date().getFullYear()}
+          </div>
         </div>
         <LinkButton
-          href="https://join.slack.com/t/vivid-jqa6824/shared_invite/zt-1f7tbxl86-wruO1aM7FYmEdNaOOnYCMQ"
-          aria-label="Join Slack"
+          href={CHROME_STORE_URL}
+          aria-label="Get GM Pro on Chrome Web Store"
         >
-          Join our Slack!
+          Get it on Chrome Web Store
         </LinkButton>
       </div>
     </footer>

@@ -1,5 +1,5 @@
 {
-  "name": "vivid-landing-template",
+  "name": "gm-pro-landing",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -28,7 +28,6 @@
     "postcss": "^8.4.18",
     "tailwindcss": "^3.2.1",
     "typescript": "4.8.4",
-    "usehooks-ts": "^2.9.1",
-    "vivid-studio": "^0.14.0"
+    "usehooks-ts": "^2.9.1"
   }
 }

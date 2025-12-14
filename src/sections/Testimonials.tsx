@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import { ReactNode } from "react";
 
 import { Quote } from "../svg/Quote";
@@ -8,14 +8,13 @@ import { GradientText } from "../components/GradientText";
 import { Section } from "../components/Section";
 import { Title } from "../components/Title";
 
-// Built with Vivid (https://vivid.lol) ⚡️
 
 const TestimonialImage = ({ src, alt }: { src: string; alt: string }) => {
   return (
     <div className="absolute mx-auto -top-10">
       <Quote />
-      <Image
-        className="rounded-full"
+      <img
+        className="rounded-full w-24 h-24 object-cover"
         src={src}
         width="96"
         height="96"
@@ -28,29 +27,19 @@ const TestimonialImage = ({ src, alt }: { src: string; alt: string }) => {
 const TestimonialText = ({
   quote,
   name,
-  title,
-  handle,
-  link,
+  date,
 }: {
   quote: string;
   name: string;
-  title: string;
-  handle: string;
-  link: string;
+  date: string;
 }) => {
   return (
     <>
       <blockquote className="font-medium">&quot;{quote}&quot;</blockquote>
       <div className="">
-        <cite className="not-italic font-bold">— {name}</cite>
+        <cite className="not-italic font-bold">— {name}</cite>
         <div className="text-base text-light">
-          <span>{title}</span>{" "}
-          <a
-            className="text-primary-600 dark:text-primary-400 hover:underline"
-            href={link}
-          >
-            @{handle}
-          </a>
+          <span>{date}</span> <span className="text-amber-500">★★★★★</span>
         </div>
       </div>
     </>
@@ -71,43 +60,44 @@ export const Testimonials = () => {
       {/* Header */}
       <div className="gap-4 col">
         <Title size="md">
-          <GradientText className="amber-red">Loved</GradientText> by developers
+          <GradientText className="amber-red">Loved</GradientText> by users
         </Title>
-        <Details>Styling your web app has never been easier.</Details>
+        <Details>
+          5 out of 5 stars • See what our users are saying about GM Pro.
+        </Details>
       </div>
       {/* Testimonials */}
       <div className="gap-20 md:gap-6 col md:row">
-        {/* Testimonial 1 */}
+        {/* Testimonial 1 - Gee Nim */}
         <Testimonial>
-          <TestimonialImage src="/images/will.jpg" alt="Will Gao" />
+          <TestimonialImage
+            src="https://lh3.googleusercontent.com/a-/ALV-UjWwF-LVIX4j65CLk-amBJjPpXAz8yCb3BNBNjFBUlIXmydpu6T0=s96-w96-h96"
+            alt="Gee Nim"
+          />
           <TestimonialText
-            quote="When I first clicked on a component and its code popped up — magical"
-            name="Will Gao"
-            title="Technical PM"
-            handle="Meta"
-            link="https://www.linkedin.com/in/willgao99/"
+            quote="I've been using this for a while now and it has actually made meetings a bit more fun since there's an option to react an emoji to another person's message!"
+            name="Gee Nim"
+            date="Dec 2, 2025"
           />
         </Testimonial>
-        {/* Testimonial 2 */}
+        {/* Testimonial 2 - Anshul */}
         <Testimonial>
-          <TestimonialImage src="/images/veljko.jpg" alt="Veljko Muratovic" />
-          <TestimonialText
-            quote="I'm going to have to make the switch to Chrome. Just to keep using Vivid."
-            name="Veljko Muratovic"
-            title="Front End Dev"
-            handle="Freelance"
-            link="https://www.linkedin.com/in/veljko-muratovic/"
+          <TestimonialImage
+            src="https://lh3.googleusercontent.com/a/default-user=s96-w96-h96"
+            alt="Anshul"
           />
+          <TestimonialText quote="love it" name="Anshul" date="Oct 22, 2025" />
         </Testimonial>
-        {/* Testimonial 3 */}
+        {/* Testimonial 3 - Matias Meyer */}
         <Testimonial>
-          <TestimonialImage src="/images/tejal.png" alt="Tejal Patwardhan" />
+          <TestimonialImage
+            src="https://lh3.googleusercontent.com/a-/ALV-UjXPQcCiPuZV7yyAd53iqLGGNn3bvL7KzZoCVZMJg49KswOGX1tO=s96-w96-h96"
+            alt="Matias Meyer"
+          />
           <TestimonialText
-            quote="Vivid has changed the game! It's already saved me hours of development time"
-            name="Tejal Patwardhan"
-            title="Founder"
-            handle="Martingale"
-            link="https://martingalelabs.com/"
+            quote="Just amazing!!!"
+            name="Matias Meyer"
+            date="Jun 7, 2025"
           />
         </Testimonial>
       </div>

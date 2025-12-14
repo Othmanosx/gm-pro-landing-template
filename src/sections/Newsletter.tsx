@@ -1,9 +1,11 @@
 import { NewsletterSpheres } from "../svg/NewsletterSpheres";
+import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Section } from "../components/Section";
-import { WaitlistForm } from "../components/WaitlistForm";
 
-// Built with Vivid (https://vivid.lol) ⚡️
+
+const CHROME_STORE_URL =
+  "https://chromewebstore.google.com/detail/GM%20Pro:%20Supercharge%20Your%20Google%20Meet%20Experience/bfmgohplnhblcajmjhmcimjlikohiomh";
 
 const Background = () => (
   <div
@@ -21,13 +23,18 @@ export const Newsletter = () => {
         <Background />
         <div className="gap-6 text-center md:text-left col md:w-1/2 ">
           <h2 className="text-3xl font-bold text-gray-100">
-            Save your spot today
+            Ready to transform your Google Meet experience?
           </h2>
           <p className="text-lg text-light">
-            By joining our waitlist, you&apos;ll be the first to see our
-            product. We&apos;d love to learn from you along the way!
+            Join thousands of users who have already enhanced their meetings
+            with GM Pro. Install now and discover the difference!
           </p>
-          <WaitlistForm id="newsletter-waitlist" />
+          <div className="flex gap-4">
+            <Button onClick={() => window.open(CHROME_STORE_URL, "_blank")}>
+              Add to Chrome — It&apos;s Free
+            </Button>
+          </div>
+          <p className="text-sm text-gray-400">⭐ 5.0 rating • Free forever</p>
         </div>
       </Card>
     </Section>

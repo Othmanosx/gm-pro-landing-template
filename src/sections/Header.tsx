@@ -8,7 +8,9 @@ import { GradientText } from "../components/GradientText";
 import { LinkButton } from "../components/LinkButton";
 import { Moon, Sun } from "../svg/DarkModeIcons";
 
-// Built with Vivid (https://vivid.lol) ⚡️
+
+const CHROME_STORE_URL =
+  "https://chromewebstore.google.com/detail/GM%20Pro:%20Supercharge%20Your%20Google%20Meet%20Experience/bfmgohplnhblcajmjhmcimjlikohiomh";
 
 export const Header = ({
   isDarkMode,
@@ -31,19 +33,22 @@ export const Header = ({
   // Clean up stale dark mode
   useEffectOnce(() => setReloaded(true));
 
-  const goToEmail = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+  const goToChromeStore = () => {
+    window.open(CHROME_STORE_URL, "_blank");
   };
 
   const Logo = () => (
     <Link href="/">
-      <div className="items-center block gap-1 row">
-        <Image src="/images/logo.png" alt="Vivid logo" height="40" width="40" />
-        <div className="text-3xl font-bold">
-          <GradientText className="pink-blue">Vivid</GradientText>
+      <div className="items-center block gap-2 row">
+        <img
+          src="https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
+          alt="GM Pro logo"
+          height="40"
+          width="40"
+          className="rounded-lg"
+        />
+        <div className="text-2xl font-bold">
+          <GradientText className="pink-blue">GM Pro</GradientText>
         </div>
       </div>
     </Link>
@@ -65,10 +70,10 @@ export const Header = ({
           </li>
         ) : null}
         <li>
-          <LinkButton href="/">Docs</LinkButton>
+          <LinkButton href="#features">Features</LinkButton>
         </li>
         <li className={`transition ${!nextSection && "hidden"}`}>
-          <Button onClick={goToEmail}>Waitlist</Button>
+          <Button onClick={goToChromeStore}>Add to Chrome</Button>
         </li>
       </ul>
     </nav>

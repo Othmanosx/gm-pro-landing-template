@@ -1,38 +1,32 @@
-# Vivid Landing Page Template
+# GM Pro Landing Page
 
-This is a ready to use template for any landing page you need, built with React, NextJS, and Tailwind CSS. 
-
-Modelled after the [Vivid landing page](https://vivid.lol).
-
-> NOTE: If you are looking for a simpler alternative that is flatter and uses JS instead of TS, check out our [simple template](https://github.com/vivid-labs/vivid-landing-template-simple)!
-
-## Preview
-
-![vivid-template-pic](https://user-images.githubusercontent.com/62365335/202585708-82c27ea9-85fc-491f-b991-d4005651b0c2.png)
-
+Landing page for GM Pro Chrome Extension - Supercharge Your Google Meet Experience.
 
 ## Features
 
-- Fully modular and easy to extend
+- Enhanced Chat Interface with persistent chat history
+- Dark Mode for Chat
+- Auto Mic Muting & Camera Disabling
+- Auto Join Meetings
+- Real-time Transcription Tab
+- Lobby Notifier
+- Message Reactions & Replies
+- Image & GIF Sharing in Chat
+- Attendee Shuffling
 
-- Perfect lighthouse scores for great SEO
+## Tech Stack
 
-- Very accessible, passing checks for screen-readers and other browsing aids
-
-- Easily customizable via Vivid, Tailwind configuration, global style presets, and component props
-
-- Built-in light and dark modes
+- React, Next.js, Tailwind CSS
+- Fully responsive design
+- Light and dark modes
+- Perfect accessibility scores
 
 ## Getting Started
 
-1. Install dependencies with `yarn install` (or the equivalent for other package managers)
+1. Install dependencies with `pnpm install`
+2. Run the dev server with `pnpm dev`
+3. Open http://localhost:3000
 
-2. Run the test app with `yarn dev`
+## Links
 
-## Customizing
-
-This template is made to be easily customizable! Using Vivid, you can command-click on any part of the page and immediately edit its code. Check out the [Vivid docs](https://docs.vivid.lol) for more information on how to style in-browser!
-
-The components in the `src/components` directory provide an easy way to extend the page.
-
-If you want to edit colors or fonts, simply edit `styles/globals.css` or `tailwind.config.js`.
+- [Chrome Web Store](https://chromewebstore.google.com/detail/GM%20Pro:%20Supercharge%20Your%20Google%20Meet%20Experience/bfmgohplnhblcajmjhmcimjlikohiomh)

@@ -8,15 +8,9 @@ import { NextSeo } from "next-seo";
 import { useEffect } from "react";
 import { useDarkMode, useEffectOnce } from "usehooks-ts";
 
-// Initialize Vivid (https://vivid.lol)
-if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
-  import("vivid-studio").then((v) => v.run());
-  import("vivid-studio/style.css");
-}
-
-const siteTitle = "Vivid — Build visually. Code faster.";
+const siteTitle = "GM Pro: Supercharge Your Google Meet Experience";
 const siteDescription =
-  "Make CSS styling a breeze with Vivid's in-browser visual editor that automatically updates your code.";
+  "Enhance chat functionality, streamline communication, and unlock powerful tools for your Google Meet meetings with GM Pro Chrome extension.";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const { isDarkMode, toggle: toggleDarkMode } = useDarkMode();
@@ -48,12 +42,15 @@ const App = ({ Component, pageProps }: AppProps) => {
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="/apple-touch-icon.png"
+          href="https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
         />
-        <link rel="icon" href="/icons/favicon.ico" />
+        <link
+          rel="icon"
+          href="https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
+        />
         <meta
           property="og:image"
-          content="https://vivid.lol/images/landing-page.png"
+          content="https://lh3.googleusercontent.com/Vn3qQlegazqzvJlriBP3j1RUJfQVaIqMScbKqIf8RWum_tydkntTMiFo24WUsnHT3XbzgXGV9H7zSneOcjFDm5Aw=s1280-w1280-h800"
         />
       </Head>
       <NextSeo

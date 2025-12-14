@@ -1,7 +1,6 @@
 import { DetailedHTMLProps, InputHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
-// Built with Vivid (https://vivid.lol) ⚡️
 
 export const Input = (
   props: DetailedHTMLProps<
