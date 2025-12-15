@@ -285,7 +285,7 @@ export default function AddonSidePanel() {
         )}
 
         {/* Extension Connection Status */}
-        {!isLoading && (
+        {!isLoading && !isConnected && (
           <div
             style={{
               display: "flex",
@@ -314,7 +314,7 @@ export default function AddonSidePanel() {
                 backgroundColor: isConnected ? "#34a853" : "#ea4335",
               }}
             />
-            {isConnected ? "Extension Connected" : "Extension Not Connected"}
+            Extension Not Connected
           </div>
         )}
 
