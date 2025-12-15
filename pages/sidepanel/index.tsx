@@ -6,7 +6,6 @@ import {
 } from "@googleworkspace/meet-addons/meet.addons";
 
 // Your Google Cloud Project Number (from Google Cloud Console)
-// This must match the project where you configured the Add-on
 const CLOUD_PROJECT_NUMBER = "464731456038";
 
 // Types matching the GM Pro extension settings
@@ -69,10 +68,11 @@ export default function AddonSidePanel() {
     DEFAULT_FEATURE_FLAGS
   );
   const [isConnected, setIsConnected] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [connectionError, setConnectionError] = useState<string | null>(null);
   const [sidePanelClient, setSidePanelClient] =
     useState<MeetSidePanelClient | null>(null);
-  const [sdkError, setSdkError] = useState<string | null>(null);
+  const [sdkInitialized, setSdkInitialized] = useState(false);
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize Google Meet Add-on SDK
@@ -84,14 +84,12 @@ export default function AddonSidePanel() {
         });
         const client = await session.createSidePanelClient();
         setSidePanelClient(client);
+        setSdkInitialized(true);
         console.log("[GM Pro Add-on] Meet SDK initialized successfully");
       } catch (error) {
         console.error("[GM Pro Add-on] Failed to initialize Meet SDK:", error);
-        setSdkError(
-          error instanceof Error
-            ? error.message
-            : "Failed to initialize Meet Add-on SDK"
-        );
+        // SDK initialization failure is not critical - addon can still work with extension
+        setSdkInitialized(false);
       }
     }
 
@@ -109,9 +107,7 @@ export default function AddonSidePanel() {
 
       console.log("[GM Pro Add-on] Sending message:", type, payload);
 
-      // The Add-on runs in a deeply nested iframe structure
-      // We only need to post to window.top to reach the extension content script
-      // which runs in the main meet.google.com frame
+      // Post to window.top to reach the extension content script
       try {
         if (window.top && window.top !== window) {
           window.top.postMessage(message, "*");
@@ -125,13 +121,6 @@ export default function AddonSidePanel() {
 
   // Handle incoming messages from extension
   const handleMessage = useCallback((event: MessageEvent) => {
-    // Log all messages for debugging
-    console.log("[GM Pro Add-on] Received postMessage:", {
-      origin: event.origin,
-      source: event.data?.source,
-      type: event.data?.type,
-    });
-
     // Validate message is from GM Pro extension
     if (event.data?.source !== "gm-pro-extension") return;
 
@@ -144,6 +133,7 @@ export default function AddonSidePanel() {
           console.log("[GM Pro Add-on] Updating settings:", message.payload);
           setSettings(message.payload as Settings);
           setIsConnected(true);
+          setIsLoading(false);
           setConnectionError(null);
           if (connectionTimeoutRef.current) {
             clearTimeout(connectionTimeoutRef.current);
@@ -170,14 +160,15 @@ export default function AddonSidePanel() {
     sendMessage("GM_PRO_ADDON_READY");
     sendMessage("GM_PRO_GET_SETTINGS");
 
-    // Set connection timeout
+    // Set connection timeout - show helpful message if extension not found
     connectionTimeoutRef.current = setTimeout(() => {
+      setIsLoading(false);
       if (!isConnected) {
         setConnectionError(
-          "Unable to connect to GM Pro extension. Make sure the extension is installed."
+          "GM Pro Chrome extension required. Install it to use this add-on."
         );
       }
-    }, 3000);
+    }, 5000);
 
     return () => {
       window.removeEventListener("message", handleMessage);
@@ -204,51 +195,86 @@ export default function AddonSidePanel() {
 
   const isDark = settings.isDark;
 
+  // Styles that ensure no horizontal scrolling and responsive design
+  const containerStyle: React.CSSProperties = {
+    backgroundColor: isDark ? "#202124" : "#ffffff",
+    color: isDark ? "#e8eaed" : "#202124",
+    minHeight: "100vh",
+    maxWidth: "100%",
+    padding: "12px",
+    fontFamily: '"Google Sans", Roboto, Arial, sans-serif',
+    overflowX: "hidden",
+    boxSizing: "border-box",
+  };
+
   return (
     <>
       <Head>
-        <title>GM Pro Settings</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>GM Pro - Meeting Settings</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
         <meta name="robots" content="noindex, nofollow" />
+        <meta
+          name="description"
+          content="GM Pro meeting enhancement settings"
+        />
       </Head>
 
-      <div
-        style={{
-          backgroundColor: isDark ? "#2f2f2f" : "#ffffff",
-          color: isDark ? "#ffffff" : "#000000",
-          minHeight: "100vh",
-          padding: "16px",
-          fontFamily:
-            '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        }}
-      >
-        {/* Header */}
-        <header style={{ textAlign: "center", marginBottom: "16px" }}>
+      <div style={containerStyle}>
+        {/* Header with logo and status */}
+        <header style={{ textAlign: "center", marginBottom: "12px" }}>
           <img
             src="https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
-            alt="GM Pro Logo"
-            width={70}
-            height={70}
-            style={{ borderRadius: "12px", justifySelf: "center" }}
+            alt="GM Pro"
+            width={48}
+            height={48}
+            style={{ borderRadius: "8px" }}
           />
-          <h1 style={{ fontSize: "16px", margin: "8px 0 4px" }}>
-            GM Pro Settings
+          <h1
+            style={{ fontSize: "16px", margin: "8px 0 4px", fontWeight: 500 }}
+          >
+            GM Pro
           </h1>
+          <p
+            style={{
+              fontSize: "12px",
+              color: isDark ? "#9aa0a6" : "#5f6368",
+              margin: 0,
+            }}
+          >
+            Enhance your Google Meet experience
+          </p>
+        </header>
 
-          {/* SDK Status */}
-          {sdkError && (
+        {/* Loading State */}
+        {isLoading && (
+          <div style={{ textAlign: "center", padding: "24px 0" }}>
             <div
               style={{
-                fontSize: "11px",
-                color: "#f44336",
-                marginBottom: "4px",
+                width: "24px",
+                height: "24px",
+                border: `2px solid ${isDark ? "#3c4043" : "#e8eaed"}`,
+                borderTopColor: "#1a73e8",
+                borderRadius: "50%",
+                animation: "spin 1s linear infinite",
+                margin: "0 auto 12px",
+              }}
+            />
+            <p
+              style={{
+                fontSize: "13px",
+                color: isDark ? "#9aa0a6" : "#5f6368",
               }}
             >
-              SDK: {sdkError}
-            </div>
-          )}
+              Connecting to extension...
+            </p>
+          </div>
+        )}
 
-          {/* Extension Connection Status */}
+        {/* Extension Connection Status */}
+        {!isLoading && (
           <div
             style={{
               display: "flex",
@@ -256,11 +282,17 @@ export default function AddonSidePanel() {
               justifyContent: "center",
               gap: "6px",
               fontSize: "12px",
-              color: isConnected
-                ? "#4caf50"
-                : connectionError
-                ? "#f44336"
-                : "#ff9800",
+              padding: "8px",
+              borderRadius: "8px",
+              backgroundColor: isConnected
+                ? isDark
+                  ? "rgba(52, 168, 83, 0.15)"
+                  : "rgba(52, 168, 83, 0.1)"
+                : isDark
+                ? "rgba(234, 67, 53, 0.15)"
+                : "rgba(234, 67, 53, 0.1)",
+              color: isConnected ? "#34a853" : "#ea4335",
+              marginBottom: "12px",
             }}
           >
             <span
@@ -268,228 +300,239 @@ export default function AddonSidePanel() {
                 width: "8px",
                 height: "8px",
                 borderRadius: "50%",
-                backgroundColor: isConnected
-                  ? "#4caf50"
-                  : connectionError
-                  ? "#f44336"
-                  : "#ff9800",
+                backgroundColor: isConnected ? "#34a853" : "#ea4335",
               }}
             />
-            {isConnected
-              ? "Extension Connected"
-              : connectionError
-              ? "Extension Not Found"
-              : "Connecting..."}
-          </div>
-        </header>
-
-        {connectionError && !isConnected && (
-          <div
-            style={{
-              backgroundColor: isDark ? "#3d2020" : "#ffebee",
-              border: `1px solid ${isDark ? "#5c3030" : "#ffcdd2"}`,
-              borderRadius: "8px",
-              padding: "12px",
-              marginBottom: "16px",
-              fontSize: "13px",
-            }}
-          >
-            {connectionError}
-            <div style={{ marginTop: "8px" }}>
-              <a
-                href="https://chromewebstore.google.com/detail/bfmgohplnhblcajmjhmcimjlikohiomh"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: isDark ? "#90caf9" : "#1976d2" }}
-              >
-                Install GM Pro Extension →
-              </a>
-            </div>
+            {isConnected ? "Extension Connected" : "Extension Not Connected"}
           </div>
         )}
 
-        {/* Toggle Super Chat Button */}
-        <button
-          onClick={toggleSuperChat}
-          disabled={!featureFlags.isSuperChatEnabled || !isConnected}
-          style={{
-            width: "100%",
-            padding: "12px 16px",
-            backgroundColor:
-              featureFlags.isSuperChatEnabled && isConnected
-                ? "#1976d2"
-                : "#9e9e9e",
-            color: "#ffffff",
-            border: "none",
-            borderRadius: "8px",
-            fontSize: "14px",
-            fontWeight: 500,
-            cursor:
-              featureFlags.isSuperChatEnabled && isConnected
-                ? "pointer"
-                : "not-allowed",
-            marginBottom: "16px",
-            transition: "background-color 0.2s",
-          }}
-          title={
-            !featureFlags.isSuperChatEnabled
-              ? "Super Chat is temporarily disabled"
-              : !isConnected
-              ? "Connect to extension first"
-              : "Toggle the enhanced Super Chat feature"
-          }
-        >
-          Toggle Super Chat
-        </button>
-
-        <Divider isDark={isDark} />
-
-        {/* Settings Toggles */}
-        <SettingRow
-          label="Dark Mode"
-          icon="🌙"
-          checked={settings.isDark}
-          onChange={(checked) => updateSetting("isDark", checked)}
-          isDark={isDark}
-          disabled={!isConnected}
-        />
-
-        <Divider isDark={isDark} />
-
-        <SettingRow
-          label="Auto Mute Mic"
-          icon="🎤"
-          checked={settings.autoDisableMic}
-          onChange={(checked) => updateSetting("autoDisableMic", checked)}
-          isDark={isDark}
-          disabled={!isConnected}
-        />
-
-        <Divider isDark={isDark} />
-
-        <SettingRow
-          label="Auto Disable Camera"
-          icon="📷"
-          checked={settings.autoDisableCamera}
-          onChange={(checked) => updateSetting("autoDisableCamera", checked)}
-          isDark={isDark}
-          disabled={!isConnected}
-        />
-
-        <Divider isDark={isDark} />
-
-        <SettingRow
-          label="Transcriptions (Beta)"
-          icon="📝"
-          checked={
-            settings.autoEnableTranscriptions &&
-            featureFlags.isTranscriptionsEnabled
-          }
-          onChange={(checked) =>
-            updateSetting("autoEnableTranscriptions", checked)
-          }
-          isDark={isDark}
-          disabled={!isConnected || !featureFlags.isTranscriptionsEnabled}
-          tooltip={
-            !featureFlags.isTranscriptionsEnabled
-              ? "Temporarily disabled"
-              : undefined
-          }
-        />
-
-        <Divider isDark={isDark} />
-
-        <SettingRow
-          label="Auto Open Chat"
-          icon="💬"
-          checked={settings.autoOpenChat}
-          onChange={(checked) => updateSetting("autoOpenChat", checked)}
-          isDark={isDark}
-          disabled={!isConnected}
-        />
-
-        <Divider isDark={isDark} />
-
-        <SettingRow
-          label="Lobby Notifier"
-          icon="🔔"
-          checked={settings.lobbyNotifier}
-          onChange={(checked) => updateSetting("lobbyNotifier", checked)}
-          isDark={isDark}
-          disabled={!isConnected}
-          tooltip="Plays a sound when someone joins while you're in the lobby"
-        />
-
-        <Divider isDark={isDark} />
-
-        {/* Auto Join Meeting Dropdown */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "8px 0",
-            opacity: !isConnected ? 0.5 : 1,
-          }}
-        >
-          <span
+        {/* Error State with Install Link */}
+        {connectionError && !isConnected && !isLoading && (
+          <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              fontSize: "14px",
-            }}
-          >
-            <span>⏰</span>
-            Auto Join Meeting
-          </span>
-          <select
-            value={settings.joinMeetingDelay}
-            onChange={(e) =>
-              updateSetting("joinMeetingDelay", Number(e.target.value))
-            }
-            disabled={!isConnected}
-            style={{
-              padding: "6px 10px",
-              borderRadius: "6px",
-              border: `1px solid ${isDark ? "#555" : "#ddd"}`,
-              backgroundColor: isDark ? "#424242" : "#fff",
-              color: isDark ? "#fff" : "#000",
+              backgroundColor: isDark ? "rgba(234, 67, 53, 0.1)" : "#fce8e6",
+              borderRadius: "8px",
+              padding: "12px",
+              marginBottom: "12px",
               fontSize: "13px",
-              cursor: isConnected ? "pointer" : "not-allowed",
             }}
           >
-            <option value={-1}>Off</option>
-            <option value={0}>Immediately</option>
-            <option value={1}>After 1 min</option>
-            <option value={2}>After 2 mins</option>
-            <option value={5}>After 5 mins</option>
-          </select>
-        </div>
+            <p style={{ margin: "0 0 8px", lineHeight: 1.4 }}>
+              {connectionError}
+            </p>
+            <a
+              href="https://chromewebstore.google.com/detail/gm-pro/bfmgohplnhblcajmjhmcimjlikohiomh"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                color: "#1a73e8",
+                textDecoration: "none",
+                fontWeight: 500,
+              }}
+            >
+              Install GM Pro Extension
+              <span style={{ fontSize: "16px" }}>→</span>
+            </a>
+          </div>
+        )}
 
-        <Divider isDark={isDark} />
+        {/* Main Settings - Only show when connected or loading complete */}
+        {!isLoading && (
+          <>
+            {/* Quick Actions */}
+            <section style={{ marginBottom: "16px" }}>
+              <SectionTitle isDark={isDark}>Quick Actions</SectionTitle>
 
-        {/* Footer */}
-        <footer
-          style={{
-            marginTop: "20px",
-            textAlign: "center",
-            fontSize: "12px",
-            color: isDark ? "#888" : "#666",
-          }}
-        >
-          <a
-            href="https://chromewebstore.google.com/detail/bfmgohplnhblcajmjhmcimjlikohiomh"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: isDark ? "#90caf9" : "#1976d2",
-              textDecoration: "none",
-            }}
-          >
-            Get GM Pro Extension
-          </a>
-        </footer>
+              <ActionButton
+                onClick={toggleSuperChat}
+                disabled={!featureFlags.isSuperChatEnabled || !isConnected}
+                isDark={isDark}
+                icon="💬"
+                label="Toggle Super Chat"
+                description={
+                  !featureFlags.isSuperChatEnabled
+                    ? "Temporarily unavailable"
+                    : !isConnected
+                    ? "Connect extension first"
+                    : "Enhanced chat experience"
+                }
+              />
+            </section>
+
+            {/* Meeting Settings */}
+            <section style={{ marginBottom: "16px" }}>
+              <SectionTitle isDark={isDark}>Meeting Settings</SectionTitle>
+
+              <SettingRow
+                label="Dark Mode"
+                icon="🌙"
+                checked={settings.isDark}
+                onChange={(checked) => updateSetting("isDark", checked)}
+                isDark={isDark}
+                disabled={!isConnected}
+              />
+
+              <SettingRow
+                label="Auto Mute Mic"
+                icon="🎤"
+                checked={settings.autoDisableMic}
+                onChange={(checked) => updateSetting("autoDisableMic", checked)}
+                isDark={isDark}
+                disabled={!isConnected}
+                description="Mute microphone when joining"
+              />
+
+              <SettingRow
+                label="Auto Disable Camera"
+                icon="📷"
+                checked={settings.autoDisableCamera}
+                onChange={(checked) =>
+                  updateSetting("autoDisableCamera", checked)
+                }
+                isDark={isDark}
+                disabled={!isConnected}
+                description="Turn off camera when joining"
+              />
+
+              <SettingRow
+                label="Auto Open Chat"
+                icon="💬"
+                checked={settings.autoOpenChat}
+                onChange={(checked) => updateSetting("autoOpenChat", checked)}
+                isDark={isDark}
+                disabled={!isConnected}
+                description="Open chat panel automatically"
+              />
+
+              <SettingRow
+                label="Lobby Notifier"
+                icon="🔔"
+                checked={settings.lobbyNotifier}
+                onChange={(checked) => updateSetting("lobbyNotifier", checked)}
+                isDark={isDark}
+                disabled={!isConnected}
+                description="Sound alert when someone joins"
+              />
+
+              <SettingRow
+                label="Auto Transcriptions"
+                icon="📝"
+                checked={
+                  settings.autoEnableTranscriptions &&
+                  featureFlags.isTranscriptionsEnabled
+                }
+                onChange={(checked) =>
+                  updateSetting("autoEnableTranscriptions", checked)
+                }
+                isDark={isDark}
+                disabled={!isConnected || !featureFlags.isTranscriptionsEnabled}
+                description={
+                  !featureFlags.isTranscriptionsEnabled
+                    ? "Temporarily unavailable"
+                    : "Enable captions automatically"
+                }
+              />
+            </section>
+
+            {/* Auto Join Setting */}
+            <section style={{ marginBottom: "16px" }}>
+              <SectionTitle isDark={isDark}>Auto Join</SectionTitle>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "10px 12px",
+                  backgroundColor: isDark ? "#292a2d" : "#f8f9fa",
+                  borderRadius: "8px",
+                  opacity: !isConnected ? 0.5 : 1,
+                }}
+              >
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <span>⏰</span>
+                  <span style={{ fontSize: "14px" }}>Join Meeting</span>
+                </div>
+                <select
+                  value={settings.joinMeetingDelay}
+                  onChange={(e) =>
+                    updateSetting("joinMeetingDelay", Number(e.target.value))
+                  }
+                  disabled={!isConnected}
+                  style={{
+                    padding: "6px 8px",
+                    borderRadius: "4px",
+                    border: `1px solid ${isDark ? "#5f6368" : "#dadce0"}`,
+                    backgroundColor: isDark ? "#3c4043" : "#fff",
+                    color: isDark ? "#e8eaed" : "#202124",
+                    fontSize: "13px",
+                    cursor: isConnected ? "pointer" : "not-allowed",
+                    outline: "none",
+                  }}
+                >
+                  <option value={-1}>Manual</option>
+                  <option value={0}>Immediately</option>
+                  <option value={1}>After 1 min</option>
+                  <option value={2}>After 2 mins</option>
+                  <option value={5}>After 5 mins</option>
+                </select>
+              </div>
+            </section>
+
+            {/* Footer */}
+            <footer
+              style={{
+                textAlign: "center",
+                fontSize: "11px",
+                color: isDark ? "#9aa0a6" : "#5f6368",
+                paddingTop: "8px",
+                borderTop: `1px solid ${isDark ? "#3c4043" : "#e8eaed"}`,
+              }}
+            >
+              <p style={{ margin: "4px 0" }}>
+                Need help?{" "}
+                <a
+                  href="https://www.gm-pro.online/support"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#1a73e8", textDecoration: "none" }}
+                >
+                  Contact Support
+                </a>
+              </p>
+              <p style={{ margin: "4px 0" }}>
+                <a
+                  href="https://www.gm-pro.online/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: isDark ? "#9aa0a6" : "#5f6368",
+                    textDecoration: "none",
+                  }}
+                >
+                  Privacy Policy
+                </a>
+                {" • "}
+                <a
+                  href="https://www.gm-pro.online/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: isDark ? "#9aa0a6" : "#5f6368",
+                    textDecoration: "none",
+                  }}
+                >
+                  Terms of Service
+                </a>
+              </p>
+            </footer>
+          </>
+        )}
       </div>
 
       <style jsx global>{`
@@ -498,25 +541,108 @@ export default function AddonSidePanel() {
           margin: 0;
           padding: 0;
         }
+        html,
         body {
           margin: 0;
           padding: 0;
+          overflow-x: hidden;
+        }
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        /* Ensure no horizontal scroll */
+        body {
+          max-width: 100vw;
+          overflow-x: hidden;
+        }
+        /* Google-style focus ring */
+        button:focus-visible,
+        select:focus-visible,
+        input:focus-visible {
+          outline: 2px solid #1a73e8;
+          outline-offset: 2px;
         }
       `}</style>
     </>
   );
 }
 
-// Divider component
-function Divider({ isDark }: { isDark: boolean }) {
+// Section Title Component
+function SectionTitle({
+  children,
+  isDark,
+}: {
+  children: React.ReactNode;
+  isDark: boolean;
+}) {
   return (
-    <hr
+    <h2
       style={{
-        border: "none",
-        borderTop: `1px solid ${isDark ? "#555" : "#e0e0e0"}`,
-        margin: "12px 0",
+        fontSize: "11px",
+        fontWeight: 500,
+        textTransform: "uppercase",
+        letterSpacing: "0.5px",
+        color: isDark ? "#9aa0a6" : "#5f6368",
+        marginBottom: "8px",
       }}
-    />
+    >
+      {children}
+    </h2>
+  );
+}
+
+// Action Button Component
+interface ActionButtonProps {
+  onClick: () => void;
+  disabled: boolean;
+  isDark: boolean;
+  icon: string;
+  label: string;
+  description: string;
+}
+
+function ActionButton({
+  onClick,
+  disabled,
+  isDark,
+  icon,
+  label,
+  description,
+}: ActionButtonProps) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        width: "100%",
+        padding: "12px",
+        backgroundColor: disabled
+          ? isDark
+            ? "#3c4043"
+            : "#e8eaed"
+          : "#1a73e8",
+        color: disabled ? (isDark ? "#9aa0a6" : "#80868b") : "#ffffff",
+        border: "none",
+        borderRadius: "8px",
+        fontSize: "14px",
+        fontWeight: 500,
+        cursor: disabled ? "not-allowed" : "pointer",
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        transition: "background-color 0.2s",
+      }}
+    >
+      <span style={{ fontSize: "18px" }}>{icon}</span>
+      <div style={{ textAlign: "left" }}>
+        <div>{label}</div>
+        <div style={{ fontSize: "11px", fontWeight: 400, opacity: 0.8 }}>
+          {description}
+        </div>
+      </div>
+    </button>
   );
 }
 
@@ -528,7 +654,7 @@ interface SettingRowProps {
   onChange: (checked: boolean) => void;
   isDark: boolean;
   disabled?: boolean;
-  tooltip?: string;
+  description?: string;
 }
 
 function SettingRow({
@@ -538,7 +664,7 @@ function SettingRow({
   onChange,
   isDark,
   disabled,
-  tooltip,
+  description,
 }: SettingRowProps) {
   return (
     <div
@@ -546,34 +672,49 @@ function SettingRow({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "8px 0",
+        padding: "10px 12px",
+        backgroundColor: isDark ? "#292a2d" : "#f8f9fa",
+        borderRadius: "8px",
+        marginBottom: "6px",
         opacity: disabled ? 0.5 : 1,
         cursor: disabled ? "not-allowed" : "default",
       }}
-      title={tooltip}
     >
-      <span
+      <div
         style={{
           display: "flex",
           alignItems: "center",
           gap: "8px",
-          fontSize: "14px",
+          flex: 1,
+          minWidth: 0,
         }}
       >
-        <span>{icon}</span>
-        {label}
-        {tooltip && (
-          <span style={{ fontSize: "12px", color: isDark ? "#888" : "#666" }}>
-            ℹ️
-          </span>
-        )}
-      </span>
+        <span style={{ fontSize: "16px", flexShrink: 0 }}>{icon}</span>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontSize: "14px", fontWeight: 400 }}>{label}</div>
+          {description && (
+            <div
+              style={{
+                fontSize: "11px",
+                color: isDark ? "#9aa0a6" : "#5f6368",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {description}
+            </div>
+          )}
+        </div>
+      </div>
       <label
         style={{
           position: "relative",
           display: "inline-block",
-          width: "48px",
-          height: "26px",
+          width: "36px",
+          height: "20px",
+          flexShrink: 0,
+          marginLeft: "8px",
         }}
       >
         <input
@@ -585,6 +726,7 @@ function SettingRow({
             opacity: 0,
             width: 0,
             height: 0,
+            position: "absolute",
           }}
         />
         <span
@@ -595,22 +737,26 @@ function SettingRow({
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: checked ? "#1976d2" : isDark ? "#555" : "#ccc",
-            transition: "0.3s",
-            borderRadius: "26px",
+            backgroundColor: checked
+              ? "#1a73e8"
+              : isDark
+              ? "#5f6368"
+              : "#dadce0",
+            transition: "0.2s",
+            borderRadius: "10px",
           }}
         >
           <span
             style={{
               position: "absolute",
-              content: '""',
-              height: "20px",
-              width: "20px",
-              left: checked ? "25px" : "3px",
-              bottom: "3px",
+              height: "16px",
+              width: "16px",
+              left: checked ? "18px" : "2px",
+              bottom: "2px",
               backgroundColor: "#fff",
-              transition: "0.3s",
+              transition: "0.2s",
               borderRadius: "50%",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
             }}
           />
         </span>
