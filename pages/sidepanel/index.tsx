@@ -230,7 +230,7 @@ export default function AddonSidePanel() {
             alt="GM Pro"
             width={48}
             height={48}
-            style={{ borderRadius: "8px" }}
+            style={{ borderRadius: "8px", justifySelf: "center" }}
           />
           <h1
             style={{ fontSize: "16px", margin: "8px 0 4px", fontWeight: 500 }}
@@ -418,7 +418,7 @@ export default function AddonSidePanel() {
                 description="Sound alert when someone joins"
               />
 
-              <SettingRow
+              {/* <SettingRow
                 label="Auto Transcriptions"
                 icon="📝"
                 checked={
@@ -435,7 +435,7 @@ export default function AddonSidePanel() {
                     ? "Temporarily unavailable"
                     : "Enable captions automatically"
                 }
-              />
+              /> */}
             </section>
 
             {/* Auto Join Setting */}
