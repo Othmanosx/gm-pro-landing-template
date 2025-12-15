@@ -235,7 +235,7 @@ export default function AddonSidePanel() {
             alt="GM Pro Logo"
             width={70}
             height={70}
-            style={{ borderRadius: "12px" }}
+            style={{ borderRadius: "12px", justifySelf: "center" }}
           />
           <h1 style={{ fontSize: "16px", margin: "8px 0 4px" }}>
             GM Pro Settings
