@@ -214,6 +214,8 @@ export default function AddonSidePanel() {
     fontFamily: '"Google Sans", Roboto, Arial, sans-serif',
     overflowX: "hidden",
     boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "column",
   };
 
   return (
@@ -445,11 +447,6 @@ export default function AddonSidePanel() {
                     : "Enable captions automatically"
                 }
               /> */}
-            </section>
-
-            {/* Auto Join Setting */}
-            <section style={{ marginBottom: "16px" }}>
-              <SectionTitle isDark={isDark}>Auto Join</SectionTitle>
               <div
                 style={{
                   display: "flex",
@@ -500,6 +497,7 @@ export default function AddonSidePanel() {
                 fontSize: "11px",
                 color: isDark ? "#9aa0a6" : "#5f6368",
                 paddingTop: "8px",
+                marginTop: "auto",
                 borderTop: `1px solid ${isDark ? "#3c4043" : "#e8eaed"}`,
               }}
             >
