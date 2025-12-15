@@ -67,7 +67,7 @@ export default function AddonSidePanel() {
   const [featureFlags, setFeatureFlags] = useState<FeatureFlags>(
     DEFAULT_FEATURE_FLAGS
   );
-  const [isConnected, setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [connectionError, setConnectionError] = useState<string | null>(null);
   const [sidePanelClient, setSidePanelClient] =
@@ -75,14 +75,24 @@ export default function AddonSidePanel() {
   const [sdkInitialized, setSdkInitialized] = useState(false);
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Initialize Google Meet Add-on SDK
+  // Initialize Google Meet Add-on SDK only if meet_sdk param is present
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (!urlParams.has("meet_sdk")) {
+      // Don't initialize SDK if not running in Meet Add-on context
+      return;
+    }
     async function initMeetAddon() {
       try {
         const session = await meet.addon.createAddonSession({
           cloudProjectNumber: CLOUD_PROJECT_NUMBER,
         });
         const client = await session.createSidePanelClient();
+        console.log({
+          session,
+          sidePanelClient,
+        });
+
         setSidePanelClient(client);
         setSdkInitialized(true);
         console.log("[GM Pro Add-on] Meet SDK initialized successfully");
@@ -92,7 +102,6 @@ export default function AddonSidePanel() {
         setSdkInitialized(false);
       }
     }
-
     initMeetAddon();
   }, []);
 
@@ -132,7 +141,7 @@ export default function AddonSidePanel() {
         if (message.payload) {
           console.log("[GM Pro Add-on] Updating settings:", message.payload);
           setSettings(message.payload as Settings);
-          setIsConnected(true);
+          // setIsConnected(true);
           setIsLoading(false);
           setConnectionError(null);
           if (connectionTimeoutRef.current) {
@@ -244,7 +253,7 @@ export default function AddonSidePanel() {
               margin: 0,
             }}
           >
-            Enhance your Google Meet experience
+            Enhance your Google Meet™ experience
           </p>
         </header>
 
@@ -529,6 +538,9 @@ export default function AddonSidePanel() {
                 >
                   Terms of Service
                 </a>
+              </p>
+              <p style={{ margin: "4px 0", fontSize: "10px" }}>
+                Google Meet™ is a trademark of Google LLC
               </p>
             </footer>
           </>
