@@ -33,6 +33,12 @@ export const Footer = () => {
           >
             Terms of Service
           </Link>
+          <Link
+            href="/support"
+            className="text-sm text-light hover:text-gray-300"
+          >
+            Support
+          </Link>
           <LinkButton
             href={CHROME_STORE_URL}
             aria-label="Get GM Pro on Chrome Web Store"
