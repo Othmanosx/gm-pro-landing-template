@@ -144,14 +144,23 @@ export default function AddonSidePanel() {
 
   // Handle incoming messages from extension
   const handleMessage = useCallback((event: MessageEvent) => {
+    // Log all messages for debugging
+    console.log("[GM Pro Add-on] Received postMessage:", {
+      origin: event.origin,
+      source: event.data?.source,
+      type: event.data?.type,
+    });
+
     // Validate message is from GM Pro extension
     if (event.data?.source !== "gm-pro-extension") return;
 
     const message = event.data as ExtensionMessage;
+    console.log("[GM Pro Add-on] Valid extension message:", message.type);
 
     switch (message.type) {
       case "GM_PRO_SETTINGS_UPDATE":
         if (message.payload) {
+          console.log("[GM Pro Add-on] Updating settings:", message.payload);
           setSettings(message.payload as Settings);
           setIsConnected(true);
           setConnectionError(null);
@@ -162,6 +171,10 @@ export default function AddonSidePanel() {
         break;
       case "GM_PRO_FEATURE_FLAGS":
         if (message.payload) {
+          console.log(
+            "[GM Pro Add-on] Updating feature flags:",
+            message.payload
+          );
           setFeatureFlags(message.payload as FeatureFlags);
         }
         break;
