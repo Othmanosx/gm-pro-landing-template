@@ -7,9 +7,9 @@
     },
     "meet": {
       "web": {
-        "sidePanelUrl": "https://gm-pro.online/sidepanel",
+        "sidePanelUrl": "https://www.gm-pro.online/sidepanel",
         "supportsScreenSharing": false,
-        "addOnOrigins": ["https://gm-pro.online"],
+        "addOnOrigins": ["https://gm-pro.online", "https://www.gm-pro.online"],
         "logoUrl": "https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120",
         "darkModeLogoUrl": "https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
       }
