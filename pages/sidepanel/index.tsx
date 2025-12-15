@@ -48,7 +48,7 @@ interface ExtensionMessage {
 }
 
 const DEFAULT_SETTINGS: Settings = {
-  isDark: false,
+  isDark: true,
   autoDisableMic: false,
   autoDisableCamera: false,
   autoEnableTranscriptions: false,
