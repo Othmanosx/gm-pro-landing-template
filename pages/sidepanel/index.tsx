@@ -255,7 +255,7 @@ export default function AddonSidePanel() {
               margin: 0,
             }}
           >
-            Enhance your Google Meet™ experience
+            For Google Meet™
           </p>
         </header>
 
