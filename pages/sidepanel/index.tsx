@@ -98,7 +98,7 @@ export default function AddonSidePanel() {
     initMeetAddon();
   }, []);
 
-  // Send message to parent window (extension content script)
+  // Send message to top-level window where extension content script runs
   const sendMessage = useCallback(
     (type: MessageType, payload?: Partial<Settings> | string) => {
       const message: AddonMessage = {
@@ -106,9 +106,38 @@ export default function AddonSidePanel() {
         source: "gm-pro-addon",
         payload,
       };
-      // Send to parent window (if in iframe) and to same window
-      window.parent.postMessage(message, "*");
-      window.postMessage(message, "*");
+
+      console.log("[GM Pro Add-on] Sending message:", type, payload);
+
+      // The Add-on runs in a deeply nested iframe structure
+      // We need to post to window.top to reach the extension content script
+      // which runs in the main meet.google.com frame
+      try {
+        // Post to the top-level window (meet.google.com)
+        if (window.top && window.top !== window) {
+          window.top.postMessage(message, "https://meet.google.com");
+        }
+      } catch (e) {
+        // If blocked by same-origin policy, try with '*'
+        console.log("[GM Pro Add-on] Trying wildcard origin");
+        try {
+          window.top?.postMessage(message, "*");
+        } catch (e2) {
+          console.error("[GM Pro Add-on] Failed to post to top:", e2);
+        }
+      }
+
+      // Also traverse up the parent chain in case of nested iframes
+      let currentWindow: Window | null = window.parent;
+      while (currentWindow && currentWindow !== window) {
+        try {
+          currentWindow.postMessage(message, "*");
+        } catch {
+          // Ignore cross-origin errors
+        }
+        if (currentWindow === currentWindow.parent) break;
+        currentWindow = currentWindow.parent;
+      }
     },
     []
   );
