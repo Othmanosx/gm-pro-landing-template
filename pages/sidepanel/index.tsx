@@ -1,5 +1,13 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import Head from "next/head";
+import {
+  meet,
+  MeetSidePanelClient,
+} from "@googleworkspace/meet-addons/meet.addons";
+
+// Your Google Cloud Project Number (from Google Cloud Console)
+// This must match the project where you configured the Add-on
+const CLOUD_PROJECT_NUMBER = "464731456038";
 
 // Types matching the GM Pro extension settings
 interface Settings {
@@ -62,7 +70,33 @@ export default function AddonSidePanel() {
   );
   const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState<string | null>(null);
+  const [sidePanelClient, setSidePanelClient] =
+    useState<MeetSidePanelClient | null>(null);
+  const [sdkError, setSdkError] = useState<string | null>(null);
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Initialize Google Meet Add-on SDK
+  useEffect(() => {
+    async function initMeetAddon() {
+      try {
+        const session = await meet.addon.createAddonSession({
+          cloudProjectNumber: CLOUD_PROJECT_NUMBER,
+        });
+        const client = await session.createSidePanelClient();
+        setSidePanelClient(client);
+        console.log("[GM Pro Add-on] Meet SDK initialized successfully");
+      } catch (error) {
+        console.error("[GM Pro Add-on] Failed to initialize Meet SDK:", error);
+        setSdkError(
+          error instanceof Error
+            ? error.message
+            : "Failed to initialize Meet Add-on SDK"
+        );
+      }
+    }
+
+    initMeetAddon();
+  }, []);
 
   // Send message to parent window (extension content script)
   const sendMessage = useCallback(
@@ -72,7 +106,7 @@ export default function AddonSidePanel() {
         source: "gm-pro-addon",
         payload,
       };
-      // Send to parent window (if in iframe) or to same window
+      // Send to parent window (if in iframe) and to same window
       window.parent.postMessage(message, "*");
       window.postMessage(message, "*");
     },
@@ -105,7 +139,7 @@ export default function AddonSidePanel() {
     }
   }, []);
 
-  // Initialize connection
+  // Initialize connection to extension
   useEffect(() => {
     window.addEventListener("message", handleMessage);
 
@@ -117,7 +151,7 @@ export default function AddonSidePanel() {
     connectionTimeoutRef.current = setTimeout(() => {
       if (!isConnected) {
         setConnectionError(
-          "Unable to connect to GM Pro extension. Make sure the extension is installed and you are on a Google Meet page."
+          "Unable to connect to GM Pro extension. Make sure the extension is installed."
         );
       }
     }, 3000);
@@ -152,10 +186,10 @@ export default function AddonSidePanel() {
       <Head>
         <title>GM Pro Settings</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="noindex, nofollow" />
       </Head>
 
       <div
-        className={`addon-container ${isDark ? "dark" : "light"}`}
         style={{
           backgroundColor: isDark ? "#2f2f2f" : "#ffffff",
           color: isDark ? "#ffffff" : "#000000",
@@ -172,11 +206,26 @@ export default function AddonSidePanel() {
             alt="GM Pro Logo"
             width={70}
             height={70}
-            style={{ borderRadius: "12px", justifySelf: "center" }}
+            style={{ borderRadius: "12px" }}
           />
           <h1 style={{ fontSize: "16px", margin: "8px 0 4px" }}>
             GM Pro Settings
           </h1>
+
+          {/* SDK Status */}
+          {sdkError && (
+            <div
+              style={{
+                fontSize: "11px",
+                color: "#f44336",
+                marginBottom: "4px",
+              }}
+            >
+              SDK: {sdkError}
+            </div>
+          )}
+
+          {/* Extension Connection Status */}
           <div
             style={{
               display: "flex",
@@ -204,9 +253,9 @@ export default function AddonSidePanel() {
               }}
             />
             {isConnected
-              ? "Connected"
+              ? "Extension Connected"
               : connectionError
-              ? "Disconnected"
+              ? "Extension Not Found"
               : "Connecting..."}
           </div>
         </header>
@@ -223,6 +272,16 @@ export default function AddonSidePanel() {
             }}
           >
             {connectionError}
+            <div style={{ marginTop: "8px" }}>
+              <a
+                href="https://chromewebstore.google.com/detail/bfmgohplnhblcajmjhmcimjlikohiomh"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: isDark ? "#90caf9" : "#1976d2" }}
+              >
+                Install GM Pro Extension →
+              </a>
+            </div>
           </div>
         )}
 
@@ -397,7 +456,7 @@ export default function AddonSidePanel() {
           }}
         >
           <a
-            href="https://chromewebstore.google.com/detail/GM%20Pro:%20Supercharge%20Your%20Google%20Meet%20Experience/bfmgohplnhblcajmjhmcimjlikohiomh"
+            href="https://chromewebstore.google.com/detail/bfmgohplnhblcajmjhmcimjlikohiomh"
             target="_blank"
             rel="noopener noreferrer"
             style={{
