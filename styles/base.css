@@ -1,0 +1,449 @@
+/**
+ * Copyright 2025 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+:root {
+  --fui-primary: #000; /* fallback for var(--color-black) */
+  --fui-primary-hover: rgba(0, 0, 0, 0.85);
+  --fui-primary-surface: #fff; /* fallback for var(--color-white) */
+  --fui-text: #000;
+  --fui-text-muted: #1f2937; /* fallback for var(--color-gray-800) */
+  --fui-background: #fff;
+  --fui-border: #e5e7eb; /* fallback for var(--color-gray-200) */
+  --fui-input: #d1d5db; /* fallback for var(--color-gray-300) */
+  --fui-error: #ef4444; /* fallback for var(--color-red-500) */
+  --fui-radius: 0.375rem; /* fallback for var(--radius-sm) */
+  --fui-radius-card: 0.75rem; /* fallback for var(--radius-xl) */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fui-primary: #fff;
+    --fui-primary-hover: rgba(255, 255, 255, 0.85);
+    --fui-primary-surface: #000;
+    --fui-text: #fff;
+    --fui-text-muted: #d4d4d4; /* fallback for var(--color-neutral-300) */
+    --fui-background: #09090b; /* fallback for var(--color-neutral-950) */
+    --fui-border: #27272a; /* fallback for var(--color-neutral-800) */
+    --fui-input: #404040; /* fallback for var(--color-neutral-700) */
+    --fui-error: #b91c1c; /* fallback for var(--color-red-700) */
+    --fui-radius: 0.375rem;
+    --fui-radius-card: 0.75rem;
+  }
+}
+
+:root {
+  --color-primary: var(--fui-primary);
+  --color-primary-hover: var(--fui-primary-hover);
+  --color-primary-surface: var(--fui-primary-surface);
+  --color-text: var(--fui-text);
+  --color-text-muted: var(--fui-text-muted);
+  --color-background: var(--fui-background);
+  --color-border: var(--fui-border);
+  --color-input: var(--fui-input);
+  --color-error: var(--fui-error);
+  --radius: var(--fui-radius);
+  --radius-card: var(--fui-radius-card);
+}
+
+/* Components */
+.fui-screen {
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fui-screen .fui-screen__children {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fui-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fui-card {
+  background: var(--color-background);
+  padding: 2.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.fui-card__header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fui-card__title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--color-text);
+}
+
+.fui-card__subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.fui-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.fui-form fieldset,
+.fui-form fieldset label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--color-text);
+}
+
+.fui-form fieldset label div[data-input-label] {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.fui-form fieldset label div[data-input-label] > div:first-child {
+  flex-grow: 1;
+}
+
+.fui-form fieldset label div[data-input-description] {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.fui-form .fui-form__action {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  text-decoration: underline;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.fui-form fieldset label input {
+  width: 100%;
+  border: 1px solid var(--color-input);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  outline: 2px solid transparent;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  background: transparent;
+}
+
+.fui-form fieldset label input[aria-invalid="true"] {
+  border-color: var(--color-error);
+  outline-color: var(--color-error);
+  outline-width: 2px;
+}
+
+.fui-form fieldset label div[data-input-group] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fui-form .fui-qr-code-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.fui-error {
+  color: var(--color-error);
+  text-align: left;
+  font-size: 0.75rem;
+}
+
+.fui-success {
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.fui-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  background: var(--color-primary);
+  color: var(--color-primary-surface);
+  transition: background 0.2s;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.fui-button:hover {
+  background: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+.fui-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fui-button--secondary {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-input);
+}
+
+.fui-button--secondary:hover {
+  background: var(--color-background);
+  border-color: var(--color-primary);
+}
+
+.fui-button.fui-provider__button {
+  border: 1px solid var(--color-border);
+}
+
+.fui-provider__button svg,
+.fui-provider__button img {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.fui-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.fui-divider__line {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.fui-divider__text {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.fui-phone-input {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.fui-phone-input__number-input {
+  border: 1px solid var(--color-input);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  outline: 2px solid transparent;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  background: transparent;
+  flex: 1;
+}
+
+.fui-phone-input__number-input[aria-invalid="true"] {
+  outline-color: var(--color-error);
+  outline-width: 2px;
+}
+
+.fui-country-selector {
+  position: relative;
+  display: inline-block;
+  width: 120px;
+}
+
+.fui-country-selector__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  outline: 1px solid var(--color-input);
+  border-radius: var(--radius);
+  background: transparent;
+  overflow: hidden;
+}
+
+.fui-country-selector__flag {
+  position: absolute;
+  left: 0.5rem;
+  font-size: 1.125rem;
+  pointer-events: none;
+}
+
+.fui-country-selector select {
+  width: 100%;
+  padding-left: 2rem;
+  padding-right: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  outline: 2px solid var(--color-primary);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  color: transparent;
+}
+
+.fui-country-selector__dial-code {
+  position: absolute;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  pointer-events: none;
+  color: var(--color-text);
+}
+
+.fui-form
+  fieldset
+  label
+  div[data-input-group]:has(input[aria-invalid="true"])
+  .fui-country-selector,
+.fui-form
+  fieldset
+  label
+  div[data-input-group]:has(input[aria-invalid="true"])
+  .fui-country-selector
+  .fui-country-selector__wrapper {
+  outline-color: var(--color-error);
+  outline-width: 2px;
+  border-radius: var(--radius);
+}
+
+.fui-policies {
+  color: var(--color-text-muted);
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.fui-policies a,
+.fui-policies button {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+/* Provider button themes */
+.fui-provider__button[data-provider="google.com"][data-themed="true"] {
+  --google-primary: #131314;
+  --color-primary: var(--google-primary);
+  --color-primary-hover: rgba(19, 19, 20, 0.85);
+  --color-primary-surface: #fff;
+  --color-border: var(--google-primary);
+}
+
+.fui-provider__button[data-provider="google.com"][data-themed="neutral"] {
+  --google-primary: #f2f2f2;
+  --color-primary: var(--google-primary);
+  --color-primary-hover: rgba(242, 242, 242, 0.85);
+  --color-primary-surface: #1f1f1f;
+  --color-border: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fui-provider__button[data-provider="google.com"][data-themed="true"] {
+    --google-primary: #fff;
+    --color-primary: var(--google-primary);
+    --color-primary-hover: rgba(255, 255, 255, 0.85);
+    --color-primary-surface: #1f1f1f;
+    --color-border: #747775;
+  }
+}
+
+.fui-provider__button[data-provider="facebook.com"][data-themed="true"] {
+  --facebook-primary: #1877f2;
+  --color-primary: var(--facebook-primary);
+  --color-primary-hover: rgba(24, 119, 242, 0.85);
+  --color-primary-surface: #fff;
+  --color-border: var(--facebook-primary);
+}
+
+.fui-provider__button[data-provider="apple.com"][data-themed="true"] {
+  --apple-primary: #000;
+  --color-primary: var(--apple-primary);
+  --color-primary-hover: rgba(0, 0, 0, 0.85);
+  --color-primary-surface: #fff;
+  --color-border: var(--apple-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .fui-provider__button[data-provider="apple.com"][data-themed="true"] {
+    --apple-primary: #fff;
+    --color-primary: var(--apple-primary);
+    --color-primary-hover: rgba(255, 255, 255, 0.85);
+    --color-primary-surface: #000;
+    --color-border: #fff;
+  }
+}
+
+.fui-provider__button[data-provider="github.com"][data-themed="true"] {
+  --github-primary: #000;
+  --color-primary: var(--github-primary);
+  --color-primary-hover: rgba(0, 0, 0, 0.85);
+  --color-primary-surface: #fff;
+  --color-border: var(--github-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .fui-provider__button[data-provider="github.com"][data-themed="true"] {
+    --github-primary: #fff;
+    --color-primary: var(--github-primary);
+    --color-primary-hover: rgba(255, 255, 255, 0.85);
+    --color-primary-surface: #000;
+    --color-border: #fff;
+  }
+}
+
+.fui-provider__button[data-provider="microsoft.com"][data-themed="true"] {
+  --microsoft-primary: #2f2f2f;
+  --color-primary: var(--microsoft-primary);
+  --color-primary-hover: rgba(47, 47, 47, 0.85);
+  --color-primary-surface: #fff;
+  --color-border: var(--microsoft-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .fui-provider__button[data-provider="microsoft.com"][data-themed="true"] {
+    --microsoft-primary: #fff;
+    --color-primary: var(--microsoft-primary);
+    --color-primary-hover: rgba(255, 255, 255, 0.85);
+    --color-primary-surface: #5e5e5e;
+    --color-border: #fff;
+  }
+}
+
+.fui-provider__button[data-provider="twitter.com"][data-themed="true"] {
+  --twitter-primary: #1da1f2;
+  --color-primary: var(--twitter-primary);
+  --color-primary-hover: rgba(29, 161, 242, 0.85);
+  --color-primary-surface: #fff;
+  --color-border: var(--twitter-primary);
+}

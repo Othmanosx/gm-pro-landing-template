@@ -1,5 +1,6 @@
 import "aos/dist/aos.css";
 import "../styles/globals.css";
+import "../styles/base.css";
 
 import AOS from "aos";
 import type { AppProps } from "next/app";

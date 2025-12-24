@@ -5,6 +5,8 @@ import {
   MeetSidePanelClient,
 } from "@googleworkspace/meet-addons/meet.addons";
 
+import GoogleButton from "../../src/components/GoogleButton";
+
 // Your Google Cloud Project Number (from Google Cloud Console)
 const CLOUD_PROJECT_NUMBER = "464731456038";
 
@@ -258,6 +260,7 @@ export default function AddonSidePanel() {
             For Google Meet™
           </p>
         </header>
+        <GoogleButton />
 
         {/* Loading State */}
         {isLoading && (
