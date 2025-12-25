@@ -11,6 +11,35 @@
   outline: auto;
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Ensure no horizontal scroll */
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+/* Google-style focus ring */
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+}
+
 /* Custom utility classes */
 @layer utilities {
   /* Use the background as the text fill */

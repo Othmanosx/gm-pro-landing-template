@@ -7,6 +7,10 @@ const Document = () => {
       <Head />
       <body>
         <Script strategy="beforeInteractive" src="/scripts/darkModeScript.js" />
+        <Script
+          strategy="beforeInteractive"
+          src="https://accounts.google.com/gsi/client"
+        ></Script>
         <Main />
         <NextScript />
       </body>
