@@ -269,7 +269,6 @@ const SettingsPanel = ({
             For Google Meet™
           </p>
         </header>
-        <GoogleButton />
 
         {/* Main Settings - Only show when connected or loading complete */}
         <>

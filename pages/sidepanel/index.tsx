@@ -6,6 +6,7 @@ import {
 
 import SettingsPanel from "../../src/components/SettingsPanel";
 import ChatApp from "../../src/components/Chat/app";
+import useAuthedUser from "@root/src/firebase/useAuthedUser";
 
 // Your Google Cloud Project Number (from Google Cloud Console)
 const CLOUD_PROJECT_NUMBER = "464731456038";
@@ -113,10 +114,6 @@ export default function AddonSidePanel() {
           cloudProjectNumber: CLOUD_PROJECT_NUMBER,
         });
         const client = await session.createSidePanelClient();
-        console.log({
-          session,
-          sidePanelClient,
-        });
 
         setSidePanelClient(client);
         setSdkInitialized(true);
@@ -277,6 +274,7 @@ export default function AddonSidePanel() {
           updateSetting={updateSetting}
         />
       )}
+      <ChatApp currentMeetId={"placeholder-meet-id"} />
     </>
   );
 }

@@ -3,11 +3,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/init";
 import { signOut } from "firebase/auth";
 import signInWithGoogleIdToken from "../firebase/authHelpers";
+import useAuthedUser from "../firebase/useAuthedUser";
 
 declare const google: any;
 
 const GoogleButton = () => {
-  const [user] = useAuthState(auth);
+  const user = useAuthedUser();
 
   useEffect(() => {
     function GoogleLogin() {
