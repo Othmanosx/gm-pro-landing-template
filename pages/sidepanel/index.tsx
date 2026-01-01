@@ -156,6 +156,12 @@ export default function AddonSidePanel() {
               timestamp: latestMessage.timestamp,
             }),
           })
+          .then((e) => {
+            console.log(
+              "[GM Pro Add-on] Notified participants of new message",
+              e
+            );
+          })
           .catch((error) => {
             console.error("[GM Pro Add-on] Failed to notify activity:", error);
           });
