@@ -23,6 +23,7 @@ import Reactions from "./Reactions";
 import { handleAddReaction } from "./shared";
 import Image from "./Image";
 import HighlightLinks from "./HighlightLinks";
+import useAuthedUser from "@root/src/firebase/useAuthedUser";
 
 const ChatMsgContainer = styled(motion.div, {
   shouldForwardProp: (prop) => prop !== "side",
@@ -35,11 +36,11 @@ const ChatMsgContainer = styled(motion.div, {
   display: "flex",
   flexDirection: "column",
   alignItems: side === "right" ? "flex-end" : "flex-start",
-  paddingTop: isReply ? 0 : !sameUserLast ? theme.spacing(2) : 0,
-  marginTop: isReply && 20,
+  paddingTop: isReply ? 0 : !sameUserLast ? theme.spacing(2) : undefined,
+  marginTop: isReply ? 20 : undefined,
   position: "relative",
-  marginLeft: isReply && !isInChatInput ? theme.spacing(4) : 0,
-  paddingInline: isReply && !isInChatInput ? theme.spacing(2) : 0,
+  marginLeft: isReply && !isInChatInput ? theme.spacing(4) : undefined,
+  paddingInline: isReply && !isInChatInput ? theme.spacing(2) : undefined,
 }));
 
 const ReplyContainer = styled("div")<{
@@ -206,12 +207,12 @@ type Props = {
   speaker?: string;
   isTranscriptions?: boolean;
   timestamp?: number;
+  currentMeetId: string;
 };
 
-function scrollToMessage(id: string) {
-  const message = document
-    .getElementById("gm-pro-ext")
-    .shadowRoot.getElementById(id);
+function scrollToMessage(id?: string) {
+  if (!id) throw new Error("Message ID is required to scroll to message.");
+  const message = document.getElementById(id);
   if (message) {
     message.scrollIntoView({ behavior: "smooth" });
   }
@@ -267,8 +268,9 @@ const ChatMsg = ({
   speaker,
   isTranscriptions,
   timestamp,
+  currentMeetId,
 }: Props) => {
-  const localUserID = useUsersStore((state) => state.user.id);
+  const localUserID = useAuthedUser().user?.id;
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const [isReactionsTooltipOpen, setIsReactionsTooltipOpen] = useState(false);
   const users = useUsersStore((state) => state.users);
@@ -306,18 +308,21 @@ const ChatMsg = ({
   const showAvatar = isReply || (side === "left" && (!sameUserLast || reply));
   const hasReactions = reactions && Object.keys(reactions).length > 0;
 
+  const isDark = true;
+
   return (
     <ChatMsgContainer
       side={side}
       sameUserLast={sameUserLast}
-      isReply={isReply}
-      isInChatInput={isInChatInput}
+      isReply={!!isReply}
+      isInChatInput={!!isInChatInput}
     >
-      {reply && (
+      {reply && reply.id && reply.userId && (
         <ReplyContainer
           onClick={() => scrollToMessage(replyId)}
           isMe={reply.userId === localUserID}
           side={side}
+          isDark={isDark}
         >
           <ChatMsg
             id={reply.id}
@@ -329,13 +334,18 @@ const ChatMsg = ({
             isEdited={reply.isEdited}
             editedText={reply.editedText}
             timestamp={reply.timestamp}
+            currentMeetId={currentMeetId}
           />
         </ReplyContainer>
       )}
       <ClickAwayListener onClickAway={() => setIsEmojiOpen(false)}>
         <div>
           {showUserName && (
-            <UserName title={!isOldChatMessage && fullName} side={side}>
+            <UserName
+              title={!isOldChatMessage && fullName}
+              side={side}
+              isDark={isDark}
+            >
               {localUserID === userId ? "You" : name}
               {timestamp && (
                 <span
@@ -390,7 +400,14 @@ const ChatMsg = ({
               title={
                 <EmojiPicker
                   onEmojiClick={(emoji) => {
-                    handleAddReaction(emoji.unified, id, localUserID);
+                    if (!localUserID)
+                      throw new Error("User must be logged in.");
+                    handleAddReaction(
+                      emoji.unified,
+                      id,
+                      localUserID,
+                      currentMeetId
+                    );
                     setIsEmojiOpen(false);
                   }}
                   width="auto"
@@ -441,17 +458,20 @@ const ChatMsg = ({
                         onEditMessage={editMessage}
                         sameUser={localUserID === userId}
                         isTranscriptions={isTranscriptions}
+                        isDark={isDark}
                       />
                     )
                   }
+                  isDark={isDark}
                 >
                   <MessageText
-                    extraMarginBottom={hasReactions && sameUserNext}
+                    extraMarginBottom={Boolean(hasReactions && sameUserNext)}
                     sameUserNext={sameUserNext}
                     sameUserLast={sameUserLast}
                     side={side}
                     isOnlyFewEmojis={isOnlyFewEmojis(editedText ?? text)}
                     isTranscriptions={isTranscriptions}
+                    isDark={isDark}
                   >
                     {isSuperOnly && (
                       <div style={{ marginTop: -7 }}>
@@ -461,7 +481,7 @@ const ChatMsg = ({
                         </span>
                       </div>
                     )}
-                    <Image imageUrl={image} />
+                    {image && <Image imageUrl={image} />}
                     <HighlightLinks>{editedText ?? text}</HighlightLinks>
                     {isEdited && (
                       <Typography
@@ -479,6 +499,7 @@ const ChatMsg = ({
                         id={id}
                         reactions={reactions}
                         setIsReactionsTooltipOpen={setIsReactionsTooltipOpen}
+                        isDark={isDark}
                       />
                     )}
                   </MessageText>

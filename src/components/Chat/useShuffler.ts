@@ -14,7 +14,7 @@ const globalAutoShufflerRef = {
   } | null,
 };
 
-const useShuffler = () => {
+const useShuffler = (currentMeetId: string) => {
   const { user: localUser } = useAuthedUser();
   const localUserID = localUser?.id;
   const isShufflerOn = useZustandStore((state) => state.isShufflerOn);
@@ -38,11 +38,15 @@ const useShuffler = () => {
       const shuffledParticipants = [...participants].sort(
         () => Math.random() - 0.5
       );
-      sendMessageToSuperChat({
-        text: shuffledParticipants.join("\n"),
-        userId: localUserID,
-        timestamp: serverTimestamp(),
-      });
+      if (!localUserID) throw new Error("No local user ID");
+      sendMessageToSuperChat(
+        {
+          text: shuffledParticipants.join("\n"),
+          userId: localUserID,
+          timestamp: serverTimestamp(),
+        },
+        currentMeetId
+      );
     } catch (error) {
       console.log(1, "Error while shuffling participants:", error);
       alert(
@@ -56,11 +60,15 @@ const useShuffler = () => {
       const participants = await checkParticipantsTab();
       const randomParticipant =
         participants[Math.floor(Math.random() * participants.length)];
-      sendMessageToSuperChat({
-        text: randomParticipant,
-        userId: localUserID,
-        timestamp: serverTimestamp(),
-      });
+      if (!localUserID) throw new Error("No local user ID");
+      sendMessageToSuperChat(
+        {
+          text: randomParticipant,
+          userId: localUserID,
+          timestamp: serverTimestamp(),
+        },
+        currentMeetId
+      );
     } catch (error) {
       alert(
         "An error occurred while picking a random participant. Please reload the window and try again."
@@ -103,11 +111,15 @@ const useShuffler = () => {
             (p) => !participants.includes(p)
           )[0];
           participants.push(newMember);
-          sendMessageToSuperChat({
-            text: participants.join("\n"),
-            userId: localUserID,
-            timestamp: serverTimestamp(),
-          });
+          if (!localUserID) throw new Error("No local user ID");
+          sendMessageToSuperChat(
+            {
+              text: participants.join("\n"),
+              userId: localUserID,
+              timestamp: serverTimestamp(),
+            },
+            currentMeetId
+          );
         } catch (error) {
           alert(
             "An error occurred while posting the updated participants list. Please reload the window and try again."
@@ -142,11 +154,15 @@ const useShuffler = () => {
       try {
         const newParticipants = await checkParticipantsTab();
         participants = [...newParticipants].sort(() => Math.random() - 0.5);
-        sendMessageToSuperChat({
-          text: participants.join("\n"),
-          userId: localUserID,
-          timestamp: serverTimestamp(),
-        });
+        if (!localUserID) throw new Error("No local user ID");
+        sendMessageToSuperChat(
+          {
+            text: participants.join("\n"),
+            userId: localUserID,
+            timestamp: serverTimestamp(),
+          },
+          currentMeetId
+        );
       } catch (error) {
         setIsShufflerOn(false);
         globalAutoShufflerRef.current = null;

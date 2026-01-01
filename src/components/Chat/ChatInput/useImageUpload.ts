@@ -1,23 +1,25 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, RefObject } from "react";
 import {
   getStorage,
   ref,
   getDownloadURL,
   uploadBytesResumable,
+  UploadTask,
+  StorageError,
 } from "firebase/storage";
 import { useZustandStore } from "@root/src/shared/hooks/useGeneralZustandStore";
-import { useDropzone } from "react-dropzone";
+import { FileRejection, useDropzone } from "react-dropzone";
 
 export const useImageUpload = (
   disabled = false,
-  inputRef?: React.RefObject<HTMLElement>
+  inputRef?: RefObject<HTMLTextAreaElement | null>
 ) => {
-  const [localImage, setLocalImage] = useState(null);
+  const [localImage, setLocalImage] = useState("");
   const [fileError, setFileError] = useState<string | null>(null);
-  const [uploadTask, setUploadTask] = useState(null);
+  const [uploadTask, setUploadTask] = useState<UploadTask | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadError, setUploadError] = useState(null);
+  const [uploadError, setUploadError] = useState<StorageError | null>(null);
   // TODO: extract this from firebase directly
   const { isImageUploadingEnabled } = { isImageUploadingEnabled: true };
 
@@ -66,7 +68,7 @@ export const useImageUpload = (
             const shortUrl = downloadURL
               .replace(
                 "https://firebasestorage.googleapis.com/v0/b/gmpro-404802.firebasestorage.app/o/chat_images%2F",
-                (import.meta.env.VITE_STORAGE_SHORT_DOMAIN ||
+                (process.env.NEXT_PUBLIC_STORAGE_SHORT_DOMAIN ||
                   "https://img.gm-pro.online") + "/"
               )
               .replace(/&token=[^&]+/, ""); // Remove token param
@@ -78,7 +80,7 @@ export const useImageUpload = (
             setUploading(false);
             setUploadTask(null);
           } catch (err) {
-            setUploadError(err);
+            setUploadError(err as StorageError);
             setUploading(false);
             setUploadTask(null);
           }
@@ -98,7 +100,7 @@ export const useImageUpload = (
   );
 
   const onDropRejected = useCallback(
-    (fileRejections) => {
+    (fileRejections: FileRejection[]) => {
       if (fileRejections.length > 0) {
         const rejection = fileRejections[0];
         const error = rejection.errors[0];
@@ -146,7 +148,7 @@ export const useImageUpload = (
     if (uploadError && uploadError.code !== "storage/canceled") {
       setFileError("Failed to upload image. Please try again.");
       setImage(null);
-      setLocalImage(null);
+      setLocalImage("");
     }
   }, [uploadError, setImage]);
 
@@ -157,7 +159,7 @@ export const useImageUpload = (
       setUploading(false);
     }
     setImage(null);
-    setLocalImage(null);
+    setLocalImage("");
     setFileError(null);
   }, [uploadTask, setImage]);
 

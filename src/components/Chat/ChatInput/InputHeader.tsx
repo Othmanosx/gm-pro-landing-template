@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 import { useTextTransform } from "../useTextTransform";
 import SendToSelector from "../SendToSelector";
 import { Divider, IconButton, Tooltip } from "@mui/material";
@@ -6,7 +6,7 @@ import { FormatBold, FormatItalic } from "@mui/icons-material";
 import StrikethroughSIcon from "@mui/icons-material/StrikethroughS";
 
 interface Props {
-  inputRef: React.RefObject<HTMLTextAreaElement> | null;
+  inputRef: RefObject<HTMLTextAreaElement | null>;
 }
 
 const ShortcutButton = ({

@@ -17,15 +17,35 @@ import {
   serverTimestamp as realtimeServerTimestamp,
 } from "firebase/database";
 import { create } from "zustand";
-import { User } from "firebase/auth";
 import useAuthedUser from "@root/src/firebase/useAuthedUser";
+
+type User = {
+  id: string;
+  fullName: string;
+  profileImageUrl: string;
+  email: string;
+  MeetEmail?: string;
+  lastAppVersion?: string;
+  lastMeeting?: string;
+  lastSeen?: any; // timestamp, can be Date, number, or Firestore Timestamp
+  settings?: {
+    autoDisableCamera?: boolean;
+    autoDisableMic?: boolean;
+    autoEnableTranscriptions?: boolean;
+    autoOpenChat?: boolean;
+    isDark?: boolean;
+    joinMeetingDelay?: number;
+    lobbyNotifier?: boolean;
+    sendToGMProUsersOnly?: boolean;
+    // add more settings fields as needed
+  };
+};
 
 type Store = {
   users: User[];
   setUsers: (users: any[]) => void;
   activeUsers: User[];
   setActiveUsers: (users: any[]) => void;
-  user: User;
   setUser: (user: User) => void;
 };
 
@@ -34,13 +54,6 @@ export const useUsersStore = create<Store>()((set, get) => ({
   setUsers: (users) => set((state) => ({ ...state, users })),
   activeUsers: [],
   setActiveUsers: (users) => set((state) => ({ ...state, activeUsers: users })),
-  user: {
-    email: "",
-    fullName: "",
-    id: "",
-    MeetEmail: "",
-    profileImageUrl: "",
-  },
   setUser: (user) => set((state) => ({ ...state, user })),
 }));
 
@@ -50,7 +63,6 @@ export function useUsers({ currentMeetId }: { currentMeetId: string }) {
   const users = useUsersStore((state) => state.users);
   const setUsers = useUsersStore((state) => state.setUsers);
   const setActiveUsers = useUsersStore((state) => state.setActiveUsers);
-  const setUser = useUsersStore((state) => state.setUser);
 
   const { user: localUser } = useAuthedUser();
 
@@ -126,7 +138,8 @@ export function useUsers({ currentMeetId }: { currentMeetId: string }) {
         lastMeeting: currentMeetId,
       };
 
-      const userDoc = doc(firestoreDB, "users", localUser?.id);
+      if (!localUser?.id) throw new Error("No local user ID");
+      const userDoc = doc(firestoreDB, "users", localUser.id);
       firebaseUserId
         ? await updateDoc(userDoc, userData)
         : await setDoc(userDoc, userData);

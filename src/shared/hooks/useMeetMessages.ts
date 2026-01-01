@@ -1,7 +1,4 @@
 import { create } from "zustand";
-import { createStore } from "idb-keyval";
-
-const customStore = createStore("gm-pro", "meet-data");
 
 type Store = {
   meetMessages: any[];

@@ -1,7 +1,7 @@
 import { useRef, memo } from "react";
 import { ref, serverTimestamp, update } from "firebase/database";
 import ChatInput from "./ChatInput";
-import { Alert, AlertTitle, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useUsersStore } from "./useUsers";
 import ChatMessages from "./ChatMessages";
 import LoadingSkeleton from "./LoadingSkeleton";
@@ -9,9 +9,11 @@ import { useZustandStore } from "@root/src/shared/hooks/useGeneralZustandStore";
 import { sendMessageToSuperChat } from "@root/utils/sendMessage";
 import { Elmo, getOldMessage } from "@root/utils/getOldMessage";
 import { database } from "@root/src/shared/firebase";
+import useAuthedUser from "@root/src/firebase/useAuthedUser";
 
 const ChatRoom = ({ currentMeetId }: { currentMeetId: string }) => {
-  const chatContainerRef = useRef(null);
+  const localUserID = useAuthedUser().user?.id;
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const users = useUsersStore((state) => state.users);
   const image = useZustandStore((state) => state.image);
   const setImage = useZustandStore((state) => state.setImage);
@@ -24,8 +26,9 @@ const ChatRoom = ({ currentMeetId }: { currentMeetId: string }) => {
   );
   const editedMessageId = useZustandStore((state) => state.editedMessageId);
 
-  const sendMessage = async (e) => {
-    if (!currentMeetId) return;
+  const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+    if (!currentMeetId) throw new Error("No current meet ID");
+    if (!localUserID) throw new Error("No local user ID");
     e.preventDefault();
 
     const isElmo = message.toLocaleLowerCase() === "/elmo";
@@ -53,20 +56,25 @@ const ChatRoom = ({ currentMeetId }: { currentMeetId: string }) => {
             editedText: text,
           });
         } else {
-          sendMessageToSuperChat({
-            ...(text && { text }),
-            ...(imagePayload && { image: imagePayload }),
-            ...(reply && { replyId: reply?.id }),
-            ...(reply?.isSuperOnly && { isSuperOnly: true }),
-            timestamp: serverTimestamp(),
-            userId: localUserID,
-          });
+          sendMessageToSuperChat(
+            {
+              ...(text && { text }),
+              ...(imagePayload && { image: imagePayload }),
+              ...(reply && { replyId: reply?.id }),
+              ...(reply?.isSuperOnly && { isSuperOnly: true }),
+              timestamp: serverTimestamp(),
+              userId: localUserID,
+            },
+            currentMeetId
+          );
         }
         setMessage("");
         setImage(null);
         setReply(undefined);
-        setEditedMessageId(undefined);
-        chatContainerRef?.current?.firstChild?.scrollIntoView({
+        setEditedMessageId("");
+        (
+          chatContainerRef?.current?.firstChild as HTMLElement | null
+        )?.scrollIntoView({
           block: "start",
         });
       }
@@ -85,7 +93,11 @@ const ChatRoom = ({ currentMeetId }: { currentMeetId: string }) => {
       ) : (
         <ChatMessages ref={chatContainerRef} currentMeetId={currentMeetId} />
       )}
-      <ChatInput ref={chatContainerRef} sendMessage={sendMessage} />
+      <ChatInput
+        ref={chatContainerRef}
+        sendMessage={sendMessage}
+        currentMeetId={currentMeetId}
+      />
     </Stack>
   );
 };

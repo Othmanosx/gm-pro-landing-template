@@ -16,7 +16,7 @@ export const handleAddReaction = (
       return [localUserId];
     }
     if (reactions.includes(localUserId)) {
-      return reactions.filter((userId) => userId !== localUserId);
+      return reactions.filter((userId: string) => userId !== localUserId);
     }
     return [...reactions, localUserId];
   });

@@ -103,10 +103,11 @@ interface Props {
   isLoading?: boolean;
   sendMessage: (e: any) => void;
   disabled?: boolean;
+  currentMeetId: string;
 }
 function ChatInput(
-  { isLoading, sendMessage, disabled }: Props,
-  chatContainerRef
+  { isLoading, sendMessage, disabled, currentMeetId }: Props,
+  chatContainerRef: React.ForwardedRef<HTMLDivElement>
 ) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [openGifPicker, setOpenGifPicker] = useState(false);
@@ -141,10 +142,10 @@ function ChatInput(
     pickRandomParticipant,
     toggleAutoShuffler,
     isShufflerOn,
-  } = useShuffler();
+  } = useShuffler(currentMeetId);
   const participants = users.map((user) => ({
     ...user,
-    firstName: user.fullName.split(" ")[0],
+    firstName: user.fullName?.split(" ")[0],
   }));
 
   // Define available slash commands
@@ -215,11 +216,11 @@ function ChatInput(
 
   const clearEdit = () => {
     setEditedMessageId("");
-    setReply(undefined);
+    setReply();
     setMessage("");
   };
 
-  const onKeyDown = (e) => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     // stop Autocomplete from capturing keys like up and down arrow keys
     !showUserSuggestions && !showCommandSuggestions && e.stopPropagation();
     if (
@@ -345,9 +346,20 @@ function ChatInput(
             >
               <Chip
                 onClick={() => {
-                  chatContainerRef?.current?.firstChild?.scrollIntoView({
-                    block: "start",
-                  });
+                  (() => {
+                    if (
+                      chatContainerRef &&
+                      typeof chatContainerRef !== "function" &&
+                      chatContainerRef.current
+                    ) {
+                      (
+                        chatContainerRef.current
+                          .firstChild as HTMLElement | null
+                      )?.scrollIntoView({
+                        block: "start",
+                      });
+                    }
+                  })();
                 }}
                 label="New Message!"
                 color="success"
@@ -419,7 +431,7 @@ function ChatInput(
               </motion.div>
             )}
 
-            {reply && (
+            {reply && reply.id && reply.side && reply.userId && (
               <motion.div
                 layout
                 variants={variants}
@@ -460,6 +472,7 @@ function ChatInput(
                   isEdited={reply.isEdited}
                   editedText={reply.editedText}
                   timestamp={reply.timestamp}
+                  currentMeetId={currentMeetId}
                 />
               </motion.div>
             )}
