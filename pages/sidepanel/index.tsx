@@ -7,6 +7,9 @@ import {
 import SettingsPanel from "../../src/components/SettingsPanel";
 import ChatApp from "../../src/components/Chat/app";
 import useAuthedUser from "@root/src/firebase/useAuthedUser";
+import GMProLayout from "@root/src/components/GMProLayout";
+import Loading from "@root/src/components/Loading";
+import GoogleButton from "@root/src/components/GoogleButton";
 
 // Your Google Cloud Project Number (from Google Cloud Console)
 const CLOUD_PROJECT_NUMBER = "464731456038";
@@ -89,15 +92,15 @@ export const sendMessage = (
 };
 
 export default function AddonSidePanel() {
+  const { user, isLoading: isUserLoading } = useAuthedUser();
+
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [featureFlags, setFeatureFlags] = useState<FeatureFlags>(
     DEFAULT_FEATURE_FLAGS
   );
   const [isConnected, setIsConnected] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [connectionError, setConnectionError] = useState<string | null>(null);
-  const [sidePanelClient, setSidePanelClient] =
-    useState<MeetSidePanelClient | null>(null);
+
   const [sdkInitialized, setSdkInitialized] = useState(false);
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -114,8 +117,8 @@ export default function AddonSidePanel() {
           cloudProjectNumber: CLOUD_PROJECT_NUMBER,
         });
         const client = await session.createSidePanelClient();
+        console.log({ session, client, meet });
 
-        setSidePanelClient(client);
         setSdkInitialized(true);
         console.log("[GM Pro Add-on] Meet SDK initialized successfully");
       } catch (error) {
@@ -140,9 +143,8 @@ export default function AddonSidePanel() {
         if (message.payload) {
           console.log("[GM Pro Add-on] Updating settings:", message.payload);
           setSettings(message.payload as Settings);
-          // setIsConnected(true);
+          setIsConnected(true);
           setIsLoading(false);
-          setConnectionError(null);
           if (connectionTimeoutRef.current) {
             clearTimeout(connectionTimeoutRef.current);
           }
@@ -171,11 +173,6 @@ export default function AddonSidePanel() {
     // Set connection timeout - show helpful message if extension not found
     connectionTimeoutRef.current = setTimeout(() => {
       setIsLoading(false);
-      if (!isConnected) {
-        setConnectionError(
-          "GM Pro Chrome extension required. Install it to use this add-on."
-        );
-      }
     }, 5000);
 
     return () => {
@@ -197,84 +194,37 @@ export default function AddonSidePanel() {
   };
 
   const isDark = settings.isDark;
+  const loading = isLoading || isUserLoading;
+  console.log({ user });
 
-  return (
-    <>
-      {/* Extension Connection Status */}
-      {!isLoading && !isConnected && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "6px",
-            fontSize: "12px",
-            padding: "8px",
-            borderRadius: "8px",
-            backgroundColor: isConnected
-              ? isDark
-                ? "rgba(52, 168, 83, 0.15)"
-                : "rgba(52, 168, 83, 0.1)"
-              : isDark
-              ? "rgba(234, 67, 53, 0.15)"
-              : "rgba(234, 67, 53, 0.1)",
-            color: isConnected ? "#34a853" : "#ea4335",
-            marginBottom: "12px",
-          }}
-        >
-          <span
-            style={{
-              width: "8px",
-              height: "8px",
-              borderRadius: "50%",
-              backgroundColor: isConnected ? "#34a853" : "#ea4335",
-            }}
-          />
-          Extension Not Connected
-        </div>
-      )}
+  if (loading) {
+    return (
+      <GMProLayout>
+        <Loading message="Connecting…" />
+      </GMProLayout>
+    );
+  }
 
-      {/* Error State with Install Link */}
-      {connectionError && !isConnected && !isLoading && (
-        <div
-          style={{
-            backgroundColor: isDark ? "rgba(234, 67, 53, 0.1)" : "#fce8e6",
-            borderRadius: "8px",
-            padding: "12px",
-            marginBottom: "12px",
-            fontSize: "13px",
-          }}
-        >
-          <p style={{ margin: "0 0 8px", lineHeight: 1.4 }}>
-            {connectionError}
-          </p>
-          <a
-            href="https://chromewebstore.google.com/detail/gm-pro/bfmgohplnhblcajmjhmcimjlikohiomh"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "4px",
-              color: "#1a73e8",
-              textDecoration: "none",
-              fontWeight: 500,
-            }}
-          >
-            Install GM Pro Extension
-            <span style={{ fontSize: "16px" }}>→</span>
-          </a>
-        </div>
-      )}
-      {!isLoading && (
+  if (!user) {
+    return (
+      <GMProLayout>
+        <GoogleButton />
+      </GMProLayout>
+    );
+  }
+
+  if (isConnected) {
+    return (
+      <GMProLayout>
         <SettingsPanel
           settings={settings}
           isDark={isDark}
           featureFlags={featureFlags}
           updateSetting={updateSetting}
         />
-      )}
-      <ChatApp currentMeetId={"placeholder-meet-id"} />
-    </>
-  );
+      </GMProLayout>
+    );
+  }
+
+  return <ChatApp currentMeetId={"placeholder-meet-id"} />;
 }

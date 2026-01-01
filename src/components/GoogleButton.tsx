@@ -8,7 +8,7 @@ import useAuthedUser from "../firebase/useAuthedUser";
 declare const google: any;
 
 const GoogleButton = () => {
-  const user = useAuthedUser();
+  const { user } = useAuthedUser();
 
   useEffect(() => {
     function GoogleLogin() {
@@ -69,7 +69,18 @@ const GoogleButton = () => {
     );
   }
 
-  return <div id="googleSignInButton"></div>;
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+      }}
+    >
+      <div id="googleSignInButton" dir="auto" />
+    </div>
+  );
 };
 
 export default GoogleButton;

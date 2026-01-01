@@ -14,8 +14,8 @@ const MessageText = styled(motion.button)(({ theme }) => ({
   whiteSpace: "pre-wrap",
   wordBreak: "break-word",
   fontSize: 18,
-  backgroundColor: theme.palette.grey[100],
-  color: "#000",
+  backgroundColor: "#35383b",
+  color: "#ffffff",
   cursor: "pointer",
 }));
 

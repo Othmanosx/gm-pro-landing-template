@@ -6,16 +6,12 @@ import { useUsersStore } from "./useUsers";
 import ChatMessages from "./ChatMessages";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { useZustandStore } from "@root/src/shared/hooks/useGeneralZustandStore";
-import {
-  getOldChatElements,
-  sendMessageToSuperChat,
-} from "@root/utils/sendMessage";
+import { sendMessageToSuperChat } from "@root/utils/sendMessage";
 import { Elmo, getOldMessage } from "@root/utils/getOldMessage";
 import { database } from "@root/src/shared/firebase";
 
 const ChatRoom = ({ currentMeetId }: { currentMeetId: string }) => {
   const chatContainerRef = useRef(null);
-  const localUserID = useUsersStore((state) => state.user.id);
   const users = useUsersStore((state) => state.users);
   const image = useZustandStore((state) => state.image);
   const setImage = useZustandStore((state) => state.setImage);
@@ -79,36 +75,17 @@ const ChatRoom = ({ currentMeetId }: { currentMeetId: string }) => {
     }
   };
 
-  const noUserDetails = !localUserID;
-
   return (
     <Stack
       justifyContent="space-between"
       sx={{ height: "calc(100% - 97px)", flexGrow: 1 }}
     >
-      {noUserDetails && (
-        <Alert severity="error" variant="filled" sx={{ m: 2 }}>
-          <AlertTitle>Oops! You&apos;re not logged in.</AlertTitle>
-          To enjoy the chat feature, please follow these steps:
-          <ol>
-            <li>Sign in with your Google account in Chrome.</li>
-            <li>
-              Ensure that &apos;Sync&apos; is enabled. You can check this in
-              your Chrome settings (chrome://settings/syncSetup).
-            </li>
-          </ol>
-        </Alert>
-      )}
       {users?.length === 0 ? (
         <LoadingSkeleton />
       ) : (
         <ChatMessages ref={chatContainerRef} currentMeetId={currentMeetId} />
       )}
-      <ChatInput
-        ref={chatContainerRef}
-        disabled={noUserDetails}
-        sendMessage={sendMessage}
-      />
+      <ChatInput ref={chatContainerRef} sendMessage={sendMessage} />
     </Stack>
   );
 };

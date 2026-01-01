@@ -52,7 +52,7 @@ export function useUsers({ currentMeetId }: { currentMeetId: string }) {
   const setActiveUsers = useUsersStore((state) => state.setActiveUsers);
   const setUser = useUsersStore((state) => state.setUser);
 
-  const localUser = useAuthedUser();
+  const { user: localUser } = useAuthedUser();
 
   useEffect(() => {
     if (isSavingUser) return;

@@ -1,11 +1,10 @@
-import React from "react";
 import { auth } from "./init";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const useAuthedUser = () => {
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
-  return user
+  const authedUser = user
     ? {
         id: user?.providerData?.[0]?.uid,
         email: user?.email,
@@ -14,6 +13,8 @@ const useAuthedUser = () => {
         profileImageUrl: user?.photoURL,
       }
     : null;
+
+  return { user: authedUser, isLoading: loading };
 };
 
 export default useAuthedUser;

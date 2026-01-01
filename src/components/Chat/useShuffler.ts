@@ -15,7 +15,8 @@ const globalAutoShufflerRef = {
 };
 
 const useShuffler = () => {
-  const localUserID = useAuthedUser()?.id;
+  const { user: localUser } = useAuthedUser();
+  const localUserID = localUser?.id;
   const isShufflerOn = useZustandStore((state) => state.isShufflerOn);
   const setIsShufflerOn = useZustandStore((state) => state.setIsShufflerOn);
 
