@@ -1,8 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import {
-  meet,
-  MeetSidePanelClient,
-} from "@googleworkspace/meet-addons/meet.addons";
+import { meet, MeetingInfo } from "@googleworkspace/meet-addons/meet.addons";
 
 import SettingsPanel from "../../src/components/SettingsPanel";
 import ChatApp from "../../src/components/Chat/app";
@@ -102,6 +99,7 @@ export default function AddonSidePanel() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [sdkInitialized, setSdkInitialized] = useState(false);
+  const [meetingDetails, setMeetingDetails] = useState<MeetingInfo>();
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize Google Meet Add-on SDK only if meet_sdk param is present
@@ -117,7 +115,8 @@ export default function AddonSidePanel() {
           cloudProjectNumber: CLOUD_PROJECT_NUMBER,
         });
         const client = await session.createSidePanelClient();
-        console.log({ session, client, meet });
+        const details = await client.getMeetingInfo();
+        setMeetingDetails(details);
 
         setSdkInitialized(true);
         console.log("[GM Pro Add-on] Meet SDK initialized successfully");
@@ -195,7 +194,6 @@ export default function AddonSidePanel() {
 
   const isDark = settings.isDark;
   const loading = isLoading || isUserLoading;
-  console.log({ user });
 
   if (loading) {
     return (
@@ -225,6 +223,23 @@ export default function AddonSidePanel() {
       </GMProLayout>
     );
   }
+  if (!meetingDetails?.meetingId) {
+    return (
+      <GMProLayout>
+        <div style={{ padding: "20px" }}>
+          <h2>GM Pro Extension Not Found</h2>
+          <p>
+            It looks like the GM Pro browser extension is not installed or
+            enabled for this meeting. Please make sure you have the extension
+            installed and try again.
+          </p>
+          <p>
+            You can download the GM Pro extension from the Chrome Web Store.
+          </p>
+        </div>
+      </GMProLayout>
+    );
+  }
 
-  return <ChatApp currentMeetId={"placeholder-meet-id"} />;
+  return <ChatApp currentMeetId={meetingDetails.meetingId} />;
 }
