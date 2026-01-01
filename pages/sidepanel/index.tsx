@@ -141,10 +141,21 @@ export default function AddonSidePanel() {
   useEffect(() => {
     const currentCount = meetMessages.length;
     const previousCount = previousMessageCountRef.current;
+    console.log("should start activity");
+    console.log({
+      currentCount,
+      previousCount,
+      sidePanelClient,
+    });
 
     // Only notify if there's a new message (count increased)
     if (currentCount > previousCount && previousCount > 0 && sidePanelClient) {
       const latestMessage = meetMessages[meetMessages.length - 1];
+      console.log("should begin");
+      console.log({
+        latestMessage,
+        localUserID,
+      });
 
       // Only notify for messages from other users
       if (latestMessage && latestMessage.userId !== localUserID) {
