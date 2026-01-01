@@ -148,8 +148,11 @@ export default function AddonSidePanel() {
 
       // Only notify for messages from other users
       if (latestMessage && latestMessage.userId !== localUserID) {
+        console.log("start activity");
+
         sidePanelClient
           .startActivity({
+            sidePanelUrl: "https://www.gm-pro.online/sidepanel",
             additionalData: JSON.stringify({
               type: "new_chat_message",
               messageId: latestMessage.key,
