@@ -79,8 +79,6 @@ const ChatMessages = (
     (state) => state.setEditedMessageId
   );
 
-  const users = useUsersStore((state) => state.users);
-
   const editMessage = (message: Message) => {
     setEditedMessageId(message.key);
     setMessage(message.text ?? "");

@@ -105,7 +105,6 @@ export default function AddonSidePanel() {
   const [meetingDetails, setMeetingDetails] = useState<MeetingInfo>();
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [sidePanelClient, setSidePanelClient] = useState<MeetSidePanelClient>();
-  const meetMessages = useMeetMessages((state) => state.meetMessages);
   const previousMessageCountRef = useRef<number>(0);
   // Initialize Google Meet Add-on SDK only if meet_sdk param is present
   useEffect(() => {
@@ -135,55 +134,25 @@ export default function AddonSidePanel() {
       }
     }
     initMeetAddon();
-  }, [setSidePanelClient]);
+  }, []);
 
   // Notify other participants via Meet SDK when a new message appears
   useEffect(() => {
-    const currentCount = meetMessages.length;
-    const previousCount = previousMessageCountRef.current;
-    console.log("should start activity");
-    console.log({
-      currentCount,
-      previousCount,
-      sidePanelClient,
-    });
-
-    // Only notify if there's a new message (count increased)
-    if (currentCount > previousCount && previousCount > 0 && sidePanelClient) {
-      const latestMessage = meetMessages[meetMessages.length - 1];
-      console.log("should begin");
-      console.log({
-        latestMessage,
-        localUserID,
+    // Only notify for messages from other users
+    sidePanelClient
+      ?.startActivity({
+        sidePanelUrl: "https://www.gm-pro.online/sidepanel",
+        additionalData: JSON.stringify({
+          type: "new_chat_message",
+        }),
+      })
+      .then((e) => {
+        console.log("[GM Pro Add-on] Notified participants of new message", e);
+      })
+      .catch((error) => {
+        console.error("[GM Pro Add-on] Failed to notify activity:", error);
       });
-
-      // Only notify for messages from other users
-      if (latestMessage && latestMessage.userId !== localUserID) {
-        console.log("start activity");
-
-        sidePanelClient
-          .startActivity({
-            sidePanelUrl: "https://www.gm-pro.online/sidepanel",
-            additionalData: JSON.stringify({
-              type: "new_chat_message",
-              messageId: latestMessage.key,
-              timestamp: latestMessage.timestamp,
-            }),
-          })
-          .then((e) => {
-            console.log(
-              "[GM Pro Add-on] Notified participants of new message",
-              e
-            );
-          })
-          .catch((error) => {
-            console.error("[GM Pro Add-on] Failed to notify activity:", error);
-          });
-      }
-    }
-
-    previousMessageCountRef.current = currentCount;
-  }, [meetMessages, sidePanelClient, localUserID]);
+  }, []);
 
   // Handle incoming messages from extension
   const handleMessage = useCallback((event: MessageEvent) => {
