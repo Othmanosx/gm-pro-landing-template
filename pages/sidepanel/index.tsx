@@ -194,6 +194,7 @@ export default function AddonSidePanel() {
 
   const isDark = settings.isDark;
   const loading = isLoading || isUserLoading;
+  console.log(meetingDetails);
 
   if (loading) {
     return (
