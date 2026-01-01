@@ -194,7 +194,6 @@ export default function AddonSidePanel() {
 
   const isDark = settings.isDark;
   const loading = isLoading || isUserLoading;
-  console.log(meetingDetails);
 
   if (loading) {
     return (
@@ -242,5 +241,5 @@ export default function AddonSidePanel() {
     );
   }
 
-  return <ChatApp currentMeetId={meetingDetails.meetingId} />;
+  return <ChatApp currentMeetId={meetingDetails.meetingCode} />;
 }
