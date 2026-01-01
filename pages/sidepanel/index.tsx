@@ -98,7 +98,7 @@ export default function AddonSidePanel() {
   const [featureFlags, setFeatureFlags] = useState<FeatureFlags>(
     DEFAULT_FEATURE_FLAGS
   );
-  const [isConnected, setIsConnected] = useState(true);
+  const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const [sdkInitialized, setSdkInitialized] = useState(false);
