@@ -1,5 +1,9 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { meet, MeetingInfo } from "@googleworkspace/meet-addons/meet.addons";
+import {
+  meet,
+  MeetingInfo,
+  MeetSidePanelClient,
+} from "@googleworkspace/meet-addons/meet.addons";
 
 import SettingsPanel from "../../src/components/SettingsPanel";
 import ChatApp from "../../src/components/Chat/app";
@@ -7,6 +11,7 @@ import useAuthedUser from "@root/src/firebase/useAuthedUser";
 import GMProLayout from "@root/src/components/GMProLayout";
 import Loading from "@root/src/components/Loading";
 import GoogleButton from "@root/src/components/GoogleButton";
+import { useMeetMessages } from "@root/src/shared/hooks/useMeetMessages";
 
 // Your Google Cloud Project Number (from Google Cloud Console)
 const CLOUD_PROJECT_NUMBER = "464731456038";
@@ -76,8 +81,6 @@ export const sendMessage = (
     payload,
   };
 
-  console.log("[GM Pro Add-on] Sending message:", type, payload);
-
   // Post to window.top to reach the extension content script
   try {
     if (window.top && window.top !== window) {
@@ -90,7 +93,7 @@ export const sendMessage = (
 
 export default function AddonSidePanel() {
   const { user, isLoading: isUserLoading } = useAuthedUser();
-
+  const localUserID = user?.id;
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [featureFlags, setFeatureFlags] = useState<FeatureFlags>(
     DEFAULT_FEATURE_FLAGS
@@ -101,7 +104,9 @@ export default function AddonSidePanel() {
   const [sdkInitialized, setSdkInitialized] = useState(false);
   const [meetingDetails, setMeetingDetails] = useState<MeetingInfo>();
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
+  const [sidePanelClient, setSidePanelClient] = useState<MeetSidePanelClient>();
+  const meetMessages = useMeetMessages((state) => state.meetMessages);
+  const previousMessageCountRef = useRef<number>(0);
   // Initialize Google Meet Add-on SDK only if meet_sdk param is present
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -118,6 +123,9 @@ export default function AddonSidePanel() {
         const details = await client.getMeetingInfo();
         setMeetingDetails(details);
 
+        // Store client in zustand store for use in other components
+        setSidePanelClient(client);
+
         setSdkInitialized(true);
         console.log("[GM Pro Add-on] Meet SDK initialized successfully");
       } catch (error) {
@@ -127,7 +135,35 @@ export default function AddonSidePanel() {
       }
     }
     initMeetAddon();
-  }, []);
+  }, [setSidePanelClient]);
+
+  // Notify other participants via Meet SDK when a new message appears
+  useEffect(() => {
+    const currentCount = meetMessages.length;
+    const previousCount = previousMessageCountRef.current;
+
+    // Only notify if there's a new message (count increased)
+    if (currentCount > previousCount && previousCount > 0 && sidePanelClient) {
+      const latestMessage = meetMessages[meetMessages.length - 1];
+
+      // Only notify for messages from other users
+      if (latestMessage && latestMessage.userId !== localUserID) {
+        sidePanelClient
+          .startActivity({
+            additionalData: JSON.stringify({
+              type: "new_chat_message",
+              messageId: latestMessage.key,
+              timestamp: latestMessage.timestamp,
+            }),
+          })
+          .catch((error) => {
+            console.error("[GM Pro Add-on] Failed to notify activity:", error);
+          });
+      }
+    }
+
+    previousMessageCountRef.current = currentCount;
+  }, [meetMessages, sidePanelClient, localUserID]);
 
   // Handle incoming messages from extension
   const handleMessage = useCallback((event: MessageEvent) => {
@@ -135,7 +171,6 @@ export default function AddonSidePanel() {
     if (event.data?.source !== "gm-pro-extension") return;
 
     const message = event.data as ExtensionMessage;
-    console.log("[GM Pro Add-on] Valid extension message:", message.type);
 
     switch (message.type) {
       case "GM_PRO_SETTINGS_UPDATE":
