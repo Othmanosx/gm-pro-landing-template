@@ -6,25 +6,37 @@ import { useUsersStore } from "../useUsers";
 import { getUserName } from "@root/utils/getUserInfo";
 import { handleAddReaction } from "./shared";
 import { useState } from "react";
+import useAuthedUser from "@root/src/firebase/useAuthedUser";
+
+type reaction = { emoji: string; users: string[] };
+type reactions = { [key: string]: string[] };
 
 type Props = {
   id: string;
-  reactions?: { [key: string]: string[] };
+  reactions?: reactions;
   isDark: boolean;
   setIsReactionsTooltipOpen?: (isReactionsTooltipOpen: boolean) => void;
+  currentMeetId: string;
 };
 
-const Reactions = ({ reactions, id, setIsReactionsTooltipOpen }: Props) => {
-  const localUserID = useUsersStore((state) => state.user.id);
+const Reactions = ({
+  reactions,
+  id,
+  setIsReactionsTooltipOpen,
+  currentMeetId,
+}: Props) => {
+  const localUserID = useAuthedUser().user?.id;
   const users = useUsersStore((state) => state.users);
   const [lastChangedIndex, setLastChangedIndex] = useState<number>();
   const reactionsArray = reactions
     ? Object.entries(reactions).map(([emoji, users]) => ({ emoji, users }))
     : [];
 
-  const handleClickEmoji = (item, i) => {
-    setIsReactionsTooltipOpen(false);
-    handleAddReaction(item.emoji, id, localUserID);
+  const handleClickEmoji = (item: reaction, i: number) => {
+    setIsReactionsTooltipOpen?.(false);
+    if (!localUserID) throw new Error("No local user ID");
+    if (!currentMeetId) throw new Error("No current meet ID");
+    handleAddReaction(item.emoji, id, localUserID, currentMeetId);
     setLastChangedIndex(i);
   };
   const animatingMessages = reactionsArray.slice(lastChangedIndex);
@@ -44,7 +56,7 @@ const Reactions = ({ reactions, id, setIsReactionsTooltipOpen }: Props) => {
         {reactionsArray
           .sort((a, b) => b.users.length - a.users.length)
           .map((item, i) => {
-            const myReaction = item.users.includes(localUserID);
+            const myReaction = item.users.includes(localUserID!);
             return (
               <motion.div
                 key={id + item.emoji}
@@ -80,8 +92,8 @@ const Reactions = ({ reactions, id, setIsReactionsTooltipOpen }: Props) => {
                     style: { zIndex: 8 },
                     disablePortal: true,
                   }}
-                  onClose={() => setIsReactionsTooltipOpen(false)}
-                  onOpen={() => setIsReactionsTooltipOpen(true)}
+                  onClose={() => setIsReactionsTooltipOpen?.(false)}
+                  onOpen={() => setIsReactionsTooltipOpen?.(true)}
                   disableInteractive
                   arrow
                 >

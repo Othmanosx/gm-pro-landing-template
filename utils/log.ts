@@ -18,7 +18,7 @@ export default function colorLog(message: string, type?: ColorType) {
       color = COLORS.FgYellow
       break
     default:
-      color = COLORS[type]
+      color = type && type in COLORS ? COLORS[type] : COLORS.Reset
       break
   }
 

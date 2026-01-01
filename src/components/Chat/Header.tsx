@@ -50,13 +50,13 @@ const getTimestamp = (
   return 0;
 };
 
-const Header = () => {
+const Header = ({ currentMeetId }: { currentMeetId: string }) => {
   const {
     shuffleParticipants,
     pickRandomParticipant,
     toggleAutoShuffler,
     isShufflerOn,
-  } = useShuffler();
+  } = useShuffler(currentMeetId);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const activeUsers = useUsersStore((state) => state.activeUsers);

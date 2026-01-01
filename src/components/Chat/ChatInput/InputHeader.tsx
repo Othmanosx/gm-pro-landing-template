@@ -39,7 +39,7 @@ const ShortcutButton = ({
 
 const InputHeader = ({ inputRef }: Props) => {
   const { handleBoldToggle, handleItalicToggle, handleStrikethroughToggle } =
-    useTextTransform(inputRef);
+    useTextTransform(inputRef as RefObject<HTMLTextAreaElement>);
 
   const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
   const boldShortcut = isMac ? "⌘ + B" : "Ctrl + B";

@@ -60,7 +60,7 @@ export default function App({ currentMeetId }: { currentMeetId: string }) {
           direction="column"
           height="100%"
         >
-          <Header />
+          <Header currentMeetId={currentMeetId} />
           <Divider />
           <ChatRoom currentMeetId={currentMeetId} />
         </Stack>

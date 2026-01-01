@@ -84,9 +84,9 @@ const addStrike = (text: string): string => {
       if (char === " " || char === "\n") return char;
 
       const chicChar =
-        STRIKE_DATA.uppercase[char] ||
-        STRIKE_DATA.lowercase[char] ||
-        STRIKE_DATA.digits[char] ||
+        STRIKE_DATA.uppercase[char as keyof typeof STRIKE_DATA.uppercase] ||
+        STRIKE_DATA.lowercase[char as keyof typeof STRIKE_DATA.lowercase] ||
+        STRIKE_DATA.digits[char as keyof typeof STRIKE_DATA.digits] ||
         char;
 
       return chicChar + STRIKE_DATA.diacritic;
@@ -269,7 +269,11 @@ const addStyle = (
   return [...text]
     .map((char) => {
       if (char === " " || char === "\n") return char;
-      return styleMap.uppercase[char] || styleMap.lowercase[char] || char;
+      return (
+        styleMap.uppercase[char as keyof typeof styleMap.uppercase] ||
+        styleMap.lowercase[char as keyof typeof styleMap.lowercase] ||
+        char
+      );
     })
     .join("");
 };
@@ -349,7 +353,12 @@ const transformMarkedText = (text: string): string => {
   return text;
 };
 
-const handleToggle = (inputRef, message, setMessage, toggleFunction) => {
+const handleToggle = (
+  inputRef: React.RefObject<HTMLTextAreaElement>,
+  message: string,
+  setMessage: (msg: string) => void,
+  toggleFunction: (text: string) => string
+) => {
   const textarea = inputRef.current;
   if (!textarea) return;
 
@@ -374,7 +383,9 @@ const handleToggle = (inputRef, message, setMessage, toggleFunction) => {
 
 const applyBoldToText = (text: string): string => addStyle(text, BOLD_MAP);
 
-export const useTextTransform = (inputRef) => {
+export const useTextTransform = (
+  inputRef: React.RefObject<HTMLTextAreaElement>
+) => {
   const message = useZustandStore((state) => state.message);
   const setMessage = useZustandStore((state) => state.setMessage);
 
@@ -391,9 +402,11 @@ export const useTextTransform = (inputRef) => {
     [inputRef, message, setMessage]
   );
 
-  const handleTextTransform = (text) => {
+  const handleTextTransform = (text: string) => {
     const words = text.split(" ");
-    const transformedWords = words.map((word) => transformMarkedText(word));
+    const transformedWords = words.map((word: string) =>
+      transformMarkedText(word)
+    );
     setMessage(transformedWords.join(" "));
   };
 

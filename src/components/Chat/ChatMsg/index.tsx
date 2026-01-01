@@ -500,6 +500,7 @@ const ChatMsg = ({
                         reactions={reactions}
                         setIsReactionsTooltipOpen={setIsReactionsTooltipOpen}
                         isDark={isDark}
+                        currentMeetId={currentMeetId}
                       />
                     )}
                   </MessageText>

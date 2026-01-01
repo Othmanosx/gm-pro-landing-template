@@ -15,9 +15,11 @@ import { useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import styled from "@emotion/styled";
 import useLocation from "./useLocation";
+import useAuthedUser from "@root/src/firebase/useAuthedUser";
+import { getUserProfilePhoto } from "@root/utils/getUserInfo";
 
 export type Message = {
-  key?: string;
+  key: string;
   text: string;
   image?: string;
   reactions?: { [key: string]: string[] };
@@ -30,14 +32,14 @@ export type Message = {
   isSuperOnly?: boolean;
 };
 
-const ChatContainer = styled("div")(() => ({
+const ChatContainer = styled("div")({
   height: "100%",
   overflowY: "auto",
   padding: "16px",
   flex: 1,
   display: "flex",
   flexDirection: "column-reverse",
-}));
+});
 
 export const YOU_TRANSLATIONS = [
   "You",
@@ -54,9 +56,12 @@ export const YOU_TRANSLATIONS = [
 ];
 const TWENTY_TWO_HOURS = 22 * 60 * 60 * 1000;
 
-const ChatMessages = ({ currentMeetId }, chatContainerRef) => {
+const ChatMessages = (
+  { currentMeetId }: { currentMeetId: string },
+  chatContainerRef: React.ForwardedRef<HTMLDivElement>
+) => {
   const messagesRef = ref(database, `rooms/${currentMeetId}/messages`);
-  const localUserID = useUsersStore((state) => state.user.id);
+  const localUserID = useAuthedUser().user?.id;
   const setMessage = useZustandStore((state) => state.setMessage);
   // Get the messages from the database only when users are loaded
   const [messages, loading] = useListVals<Message>(messagesRef, {
@@ -80,8 +85,10 @@ const ChatMessages = ({ currentMeetId }, chatContainerRef) => {
     setEditedMessageId(message.key);
     setMessage(message.text ?? "");
     setImage(message.image ? { url: message.image } : null);
-    const reply =
-      message.replyId && messages.find((msg) => msg.key === message.replyId);
+    const reply = !!message.replyId
+      ? messages?.find((msg) => msg.key === message.replyId)
+      : undefined;
+
     setReply(
       reply
         ? {
@@ -94,11 +101,11 @@ const ChatMessages = ({ currentMeetId }, chatContainerRef) => {
             isSuperOnly: reply?.isSuperOnly,
             timestamp: reply?.timestamp,
           }
-        : null
+        : undefined
     );
   };
 
-  const allMessagesRaw = [...messages]
+  const allMessagesRaw = [...(messages ?? [])]
     .sort((a, b) => a.timestamp - b.timestamp)
     .reverse();
 
@@ -112,7 +119,12 @@ const ChatMessages = ({ currentMeetId }, chatContainerRef) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (chatContainerRef.current) {
+      // Only access .current if chatContainerRef is a RefObject
+      if (
+        chatContainerRef &&
+        typeof chatContainerRef !== "function" &&
+        chatContainerRef.current
+      ) {
         const container = chatContainerRef.current;
         // Check if the user is already at the bottom
         const isAtBottom = container.scrollTop > -250;
@@ -134,7 +146,7 @@ const ChatMessages = ({ currentMeetId }, chatContainerRef) => {
       }
     }, 10);
     return () => clearTimeout(timer);
-  }, [messages.length, allMessages.length, chatContainerRef]);
+  }, [messages?.length, allMessages.length, chatContainerRef]);
 
   useLayoutEffect(() => {
     // remove all messages and transcriptions from local database if it has been more than 22 hours since the first message was sent in this meet
@@ -160,9 +172,9 @@ const ChatMessages = ({ currentMeetId }, chatContainerRef) => {
         <EmptyChat setMessage={setMessage} location={location} />
       )}
       {allMessages?.map((message, i) => {
-        const reply =
-          message.replyId &&
-          allMessages.find((msg) => msg.key === message.replyId);
+        const reply = !!message.replyId
+          ? allMessages.find((msg) => msg.key === message.replyId)
+          : undefined;
 
         return (
           <motion.div
@@ -182,28 +194,24 @@ const ChatMessages = ({ currentMeetId }, chatContainerRef) => {
             <RenderIfVisible
               initialVisible
               visibleOffset={1800}
-              stayRendered={i < 30 || message.image || reply?.image}
+              stayRendered={i < 30 || !!message.image || !!reply?.image}
             >
               <ChatMsg
                 id={message.key}
                 userId={message.userId || message.key}
                 text={message.text}
-                profileImage={message.profileImage}
+                profileImage={getUserProfilePhoto(message.userId || "")}
                 image={message.image}
                 reactions={message.reactions}
                 side={localUserID === message.userId ? "right" : "left"}
                 sameUserNext={
-                  (message.isOldChatMessage
-                    ? message.fullName === allMessages[i - 1]?.fullName
-                    : message.userId === allMessages[i - 1]?.userId) &&
+                  message.userId === allMessages[i - 1]?.userId &&
                   allMessages[i - 1] &&
                   Math.abs(message.timestamp - allMessages[i - 1].timestamp) <
                     60000 // 1 minute in milliseconds
                 }
                 sameUserLast={
-                  (message.isOldChatMessage
-                    ? message.fullName === allMessages[i + 1]?.fullName
-                    : message.userId === allMessages[i + 1]?.userId) &&
+                  message.userId === allMessages[i + 1]?.userId &&
                   allMessages[i + 1] &&
                   Math.abs(message.timestamp - allMessages[i + 1].timestamp) <
                     60000 // 1 minute in milliseconds
@@ -211,12 +219,12 @@ const ChatMessages = ({ currentMeetId }, chatContainerRef) => {
                 reply={reply}
                 replyId={message.replyId}
                 anonymousFullName={message.fullName}
-                isOldChatMessage={message.isOldChatMessage}
                 editMessage={() => editMessage(message)}
                 isEdited={message.isEdited}
                 editedText={message.editedText}
                 isSuperOnly={message.isSuperOnly}
                 timestamp={message.timestamp}
+                currentMeetId={currentMeetId}
               />
             </RenderIfVisible>
           </motion.div>

@@ -7,9 +7,10 @@ import ChatMessages from "./ChatMessages";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { useZustandStore } from "@root/src/shared/hooks/useGeneralZustandStore";
 import { sendMessageToSuperChat } from "@root/utils/sendMessage";
-import { Elmo, getOldMessage } from "@root/utils/getOldMessage";
 import { database } from "@root/src/shared/firebase";
 import useAuthedUser from "@root/src/firebase/useAuthedUser";
+
+const Elmo = "https://ia804501.us.archive.org/19/items/elmo_20231221/elmo.jpg";
 
 const ChatRoom = ({ currentMeetId }: { currentMeetId: string }) => {
   const localUserID = useAuthedUser().user?.id;
@@ -34,12 +35,6 @@ const ChatRoom = ({ currentMeetId }: { currentMeetId: string }) => {
     const isElmo = message.toLocaleLowerCase() === "/elmo";
     try {
       if (image?.url || message !== "") {
-        const oldChatMessage = getOldMessage({
-          message: message,
-          imageUrl: image?.url,
-          reply,
-          isElmo,
-        });
         const text = isElmo ? "" : message;
         const imagePayload = isElmo ? Elmo : image?.url ? image?.url : "";
         if (editedMessageId) {

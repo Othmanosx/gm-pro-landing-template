@@ -133,7 +133,9 @@ function ChatInput(
   const setMessage = useZustandStore((state) => state.setMessage);
   const message = useZustandStore((state) => state.message);
   const label = reply ? "Send your reply" : "Send a message";
-  const { handleTextTransform, applyBoldToText } = useTextTransform(inputRef);
+  const { handleTextTransform, applyBoldToText } = useTextTransform(
+    inputRef as React.RefObject<HTMLTextAreaElement>
+  );
   // TODO: extract this from firebase directly
   const { isImageUploadingEnabled } = { isImageUploadingEnabled: true };
   const users = useUsersStore((state) => state.users);
