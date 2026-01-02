@@ -9,6 +9,7 @@ import { useZustandStore } from "@root/src/shared/hooks/useGeneralZustandStore";
 import { sendMessageToSuperChat } from "@root/utils/sendMessage";
 import { database } from "@root/src/shared/firebase";
 import useAuthedUser from "@root/src/firebase/useAuthedUser";
+import useMeetSdk from "@root/src/shared/hooks/useMeetSdk";
 
 const Elmo = "https://ia804501.us.archive.org/19/items/elmo_20231221/elmo.jpg";
 
@@ -26,12 +27,13 @@ const ChatRoom = ({ currentMeetId }: { currentMeetId: string }) => {
     (state) => state.setEditedMessageId
   );
   const editedMessageId = useZustandStore((state) => state.editedMessageId);
+  const { startActivity } = useMeetSdk();
 
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     if (!currentMeetId) throw new Error("No current meet ID");
     if (!localUserID) throw new Error("No local user ID");
     e.preventDefault();
-
+    startActivity();
     const isElmo = message.toLocaleLowerCase() === "/elmo";
     try {
       if (image?.url || message !== "") {

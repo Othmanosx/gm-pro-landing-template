@@ -1,9 +1,4 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import {
-  meet,
-  MeetingInfo,
-  MeetSidePanelClient,
-} from "@googleworkspace/meet-addons/meet.addons";
 
 import SettingsPanel from "../../src/components/SettingsPanel";
 import ChatApp from "../../src/components/Chat/app";
@@ -11,10 +6,7 @@ import useAuthedUser from "@root/src/firebase/useAuthedUser";
 import GMProLayout from "@root/src/components/GMProLayout";
 import Loading from "@root/src/components/Loading";
 import GoogleButton from "@root/src/components/GoogleButton";
-import { useMeetMessages } from "@root/src/shared/hooks/useMeetMessages";
-
-// Your Google Cloud Project Number (from Google Cloud Console)
-const CLOUD_PROJECT_NUMBER = "464731456038";
+import useMeetSdk from "@root/src/shared/hooks/useMeetSdk";
 
 // Types matching the GM Pro extension settings
 export interface Settings {
@@ -93,7 +85,7 @@ export const sendMessage = (
 
 export default function AddonSidePanel() {
   const { user, isLoading: isUserLoading } = useAuthedUser();
-  const localUserID = user?.id;
+  const { meetingDetails } = useMeetSdk();
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [featureFlags, setFeatureFlags] = useState<FeatureFlags>(
     DEFAULT_FEATURE_FLAGS
@@ -101,58 +93,7 @@ export default function AddonSidePanel() {
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [sdkInitialized, setSdkInitialized] = useState(false);
-  const [meetingDetails, setMeetingDetails] = useState<MeetingInfo>();
   const connectionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [sidePanelClient, setSidePanelClient] = useState<MeetSidePanelClient>();
-  const previousMessageCountRef = useRef<number>(0);
-  // Initialize Google Meet Add-on SDK only if meet_sdk param is present
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (!urlParams.has("meet_sdk")) {
-      // Don't initialize SDK if not running in Meet Add-on context
-      return;
-    }
-    async function initMeetAddon() {
-      try {
-        const session = await meet.addon.createAddonSession({
-          cloudProjectNumber: CLOUD_PROJECT_NUMBER,
-        });
-        const client = await session.createSidePanelClient();
-        const details = await client.getMeetingInfo();
-        setMeetingDetails(details);
-
-        // Store client in zustand store for use in other components
-        setSidePanelClient(client);
-
-        setSdkInitialized(true);
-        console.log("[GM Pro Add-on] Meet SDK initialized successfully");
-      } catch (error) {
-        console.error("[GM Pro Add-on] Failed to initialize Meet SDK:", error);
-        // SDK initialization failure is not critical - addon can still work with extension
-        setSdkInitialized(false);
-      }
-    }
-    initMeetAddon();
-  }, []);
-
-  // Notify other participants via Meet SDK when a new message appears
-  useEffect(() => {
-    // Only notify for messages from other users
-    sidePanelClient
-      ?.startActivity({
-        sidePanelUrl: "https://www.gm-pro.online/sidepanel",
-        additionalData: JSON.stringify({
-          type: "new_chat_message",
-        }),
-      })
-      .then((e) => {
-        console.log("[GM Pro Add-on] Notified participants of new message", e);
-      })
-      .catch((error) => {
-        console.error("[GM Pro Add-on] Failed to notify activity:", error);
-      });
-  }, []);
 
   // Handle incoming messages from extension
   const handleMessage = useCallback((event: MessageEvent) => {
