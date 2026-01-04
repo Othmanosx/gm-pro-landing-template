@@ -1,21 +1,26 @@
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import CloseIcon from "@mui/icons-material/Close";
 import {
   Avatar,
   AvatarGroup,
   Badge,
+  Divider,
   FormControlLabel,
   Menu,
   MenuItem,
   Switch,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { useState, useMemo } from "react";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { signOut } from "firebase/auth";
+import { auth } from "@root/src/firebase/init";
 import useShuffler from "./useShuffler";
 import { useUsersStore } from "./useUsers";
 import { Timestamp } from "firebase/firestore";
 import ShufflerIcon from "../ShufflerIcon";
+import useAuthedUser from "@root/src/firebase/useAuthedUser";
 
 const MAX_LENGTH = 8;
 
@@ -51,6 +56,12 @@ const getTimestamp = (
 };
 
 const Header = ({ currentMeetId }: { currentMeetId: string }) => {
+  const { user } = useAuthedUser();
+  const email = user?.email ?? "";
+  const fullName =
+    user?.fullName ?? (user?.email ? user.email.split("@")[0] : "") ?? "";
+  const profileImageUrl =
+    user?.profileImageUrl ?? (user as any)?.photoURL ?? "";
   const {
     shuffleParticipants,
     pickRandomParticipant,
@@ -58,7 +69,11 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
     isShufflerOn,
   } = useShuffler(currentMeetId);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [settingsAnchorEl, setSettingsAnchorEl] = useState<null | HTMLElement>(
+    null
+  );
   const open = Boolean(anchorEl);
+  const settingsOpen = Boolean(settingsAnchorEl);
   const activeUsers = useUsersStore((state) => state.activeUsers);
 
   // Sort users by lastSeen time (most recent last) and filter out users not seen in 4 hours
@@ -94,9 +109,65 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setSettingsAnchorEl(event.currentTarget);
+  };
+  const handleSettingsClose = () => {
+    setSettingsAnchorEl(null);
+  };
 
   return (
     <Stack direction="row" spacing={1} m={"4px 8px"} alignItems="center">
+      <div>
+        <IconButton
+          id="settings-button"
+          onClick={handleSettingsClick}
+          style={{ marginRight: 8 }}
+        >
+          <SettingsIcon />
+        </IconButton>
+        <Menu
+          id="settings-menu"
+          anchorEl={settingsAnchorEl}
+          open={settingsOpen}
+          onClose={handleSettingsClose}
+          disablePortal
+          MenuListProps={{
+            "aria-labelledby": "settings-button",
+          }}
+        >
+          <MenuItem sx={{ pointerEvents: "none", py: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <Avatar src={profileImageUrl} alt={fullName || email} />
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <Typography
+                  variant="subtitle2"
+                  component="div"
+                  sx={{ fontWeight: 600 }}
+                >
+                  {fullName || "Signed in"}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {email || ""}
+                </Typography>
+              </div>
+            </div>
+          </MenuItem>
+          <Divider />
+          <MenuItem
+            onClick={async () => {
+              try {
+                await signOut(auth);
+              } catch (e) {
+                console.error("Sign out failed:", e);
+              }
+              handleSettingsClose();
+            }}
+          >
+            Logout
+          </MenuItem>
+        </Menu>
+      </div>
       <AvatarGroup
         max={MAX_LENGTH}
         spacing={sortedUsers?.length > MAX_LENGTH ? "small" : "medium"}
