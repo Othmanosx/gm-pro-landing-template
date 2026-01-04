@@ -38,6 +38,16 @@ const useMeetSdk = () => {
       return;
     }
     async function initMeetAddon() {
+      // If we've already initialized the client or meeting details, skip
+      if (
+        useMeetStore.getState().sidePanelClient ||
+        useMeetStore.getState().meetingDetails
+      ) {
+        console.log(
+          "[GM Pro Add-on] Meet SDK already initialized, skipping init"
+        );
+        return;
+      }
       try {
         const session = await meet.addon.createAddonSession({
           cloudProjectNumber: CLOUD_PROJECT_NUMBER,
@@ -66,9 +76,6 @@ const useMeetSdk = () => {
 
   // Notify other participants via Meet SDK when a new message appears
   const startActivity = async () => {
-    console.log("start notify");
-    console.log(sidePanelClient);
-
     if (!sidePanelClient) {
       console.warn(
         "[GM Pro Add-on] startActivity called but sidePanelClient is not initialized"
