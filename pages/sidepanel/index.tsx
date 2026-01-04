@@ -192,15 +192,13 @@ export default function AddonSidePanel() {
     return (
       <GMProLayout>
         <div style={{ padding: "20px" }}>
-          <h2>GM Pro Extension Not Found</h2>
+          <h2>GM Pro Add-on Not Found</h2>
           <p>
-            It looks like the GM Pro browser extension is not installed or
-            enabled for this meeting. Please make sure you have the extension
-            installed and try again.
+            It looks like the GM Pro browser add-on is not installed or enabled
+            for this meeting. Please make sure you have the add-on installed and
+            try again.
           </p>
-          <p>
-            You can download the GM Pro extension from the Chrome Web Store.
-          </p>
+          <p>You can download the GM Pro add-on from the Chrome Web Store.</p>
         </div>
       </GMProLayout>
     );
