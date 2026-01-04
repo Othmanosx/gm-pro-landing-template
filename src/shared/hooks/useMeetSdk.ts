@@ -12,18 +12,24 @@ const CLOUD_PROJECT_NUMBER = "464731456038";
 type MeetSdkStore = {
   sidePanelClient: MeetSidePanelClient | null;
   setSidePanelClient: (client: MeetSidePanelClient | null) => void;
+  meetingDetails: MeetingInfo | null;
+  setMeetingDetails: (details: MeetingInfo | null) => void;
   clear: () => void;
 };
 
 export const useMeetStore = create<MeetSdkStore>()((set) => ({
   sidePanelClient: null,
   setSidePanelClient: (client) => set({ sidePanelClient: client }),
+  meetingDetails: null,
+  setMeetingDetails: (details) => set({ meetingDetails: details }),
   clear: () => set({ sidePanelClient: null }),
 }));
 
 const useMeetSdk = () => {
-  const [meetingDetails, setMeetingDetails] = useState<MeetingInfo>();
-  const [sidePanelClient, setSidePanelClient] = useState<MeetSidePanelClient>();
+  const meetingDetails = useMeetStore((s) => s.meetingDetails);
+  const setMeetingDetails = useMeetStore((s) => s.setMeetingDetails);
+  const sidePanelClient = useMeetStore((s) => s.sidePanelClient);
+  const setSidePanelClient = useMeetStore((s) => s.setSidePanelClient);
   // Initialize Google Meet Add-on SDK only if meet_sdk param is present
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -50,6 +56,12 @@ const useMeetSdk = () => {
       }
     }
     initMeetAddon();
+
+    return () => {
+      // Clear the stored client and meeting details when unmounting
+      useMeetStore.getState().clear();
+      useMeetStore.getState().setMeetingDetails(null);
+    };
   }, []);
 
   // Notify other participants via Meet SDK when a new message appears
