@@ -53,21 +53,30 @@ const useMeetSdk = () => {
   }, []);
 
   // Notify other participants via Meet SDK when a new message appears
-  const startActivity = () => {
-    // Only notify for messages from other users
-    sidePanelClient
-      ?.startActivity({
+  const startActivity = async () => {
+    console.log("start notify");
+    console.log(sidePanelClient);
+
+    if (!sidePanelClient) {
+      console.warn(
+        "[GM Pro Add-on] startActivity called but sidePanelClient is not initialized"
+      );
+      return;
+    }
+
+    try {
+      const res = await sidePanelClient.startActivity({
         sidePanelUrl: "https://www.gm-pro.online/sidepanel",
         additionalData: JSON.stringify({
           type: "new_chat_message",
         }),
-      })
-      .then((e) => {
-        console.log("[GM Pro Add-on] Notified participants of new message", e);
-      })
-      .catch((error) => {
-        console.error("[GM Pro Add-on] Failed to notify activity:", error);
       });
+      console.log("[GM Pro Add-on] Notified participants of new message", res);
+      return res;
+    } catch (error) {
+      console.error("[GM Pro Add-on] Failed to notify activity:", error);
+      throw error;
+    }
   };
   return { meetingDetails, sidePanelClient, startActivity };
 };
