@@ -84,6 +84,9 @@ const useMeetSdk = () => {
     }
 
     try {
+      const activityState = await sidePanelClient.getActivityStartingState();
+      console.log({ activityState });
+
       const res = await sidePanelClient.startActivity({
         sidePanelUrl: "https://www.gm-pro.online/sidepanel",
         additionalData: JSON.stringify({
