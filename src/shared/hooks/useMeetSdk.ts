@@ -4,7 +4,7 @@ import {
   type MeetingInfo,
   type MeetSidePanelClient,
 } from "@googleworkspace/meet-addons/meet.addons";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // Your Google Cloud Project Number (from Google Cloud Console)
 const CLOUD_PROJECT_NUMBER = "464731456038";
