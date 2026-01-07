@@ -23,6 +23,8 @@
     "firebase": "^11.0.0",
     "framer-motion": "^12.23.26",
     "gif-picker-react": "^1.5.0",
+    "google-auth-library": "^10.5.0",
+    "googleapis": "^169.0.0",
     "idb-keyval": "^6.2.2",
     "next": "16.0.10",
     "react": "19.2.3",

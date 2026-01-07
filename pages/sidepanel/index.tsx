@@ -7,6 +7,7 @@ import GMProLayout from "@root/src/components/GMProLayout";
 import Loading from "@root/src/components/Loading";
 import GoogleButton from "@root/src/components/GoogleButton";
 import useMeetSdk from "@root/src/shared/hooks/useMeetSdk";
+import { MeetParticipantsList } from "@root/src/components/MeetParticipantsList";
 
 // Types matching the GM Pro extension settings
 export interface Settings {
@@ -204,5 +205,21 @@ export default function AddonSidePanel() {
     );
   }
 
-  return <ChatApp currentMeetId={meetingDetails.meetingCode} />;
+  return (
+    <div
+      style={{
+        marginTop: "20px",
+        borderTop: "1px solid #ccc",
+        paddingTop: "20px",
+      }}
+    >
+      <MeetParticipantsList
+        conferenceId={meetingDetails.meetingId}
+        accessToken={user.accessToken}
+        autoSubscribe={false}
+      />
+    </div>
+  );
+
+  // return <ChatApp currentMeetId={meetingDetails.meetingCode} />;
 }
