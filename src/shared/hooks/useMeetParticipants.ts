@@ -60,27 +60,44 @@ export function useMeetParticipants({
   // Set up real-time updates via SSE
   useEffect(() => {
     if (!enableRealtime || !conferenceId) {
+      console.log("[useMeetParticipants] SSE disabled:", {
+        enableRealtime,
+        conferenceId,
+      });
       return;
     }
 
-    const es = new EventSource(
-      `/api/meet/participants-sse?conferenceId=${conferenceId}`
-    );
+    const sseUrl = `/api/meet/participants-sse?conferenceId=${conferenceId}`;
+    console.log("[useMeetParticipants] Connecting to SSE:", sseUrl);
+    const es = new EventSource(sseUrl);
+
+    es.onopen = () => {
+      console.log("[useMeetParticipants] SSE connection opened");
+    };
 
     es.onmessage = (event) => {
+      console.log("[useMeetParticipants] SSE message received:", event.data);
       try {
         const data = JSON.parse(event.data);
+        console.log("[useMeetParticipants] Parsed SSE data:", data);
         if (data.type === "initial" || data.type === "update") {
           setParticipants(data.participants || []);
           setLoading(false);
+          console.log(
+            "[useMeetParticipants] Participants updated:",
+            data.participants?.length || 0
+          );
         }
       } catch (err) {
-        console.error("Failed to parse SSE message:", err);
+        console.error(
+          "[useMeetParticipants] Failed to parse SSE message:",
+          err
+        );
       }
     };
 
     es.onerror = (err) => {
-      console.error("SSE error:", err);
+      console.error("[useMeetParticipants] SSE error:", err);
       setError(new Error("Real-time connection error"));
       es.close();
     };
@@ -88,6 +105,7 @@ export function useMeetParticipants({
     setEventSource(es);
 
     return () => {
+      console.log("[useMeetParticipants] Closing SSE connection");
       es.close();
     };
   }, [conferenceId, enableRealtime]);

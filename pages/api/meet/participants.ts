@@ -33,12 +33,23 @@ export default async function handler(
     if (source === "cache") {
       const conferenceRecord = `//meet.googleapis.com/conferenceRecords/${conferenceId}`;
       const participants = participantsStore.get(conferenceRecord) || [];
+      console.log("[PARTICIPANTS] Cache request:", {
+        conferenceId,
+        conferenceRecord,
+        participantsCount: participants.length,
+        storeKeys: Array.from(participantsStore.keys()),
+      });
       return res.status(200).json({ participants });
     }
 
     // Option 2: Fetch from Google Meet API (slower, but always up-to-date)
+    console.log(
+      "[PARTICIPANTS] Fetching from Google Meet API for:",
+      conferenceId
+    );
     const accessToken = req.headers.authorization?.replace("Bearer ", "");
     if (!accessToken) {
+      console.log("[PARTICIPANTS] No access token provided");
       return res.status(401).json({ error: "Unauthorized" });
     }
 
@@ -60,6 +71,11 @@ export default async function handler(
       status: p.latestEndTime ? "left" : "joined",
     }));
 
+    console.log(
+      "[PARTICIPANTS] Fetched from API:",
+      participants.length,
+      "participants"
+    );
     return res.status(200).json({ participants });
   } catch (error: any) {
     console.error("Get participants error:", error);

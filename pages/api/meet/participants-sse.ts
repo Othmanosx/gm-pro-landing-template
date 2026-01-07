@@ -23,9 +23,18 @@ export default async function handler(
   res.setHeader("Connection", "keep-alive");
 
   const conferenceRecord = `//meet.googleapis.com/conferenceRecords/${conferenceId}`;
+  console.log("[SSE] Client connected for conference:", conferenceRecord);
+  console.log(
+    "[SSE] Store keys available:",
+    Array.from(participantsStore.keys())
+  );
 
   // Send initial participants list
   const initialParticipants = participantsStore.get(conferenceRecord) || [];
+  console.log(
+    "[SSE] Sending initial participants:",
+    initialParticipants.length
+  );
   res.write(
     `data: ${JSON.stringify({
       type: "initial",
@@ -36,6 +45,12 @@ export default async function handler(
   // Poll for updates every 2 seconds
   const intervalId = setInterval(() => {
     const participants = participantsStore.get(conferenceRecord) || [];
+    console.log(
+      "[SSE] Polling update - participants:",
+      participants.length,
+      "for",
+      conferenceRecord
+    );
     res.write(
       `data: ${JSON.stringify({
         type: "update",
@@ -46,6 +61,7 @@ export default async function handler(
 
   // Clean up on client disconnect
   req.on("close", () => {
+    console.log("[SSE] Client disconnected for conference:", conferenceRecord);
     clearInterval(intervalId);
     res.end();
   });
