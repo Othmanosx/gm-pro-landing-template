@@ -13,11 +13,6 @@ interface Participant {
   type: "signed_in" | "anonymous" | "phone";
 }
 
-interface UseMeetParticipantsLiveOptions {
-  autoFetch?: boolean; // When true, continuously fetches every 5 seconds
-  pollingInterval?: number; // Polling interval in ms (default: 5000)
-}
-
 interface UseMeetParticipantsLiveResult {
   participants: Participant[];
   activeParticipants: Participant[];
@@ -28,21 +23,29 @@ interface UseMeetParticipantsLiveResult {
 }
 
 const pollingInterval = 5000;
+let globalPollingInstance: NodeJS.Timeout | null = null;
+let activeInstances = 0;
 
-export function useMeetParticipantsLive({}: UseMeetParticipantsLiveOptions = {}): UseMeetParticipantsLiveResult {
+export function useMeetParticipantsLive(): UseMeetParticipantsLiveResult {
   const { user } = useAuthedUser();
   const { meetingDetails } = useMeetSdk();
+
+  // Read from Zustand store
+  const participants = useZustandStore((state) => state.participants);
+  const loading = useZustandStore((state) => state.participantsLoading);
+  const error = useZustandStore((state) => state.participantsError);
+  const setParticipants = useZustandStore((state) => state.setParticipants);
+  const setLoading = useZustandStore((state) => state.setParticipantsLoading);
+  const setError = useZustandStore((state) => state.setParticipantsError);
   const autoFetch = useZustandStore((state) => state.isShufflerOn);
-  const [participants, setParticipants] = useState<Participant[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
   const isMountedRef = useRef(true);
 
   // Fetch participants from the API
   const fetchParticipants = useCallback(async () => {
     if (!user?.accessToken) {
       setError("User not authenticated");
+      setLoading(false);
       return;
     }
 
@@ -51,6 +54,7 @@ export function useMeetParticipantsLive({}: UseMeetParticipantsLiveOptions = {})
 
     if (!identifier) {
       setError("No meeting identifier available");
+      setLoading(false);
       return;
     }
 
@@ -89,37 +93,53 @@ export function useMeetParticipantsLive({}: UseMeetParticipantsLiveOptions = {})
         setLoading(false);
       }
     }
-  }, [user?.accessToken, meetingDetails]);
+  }, [
+    user?.accessToken,
+    meetingDetails,
+    setParticipants,
+    setLoading,
+    setError,
+  ]);
 
-  // Set up polling when autoFetch is enabled
+  // Set up polling - only one global instance
   useEffect(() => {
     isMountedRef.current = true;
+    activeInstances++;
 
     if (!autoFetch) {
-      // Clear any existing interval
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
+      // Clean up global polling if this was the last instance and it's no longer needed
+      if (activeInstances === 1 && globalPollingInstance) {
+        clearInterval(globalPollingInstance);
+        globalPollingInstance = null;
       }
-      return;
+      return () => {
+        isMountedRef.current = false;
+        activeInstances--;
+      };
     }
 
-    // Initial fetch
-    fetchParticipants();
-
-    // Set up polling
-    intervalRef.current = setInterval(() => {
+    // Only create one global polling instance
+    if (!globalPollingInstance) {
+      // Initial fetch
       fetchParticipants();
-    }, pollingInterval);
+
+      // Set up polling
+      globalPollingInstance = setInterval(() => {
+        fetchParticipants();
+      }, pollingInterval);
+    }
 
     return () => {
       isMountedRef.current = false;
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
+      activeInstances--;
+
+      // Clean up global polling when no more instances need it
+      if (activeInstances === 0 && globalPollingInstance) {
+        clearInterval(globalPollingInstance);
+        globalPollingInstance = null;
       }
     };
-  }, [autoFetch, pollingInterval, fetchParticipants]);
+  }, [autoFetch, fetchParticipants]);
 
   // Compute active participants (those who haven't left)
   const activeParticipants = participants.filter((p) => p.status === "joined");

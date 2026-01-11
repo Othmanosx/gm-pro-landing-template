@@ -19,6 +19,16 @@ export interface UploadedImage {
   contentType?: string;
 }
 
+interface Participant {
+  id: string;
+  name: string;
+  email?: string;
+  joinedAt?: string;
+  leftAt?: string;
+  status: "joined" | "left";
+  type: "signed_in" | "anonymous" | "phone";
+}
+
 type Store = {
   message: string;
   setMessage: (message: string) => void;
@@ -32,6 +42,13 @@ type Store = {
   setEditedMessageId: (editedMessageId: string) => void;
   isShufflerOn: boolean;
   setIsShufflerOn: (isShufflerOn: boolean) => void;
+  // Participants state
+  participants: Participant[];
+  setParticipants: (participants: Participant[]) => void;
+  participantsLoading: boolean;
+  setParticipantsLoading: (loading: boolean) => void;
+  participantsError: string | null;
+  setParticipantsError: (error: string | null) => void;
 };
 
 export const useZustandStore = create<Store>()((set) => ({
@@ -50,4 +67,14 @@ export const useZustandStore = create<Store>()((set) => ({
   isShufflerOn: false,
   setIsShufflerOn: (isShufflerOn) =>
     set((state) => ({ ...state, isShufflerOn })),
+  // Participants state
+  participants: [],
+  setParticipants: (participants) =>
+    set((state) => ({ ...state, participants })),
+  participantsLoading: false,
+  setParticipantsLoading: (participantsLoading) =>
+    set((state) => ({ ...state, participantsLoading })),
+  participantsError: null,
+  setParticipantsError: (participantsError) =>
+    set((state) => ({ ...state, participantsError })),
 }));
