@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { sendMessageToSuperChat } from "@root/utils/sendMessage";
 import { serverTimestamp } from "firebase/database";
 import { useZustandStore } from "@root/src/shared/hooks/useGeneralZustandStore";
@@ -14,28 +14,25 @@ const globalAutoShufflerRef = {
   } | null,
 };
 
-const useShuffler = (currentMeetId: string) => {
+interface UseShufflerOptions {
+  participantNames: string[];
+}
+
+const useShuffler = (
+  currentMeetId: string,
+  { participantNames }: UseShufflerOptions
+) => {
   const { user: localUser } = useAuthedUser();
   const localUserID = localUser?.id;
   const isShufflerOn = useZustandStore((state) => state.isShufflerOn);
   const setIsShufflerOn = useZustandStore((state) => state.setIsShufflerOn);
+  const previousParticipantsRef = useRef<string[]>([]);
 
   const shufflerId = useId();
 
-  const getParticipants = useCallback(() => {
-    const newParticipants: any[] = [];
-
-    return newParticipants;
-  }, []);
-
-  const checkParticipantsTab = useCallback(async () => {
-    return getParticipants();
-  }, [getParticipants]);
-
-  const shuffleParticipants = async () => {
+  const shuffleParticipants = useCallback(async () => {
     try {
-      const participants = await checkParticipantsTab();
-      const shuffledParticipants = [...participants].sort(
+      const shuffledParticipants = [...participantNames].sort(
         () => Math.random() - 0.5
       );
       if (!localUserID) throw new Error("No local user ID");
@@ -48,18 +45,20 @@ const useShuffler = (currentMeetId: string) => {
         currentMeetId
       );
     } catch (error) {
-      console.log(1, "Error while shuffling participants:", error);
+      console.log("Error while shuffling participants:", error);
       alert(
         "An error occurred while shuffling participants. Please reload the window and try again."
       );
     }
-  };
+  }, [participantNames, localUserID, currentMeetId]);
 
-  const pickRandomParticipant = async () => {
+  const pickRandomParticipant = useCallback(async () => {
     try {
-      const participants = await checkParticipantsTab();
+      if (participantNames.length === 0) {
+        throw new Error("No participants available");
+      }
       const randomParticipant =
-        participants[Math.floor(Math.random() * participants.length)];
+        participantNames[Math.floor(Math.random() * participantNames.length)];
       if (!localUserID) throw new Error("No local user ID");
       sendMessageToSuperChat(
         {
@@ -74,125 +73,67 @@ const useShuffler = (currentMeetId: string) => {
         "An error occurred while picking a random participant. Please reload the window and try again."
       );
     }
-  };
+  }, [participantNames, localUserID, currentMeetId]);
 
+  // Auto-shuffler effect: monitors participant changes and posts updates
   useEffect(() => {
     if (!isShufflerOn) {
-      // If this instance was controlling the global shuffler, clean it up
-      if (globalAutoShufflerRef.current?.controllerId === shufflerId) {
-        globalAutoShufflerRef.current.cleanup();
-        globalAutoShufflerRef.current = null;
-      }
+      previousParticipantsRef.current = [];
       return;
     }
 
-    // If there's already an active instance, don't create another one
-    if (globalAutoShufflerRef.current?.isActive) {
-      return;
-    }
+    // Initialize with current participants if this is the first run
+    if (
+      previousParticipantsRef.current.length === 0 &&
+      participantNames.length > 0
+    ) {
+      const shuffled = [...participantNames].sort(() => Math.random() - 0.5);
+      previousParticipantsRef.current = shuffled;
 
-    // Clean up any existing instance before creating a new one
-    if (globalAutoShufflerRef.current) {
-      globalAutoShufflerRef.current.cleanup();
-    }
-
-    let participants: string[];
-    const observer = new MutationObserver(async () => {
-      // If someone joins or leaves, post the participants list without shuffling
-      const newParticipants = getParticipants();
-
-      // on new member join
-      if (
-        participants.length > 0 &&
-        newParticipants.length > participants.length
-      ) {
-        try {
-          const newMember = newParticipants.filter(
-            (p) => !participants.includes(p)
-          )[0];
-          participants.push(newMember);
-          if (!localUserID) throw new Error("No local user ID");
-          sendMessageToSuperChat(
-            {
-              text: participants.join("\n"),
-              userId: localUserID,
-              timestamp: serverTimestamp(),
-            },
-            currentMeetId
-          );
-        } catch (error) {
-          alert(
-            "An error occurred while posting the updated participants list. Please reload the window and try again."
-          );
-        }
-      }
-
-      // on member leave, filter out the left member, but do not post the list
-      if (
-        participants.length > 0 &&
-        newParticipants.length < participants.length
-      ) {
-        const leftMember = participants.filter(
-          (p) => !newParticipants.includes(p)
-        )[0];
-        participants = participants.filter((p) => p !== leftMember);
-      }
-    });
-
-    const cleanup = () => {
-      observer.disconnect();
-    };
-
-    globalAutoShufflerRef.current = {
-      observer,
-      isActive: true,
-      cleanup,
-      controllerId: shufflerId,
-    };
-
-    const initializeAutoShuffler = async () => {
-      try {
-        const newParticipants = await checkParticipantsTab();
-        participants = [...newParticipants].sort(() => Math.random() - 0.5);
-        if (!localUserID) throw new Error("No local user ID");
+      if (localUserID) {
         sendMessageToSuperChat(
           {
-            text: participants.join("\n"),
+            text: shuffled.join("\n"),
             userId: localUserID,
             timestamp: serverTimestamp(),
           },
           currentMeetId
         );
-      } catch (error) {
-        setIsShufflerOn(false);
-        globalAutoShufflerRef.current = null;
-        console.log("Error while initializing auto shuffler:", error);
-        alert(
-          "An error occurred while shuffling participants. Please reload the window and try again."
+      }
+      return;
+    }
+
+    // Detect new members (someone joined)
+    if (participantNames.length > previousParticipantsRef.current.length) {
+      const newMembers = participantNames.filter(
+        (p) => !previousParticipantsRef.current.includes(p)
+      );
+
+      if (newMembers.length > 0 && localUserID) {
+        // Add new members to the list
+        previousParticipantsRef.current = [
+          ...previousParticipantsRef.current,
+          ...newMembers,
+        ];
+
+        // Post updated list
+        sendMessageToSuperChat(
+          {
+            text: previousParticipantsRef.current.join("\n"),
+            userId: localUserID,
+            timestamp: serverTimestamp(),
+          },
+          currentMeetId
         );
       }
-    };
-
-    initializeAutoShuffler();
-
-    return cleanup;
-  }, [
-    isShufflerOn,
-    checkParticipantsTab,
-    getParticipants,
-    localUserID,
-    setIsShufflerOn,
-  ]);
-
-  useEffect(() => {
-    return () => {
-      // If this instance was controlling the global shuffler, clean it up on unmount
-      if (globalAutoShufflerRef.current?.controllerId === shufflerId) {
-        globalAutoShufflerRef.current.cleanup();
-        globalAutoShufflerRef.current = null;
-      }
-    };
-  }, []);
+    }
+    // Detect members leaving (do not post, just update internal list)
+    else if (participantNames.length < previousParticipantsRef.current.length) {
+      previousParticipantsRef.current = previousParticipantsRef.current.filter(
+        (p) => participantNames.includes(p)
+      );
+    }
+  }, [participantNames, isShufflerOn, localUserID, currentMeetId]);
 
   return {
     shuffleParticipants,

@@ -4,6 +4,7 @@ import {
   Avatar,
   AvatarGroup,
   Badge,
+  CircularProgress,
   Divider,
   FormControlLabel,
   Menu,
@@ -21,6 +22,7 @@ import { useUsersStore } from "./useUsers";
 import { Timestamp } from "firebase/firestore";
 import ShufflerIcon from "../ShufflerIcon";
 import useAuthedUser from "@root/src/firebase/useAuthedUser";
+import { useMeetParticipantsLive } from "@root/src/shared/hooks/useMeetParticipantsLive";
 
 const MAX_LENGTH = 8;
 
@@ -62,12 +64,16 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
     user?.fullName ?? (user?.email ? user.email.split("@")[0] : "") ?? "";
   const profileImageUrl =
     user?.profileImageUrl ?? (user as any)?.photoURL ?? "";
+  // Use the new participants hook with auto-fetch when shuffler is on
+  const { participantNames, loading } = useMeetParticipantsLive();
+
   const {
     shuffleParticipants,
     pickRandomParticipant,
     toggleAutoShuffler,
-    isShufflerOn,
-  } = useShuffler(currentMeetId);
+    isShufflerOn: shufflerOn,
+  } = useShuffler(currentMeetId, { participantNames });
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [settingsAnchorEl, setSettingsAnchorEl] = useState<null | HTMLElement>(
     null
@@ -232,8 +238,10 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
           disablePortal: true,
         }}
         title={
-          isShufflerOn
+          shufflerOn
             ? "Shuffler is on, new joiners will be added to the list"
+            : loading
+            ? "Loading participants..."
             : null
         }
         arrow
@@ -243,8 +251,9 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
           id="shuffler-button"
           onClick={handleClick}
           style={{ marginLeft: 0 }}
+          disabled={loading && !shufflerOn}
         >
-          <Badge color="secondary" variant="dot" invisible={!isShufflerOn}>
+          <Badge color="secondary" variant="dot" invisible={!shufflerOn}>
             <ShufflerIcon />
           </Badge>
         </IconButton>
@@ -263,14 +272,34 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
         <MenuItem
           onClick={() => handleClose()}
           title="Shuffles the current attendees and sends the list as a message automatically every time a new person joins the call"
+          disabled={loading}
         >
           <FormControlLabel
-            control={<Switch color="primary" size="small" />}
-            label="Auto Shuffle Participants"
+            control={
+              <Switch
+                color="primary"
+                size="small"
+                disabled={loading}
+                icon={
+                  loading ? (
+                    <CircularProgress size={16} color="inherit" />
+                  ) : undefined
+                }
+              />
+            }
+            label={
+              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                Auto Shuffle Participants
+                {loading && shufflerOn && (
+                  <CircularProgress size={12} color="inherit" />
+                )}
+              </span>
+            }
             sx={{ marginLeft: 0 }}
             labelPlacement="start"
             onChange={toggleAutoShuffler}
-            checked={isShufflerOn}
+            checked={shufflerOn}
+            disabled={loading}
           />
         </MenuItem>
         <MenuItem
@@ -279,8 +308,16 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
             handleClose();
           }}
           title="Shuffles the current attendees and sends the list as a message"
+          disabled={loading || participantNames.length === 0}
         >
-          Shuffle Participants Once
+          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            Shuffle Participants Once
+            {participantNames.length === 0 && !loading && (
+              <Typography variant="caption" color="text.secondary">
+                (No participants)
+              </Typography>
+            )}
+          </span>
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -288,8 +325,16 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
             handleClose();
           }}
           title="Randomly selects someone from the attendees and posts their name as a message"
+          disabled={loading || participantNames.length === 0}
         >
-          Pick One
+          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            Pick One
+            {participantNames.length === 0 && !loading && (
+              <Typography variant="caption" color="text.secondary">
+                (No participants)
+              </Typography>
+            )}
+          </span>
         </MenuItem>
       </Menu>
     </Stack>

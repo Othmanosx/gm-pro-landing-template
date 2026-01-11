@@ -38,6 +38,7 @@ import { AlternateEmail } from "@mui/icons-material";
 import useShuffler from "../useShuffler";
 import { Shuffle, Person, PlayArrow, Stop, Bolt } from "@mui/icons-material";
 import ElmoIcon from "./ElmoIcon";
+import { useMeetParticipantsLive } from "@root/src/shared/hooks/useMeetParticipantsLive";
 
 const TransparentTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -139,12 +140,15 @@ function ChatInput(
   // TODO: extract this from firebase directly
   const { isImageUploadingEnabled } = { isImageUploadingEnabled: true };
   const users = useUsersStore((state) => state.users);
+  const { participantNames } = useMeetParticipantsLive();
+
   const {
     shuffleParticipants,
     pickRandomParticipant,
     toggleAutoShuffler,
     isShufflerOn,
-  } = useShuffler(currentMeetId);
+  } = useShuffler(currentMeetId, { participantNames });
+
   const participants = users.map((user) => ({
     ...user,
     firstName: user.fullName?.split(" ")[0],
