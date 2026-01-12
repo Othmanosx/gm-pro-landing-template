@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/init";
 import { signOut } from "firebase/auth";
 import signInWithGoogleIdToken from "../firebase/authHelpers";
@@ -42,8 +41,8 @@ const GoogleButton = () => {
             return;
           }
 
-          console.log("OAuth response received");
           const accessToken = response.access_token;
+          await signInWithGoogleIdToken(accessToken);
 
           try {
             // Store access token in localStorage for API calls
@@ -53,77 +52,31 @@ const GoogleButton = () => {
               String(Date.now() + response.expires_in * 1000)
             );
 
-            // Get user info and ID token using the access token
-            const userInfoResponse = await fetch(
-              "https://www.googleapis.com/oauth2/v3/userinfo",
-              {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                },
-              }
-            );
-            const userInfo = await userInfoResponse.json();
-            console.log("User info:", userInfo);
+            // // Get user info and ID token using the access token
+            // const userInfoResponse = await fetch(
+            //   "https://www.googleapis.com/oauth2/v3/userinfo",
+            //   {
+            //     headers: {
+            //       Authorization: `Bearer ${accessToken}`,
+            //     },
+            //   }
+            // );
+            // const userInfo = await userInfoResponse.json();
+            // console.log("User info:", userInfo);
 
             // Get the ID token by using tokeninfo endpoint
-            const tokenInfoResponse = await fetch(
-              "https://www.googleapis.com/oauth2/v3/tokeninfo",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: `access_token=${accessToken}`,
-              }
-            );
-            const tokenInfo = await tokenInfoResponse.json();
-            console.log("Token info:", tokenInfo);
-
-            // For Firebase auth, we need to use Google Sign-In separately
-            // Initialize the ID token flow for Firebase
-            google.accounts.id.initialize({
-              client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-              callback: async function (idResponse: any) {
-                try {
-                  const firebaseUser = await signInWithGoogleIdToken(
-                    idResponse.credential,
-                    accessToken
-                  );
-                  console.log("Signed into Firebase:", firebaseUser);
-
-                  // Trigger event after Firebase sign-in
-                  window.dispatchEvent(
-                    new CustomEvent("google_access_token_updated", {
-                      detail: { accessToken },
-                    })
-                  );
-
-                  setIsInitializing(false);
-                } catch (err) {
-                  console.error("Failed to sign in with ID token:", err);
-                  setIsInitializing(false);
-                }
-              },
-            });
-
-            // Trigger the One Tap sign-in for Firebase
-            google.accounts.id.prompt((notification: any) => {
-              if (
-                notification.isNotDisplayed() ||
-                notification.isSkippedMoment()
-              ) {
-                // Fallback: user is already signed in or dismissed
-                console.log(
-                  "One Tap not displayed, user may already be signed in"
-                );
-                window.dispatchEvent(
-                  new CustomEvent("google_access_token_updated", {
-                    detail: { accessToken },
-                  })
-                );
-                setIsInitializing(false);
-              }
-            });
+            // const tokenInfoResponse = await fetch(
+            //   "https://www.googleapis.com/oauth2/v3/tokeninfo",
+            //   {
+            //     method: "POST",
+            //     headers: {
+            //       "Content-Type": "application/x-www-form-urlencoded",
+            //     },
+            //     body: `access_token=${accessToken}`,
+            //   }
+            // );
+            // const tokenInfo = await tokenInfoResponse.json();
+            // console.log("Token info:", tokenInfo);
           } catch (err) {
             console.error("Failed to process OAuth response:", err);
             setIsInitializing(false);
