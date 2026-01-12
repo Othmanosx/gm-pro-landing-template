@@ -188,21 +188,22 @@ export default function AddonSidePanel() {
       </GMProLayout>
     );
   }
-  if (!meetingDetails?.meetingId) {
-    return (
-      <GMProLayout>
-        <div style={{ padding: "20px" }}>
-          <h2>GM Pro Add-on Not Found</h2>
-          <p>
-            It looks like the GM Pro browser add-on is not installed or enabled
-            for this meeting. Please make sure you have the add-on installed and
-            try again.
-          </p>
-          <p>You can download the GM Pro add-on from the Chrome Web Store.</p>
-        </div>
-      </GMProLayout>
-    );
-  }
+  // if (!meetingDetails?.meetingId) {
+  //   return (
+  //     <GMProLayout>
+  //       <div style={{ padding: "20px" }}>
+  //         <h2>GM Pro Add-on Not Found</h2>
+  //         <p>
+  //           It looks like the GM Pro browser add-on is not installed or enabled
+  //           for this meeting. Please make sure you have the add-on installed and
+  //           try again.
+  //         </p>
+  //         <p>You can download the GM Pro add-on from the Chrome Web Store.</p>
+  //       </div>
+  //     </GMProLayout>
+  //   );
+  // }
 
-  return <ChatApp currentMeetId={meetingDetails.meetingCode} />;
+  // return <ChatApp currentMeetId={meetingDetails.meetingCode} />;
+  return <ChatApp currentMeetId={"aaa"} />;
 }

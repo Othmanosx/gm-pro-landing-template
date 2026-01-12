@@ -276,25 +276,13 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
         >
           <FormControlLabel
             control={
-              <Switch
-                color="primary"
-                size="small"
-                disabled={loading}
-                icon={
-                  loading ? (
-                    <CircularProgress size={16} color="inherit" />
-                  ) : undefined
-                }
-              />
+              loading ? (
+                <CircularProgress size={16} color="inherit" sx={{ mx: 1.5 }} />
+              ) : (
+                <Switch color="primary" size="small" disabled={loading} />
+              )
             }
-            label={
-              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                Auto Shuffle Participants
-                {loading && shufflerOn && (
-                  <CircularProgress size={12} color="inherit" />
-                )}
-              </span>
-            }
+            label={"Auto Shuffle Participants"}
             sx={{ marginLeft: 0 }}
             labelPlacement="start"
             onChange={toggleAutoShuffler}
@@ -310,14 +298,7 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
           title="Shuffles the current attendees and sends the list as a message"
           disabled={loading || participantNames.length === 0}
         >
-          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            Shuffle Participants Once
-            {participantNames.length === 0 && !loading && (
-              <Typography variant="caption" color="text.secondary">
-                (No participants)
-              </Typography>
-            )}
-          </span>
+          Shuffle Participants Once
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -327,14 +308,7 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
           title="Randomly selects someone from the attendees and posts their name as a message"
           disabled={loading || participantNames.length === 0}
         >
-          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            Pick One
-            {participantNames.length === 0 && !loading && (
-              <Typography variant="caption" color="text.secondary">
-                (No participants)
-              </Typography>
-            )}
-          </span>
+          Pick One
         </MenuItem>
       </Menu>
     </Stack>

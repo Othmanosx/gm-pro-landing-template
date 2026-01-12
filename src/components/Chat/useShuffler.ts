@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef } from "react";
 import { sendMessageToSuperChat } from "@root/utils/sendMessage";
 import { serverTimestamp } from "firebase/database";
 import { useZustandStore } from "@root/src/shared/hooks/useGeneralZustandStore";
-import { useId } from "react";
 import useAuthedUser from "@root/src/firebase/useAuthedUser";
 
 const globalAutoShufflerRef = {
@@ -27,8 +26,6 @@ const useShuffler = (
   const isShufflerOn = useZustandStore((state) => state.isShufflerOn);
   const setIsShufflerOn = useZustandStore((state) => state.setIsShufflerOn);
   const previousParticipantsRef = useRef<string[]>([]);
-
-  const shufflerId = useId();
 
   const shuffleParticipants = useCallback(async () => {
     try {
