@@ -15,11 +15,12 @@ const globalAutoShufflerRef = {
 
 interface UseShufflerOptions {
   participantNames: string[];
+  fetchParticipants?: () => Promise<void>;
 }
 
 const useShuffler = (
   currentMeetId: string,
-  { participantNames }: UseShufflerOptions
+  { participantNames, fetchParticipants }: UseShufflerOptions
 ) => {
   const { user: localUser } = useAuthedUser();
   const localUserID = localUser?.id;
@@ -29,6 +30,18 @@ const useShuffler = (
 
   const shuffleParticipants = useCallback(async () => {
     try {
+      // Fetch participants first if a fetch function is provided
+      if (fetchParticipants) {
+        await fetchParticipants();
+      }
+
+      // Wait a bit for state to update
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      if (participantNames.length === 0) {
+        throw new Error("No participants available");
+      }
+
       const shuffledParticipants = [...participantNames].sort(
         () => Math.random() - 0.5
       );
@@ -47,10 +60,18 @@ const useShuffler = (
         "An error occurred while shuffling participants. Please reload the window and try again."
       );
     }
-  }, [participantNames, localUserID, currentMeetId]);
+  }, [participantNames, localUserID, currentMeetId, fetchParticipants]);
 
   const pickRandomParticipant = useCallback(async () => {
     try {
+      // Fetch participants first if a fetch function is provided
+      if (fetchParticipants) {
+        await fetchParticipants();
+      }
+
+      // Wait a bit for state to update
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       if (participantNames.length === 0) {
         throw new Error("No participants available");
       }
@@ -70,7 +91,7 @@ const useShuffler = (
         "An error occurred while picking a random participant. Please reload the window and try again."
       );
     }
-  }, [participantNames, localUserID, currentMeetId]);
+  }, [participantNames, localUserID, currentMeetId, fetchParticipants]);
 
   // Auto-shuffler effect: monitors participant changes and posts updates
   useEffect(() => {

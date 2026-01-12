@@ -65,14 +65,17 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
   const profileImageUrl =
     user?.profileImageUrl ?? (user as any)?.photoURL ?? "";
   // Use the new participants hook with auto-fetch when shuffler is on
-  const { participantNames, loading } = useMeetParticipantsLive();
+  const { participantNames, loading, refresh } = useMeetParticipantsLive();
 
   const {
     shuffleParticipants,
     pickRandomParticipant,
     toggleAutoShuffler,
     isShufflerOn: shufflerOn,
-  } = useShuffler(currentMeetId, { participantNames });
+  } = useShuffler(currentMeetId, {
+    participantNames,
+    fetchParticipants: refresh,
+  });
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [settingsAnchorEl, setSettingsAnchorEl] = useState<null | HTMLElement>(
@@ -296,7 +299,6 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
             handleClose();
           }}
           title="Shuffles the current attendees and sends the list as a message"
-          disabled={loading || participantNames.length === 0}
         >
           Shuffle Participants Once
         </MenuItem>
@@ -306,7 +308,6 @@ const Header = ({ currentMeetId }: { currentMeetId: string }) => {
             handleClose();
           }}
           title="Randomly selects someone from the attendees and posts their name as a message"
-          disabled={loading || participantNames.length === 0}
         >
           Pick One
         </MenuItem>

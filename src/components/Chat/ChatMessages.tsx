@@ -3,7 +3,6 @@ import { database } from "@root/src/shared/firebase";
 import { ref } from "firebase/database";
 import ChatMsg from "./ChatMsg";
 import LoadingSkeleton from "./LoadingSkeleton";
-import { useUsersStore } from "./useUsers";
 import { memo } from "react";
 import { useEffect } from "react";
 import { useZustandStore } from "@root/src/shared/hooks/useGeneralZustandStore";

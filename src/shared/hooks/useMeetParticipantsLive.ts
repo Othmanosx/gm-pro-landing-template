@@ -2,6 +2,8 @@ import { useEffect, useCallback, useRef } from "react";
 import useAuthedUser from "@root/src/firebase/useAuthedUser";
 import useMeetSdk from "./useMeetSdk";
 import { useZustandStore } from "./useGeneralZustandStore";
+import { signOut } from "firebase/auth";
+import { auth } from "@root/src/firebase/init";
 
 interface Participant {
   id: string;
@@ -75,6 +77,19 @@ export function useMeetParticipantsLive(): UseMeetParticipantsLiveResult {
 
       if (!response.ok) {
         const errorData = await response.json();
+
+        // Handle 401 - Invalid or expired token
+        if (response.status === 401) {
+          console.error("Access token expired or invalid, logging out");
+          try {
+            await signOut(auth);
+            localStorage.removeItem("google_access_token");
+            localStorage.removeItem("google_access_token_expires_at");
+          } catch (signOutError) {
+            console.error("Error during sign out:", signOutError);
+          }
+        }
+
         throw new Error(errorData.error || `HTTP ${response.status}`);
       }
 
