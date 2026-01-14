@@ -15,5 +15,12 @@
       }
     }
   },
-  "oauthScopes": ["https://www.googleapis.com/auth/meetings.space.readonly"]
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/meetings.space.readonly",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "openid",
+    "https://www.googleapis.com/auth/meetings.space.readonly",
+    "https://www.googleapis.com/auth/meetings.space.created"
+  ]
 }
