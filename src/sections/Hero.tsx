@@ -6,7 +6,6 @@ import { Section } from "../components/Section";
 import { GradientText } from "../components/GradientText";
 import { Button } from "../components/Button";
 
-
 const CHROME_STORE_URL =
   "https://chromewebstore.google.com/detail/GM%20Pro:%20Supercharge%20Your%20Google%20Meet%20Experience/bfmgohplnhblcajmjhmcimjlikohiomh";
 
@@ -35,7 +34,7 @@ export const Hero = () => {
         </Title>
         <Details>
           Enhance chat functionality, streamline communication, and unlock
-          powerful tools for your meetings with GM Pro.
+          powerful tools for your meetings with Better Chat.
         </Details>
         <div
           className="flex gap-4 justify-center md:justify-start"
@@ -54,7 +53,7 @@ export const Hero = () => {
       <Demo
         data-aos="fade-left"
         imageSrc="https://lh3.googleusercontent.com/Vn3qQlegazqzvJlriBP3j1RUJfQVaIqMScbKqIf8RWum_tydkntTMiFo24WUsnHT3XbzgXGV9H7zSneOcjFDm5Aw=s1280-w1280-h800"
-        alt="GM Pro enhanced chat interface showing persisted messages, emoji reactions, replies, and GIFs"
+        alt="Better Chat enhanced chat interface showing persisted messages, emoji reactions, replies, and GIFs"
       />
     </Section>
   );

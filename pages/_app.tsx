@@ -8,9 +8,9 @@ import { NextSeo } from "next-seo";
 import { useEffect, useRef } from "react";
 import { useDarkMode } from "usehooks-ts";
 
-const siteTitle = "GM Pro: Supercharge Your Google Meet Experience";
+const siteTitle = "Better Chat: Supercharge Your Google Meet Experience";
 const siteDescription =
-  "Enhance chat functionality, streamline communication, and unlock powerful tools for your Google Meet meetings with GM Pro Chrome extension.";
+  "Enhance chat functionality, streamline communication, and unlock powerful tools for your Google Meet meetings with Better Chat Chrome extension.";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const { isDarkMode, toggle: toggleDarkMode } = useDarkMode();
@@ -43,19 +43,33 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
+        <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
         <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
+          rel="icon"
+          type="image/png"
+          sizes="48x48"
+          href="/icons/favicon-48x48.png"
         />
         <link
           rel="icon"
-          href="https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
+          type="image/png"
+          sizes="32x32"
+          href="/icons/favicon-32x32.png"
         />
-        <meta
-          property="og:image"
-          content="https://lh3.googleusercontent.com/Vn3qQlegazqzvJlriBP3j1RUJfQVaIqMScbKqIf8RWum_tydkntTMiFo24WUsnHT3XbzgXGV9H7zSneOcjFDm5Aw=s1280-w1280-h800"
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/icons/favicon-16x16.png"
         />
+        <link rel="shortcut icon" href="/icons/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/icons/apple-touch-icon.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta property="og:image" content="/images/logo-512.png" />
       </Head>
       <NextSeo
         title={siteTitle}

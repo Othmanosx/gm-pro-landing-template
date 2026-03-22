@@ -1,0 +1,38 @@
+<svg
+  width="640"
+  height="656"
+  viewBox="0 0 640 656"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <linearGradient id="frameGradient" x1="166" y1="26" x2="446" y2="607" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#117685"/>
+      <stop offset="0.4" stop-color="#0A5474"/>
+      <stop offset="1" stop-color="#06254A"/>
+    </linearGradient>
+    <linearGradient id="fillGradient" x1="134" y1="84" x2="481" y2="517" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#32D873"/>
+      <stop offset="0.5" stop-color="#28BF80"/>
+      <stop offset="1" stop-color="#138E94"/>
+    </linearGradient>
+    <clipPath id="innerClip">
+      <circle cx="320" cy="297" r="243"/>
+    </clipPath>
+  </defs>
+
+  <path
+    d="M88 480C88 457 107 439 130 439H179C197 439 215 446 229 459L270 499C277 506 286 512 296 516H246C234 516 221 521 211 529L144 584C134 591 122 596 109 596C97 596 88 587 88 575V480Z"
+    fill="url(#frameGradient)"
+  />
+
+  <circle cx="320" cy="297" r="287" fill="url(#frameGradient)"/>
+
+  <g clip-path="url(#innerClip)">
+    <circle cx="320" cy="297" r="243" fill="url(#fillGradient)"/>
+  </g>
+
+  <circle cx="177" cy="292" r="42" fill="#FFFFFF"/>
+  <circle cx="320" cy="292" r="42" fill="#FFFFFF"/>
+  <circle cx="463" cy="292" r="42" fill="#FFFFFF"/>
+</svg>

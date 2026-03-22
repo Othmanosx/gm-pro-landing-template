@@ -32,8 +32,8 @@ export default function SendToSelector() {
         <MenuItem value={"all"} title="All users in this call">
           All
         </MenuItem>
-        <MenuItem value={"gm-pro"} title="users of the GM Pro extension">
-          GM Pro users
+        <MenuItem value={"gm-pro"} title="users of the Better Chat extension">
+          Better Chat users
         </MenuItem>
       </Select>
     </MUIFormControl>

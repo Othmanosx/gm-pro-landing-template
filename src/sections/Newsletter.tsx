@@ -3,7 +3,6 @@ import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Section } from "../components/Section";
 
-
 const CHROME_STORE_URL =
   "https://chromewebstore.google.com/detail/GM%20Pro:%20Supercharge%20Your%20Google%20Meet%20Experience/bfmgohplnhblcajmjhmcimjlikohiomh";
 
@@ -27,7 +26,7 @@ export const Newsletter = () => {
           </h2>
           <p className="text-lg text-light">
             Join thousands of users who have already enhanced their meetings
-            with GM Pro. Install now and discover the difference!
+            with Better Chat. Install now and discover the difference!
           </p>
           <div className="flex gap-4">
             <Button onClick={() => window.open(CHROME_STORE_URL, "_blank")}>

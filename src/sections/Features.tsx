@@ -7,7 +7,6 @@ import { GradientText } from "../components/GradientText";
 import { Section } from "../components/Section";
 import { Title } from "../components/Title";
 
-
 const FeatureSection = ({
   children,
   grayer,
@@ -38,7 +37,7 @@ const FeatureDemo = (
     center?: boolean;
     className: string;
     alt: string;
-  }
+  },
 ) => {
   const { imageSrc, bumpLeft, center, alt, className, ...divProps } = props;
   return (
@@ -48,7 +47,7 @@ const FeatureDemo = (
         `w-5/6 md:w-1/2 p-4 md:p-12 bg-gradient-to-br rounded-xl ${
           center ? "" : bumpLeft ? "md:-translate-x-14" : "md:translate-x-14"
         }`,
-        className
+        className,
       )}
     >
       <Demo
@@ -98,7 +97,7 @@ export const Features = () => {
           imageSrc="https://lh3.googleusercontent.com/Vn3qQlegazqzvJlriBP3j1RUJfQVaIqMScbKqIf8RWum_tydkntTMiFo24WUsnHT3XbzgXGV9H7zSneOcjFDm5Aw=s1280-w1280-h800"
           center
           className="amber-red"
-          alt="GM Pro enhanced chat interface showing persisted messages, emoji reactions, replies, and GIFs"
+          alt="Better Chat enhanced chat interface showing persisted messages, emoji reactions, replies, and GIFs"
         />
       </FeatureSection>
       {/* Feature 2 - Light & Dark Mode */}
@@ -117,7 +116,7 @@ export const Features = () => {
           imageSrc="https://lh3.googleusercontent.com/AtFpWiyavyWsEquTwi-qgT69EG-j5zjBU6uwQSxVUlTQ3MBZJuoMWwC1HqY7SOxsNQKabqEiviGzyZHK3qIlrUO5nPk=s1280-w1280-h800"
           bumpLeft
           className="pink-blue"
-          alt="GM Pro light and dark mode options to match your setup"
+          alt="Better Chat light and dark mode options to match your setup"
         />
       </FeatureSection>
       {/* Feature 3 - Mic & Camera Preferences */}
@@ -135,7 +134,7 @@ export const Features = () => {
         <FeatureDemo
           imageSrc="https://lh3.googleusercontent.com/m0Qmw2H644m7fS33yPGwoXSfkM75Td1GMS9b_Z18amOcay-2D9oZYscXWIp2uWgeZ-T9wfxjq4J_AkTgesvwCAKM=s1280-w1280-h800"
           className="green-sky"
-          alt="GM Pro mic and camera preferences for automatic muting and camera disable"
+          alt="Better Chat mic and camera preferences for automatic muting and camera disable"
         />
       </FeatureSection>
       {/* Feature 4 - Real Time Transcriptions */}
@@ -154,7 +153,7 @@ export const Features = () => {
           imageSrc="https://lh3.googleusercontent.com/gmqmXfl9Q7TVwLohOKRdrx1DlTrudu-4SonnK_juRy1WOdEcDWdQ5563MXI5nIBbCfQ0W73V9UbiQ2dkZuPcgB1p=s1280-w1280-h800"
           bumpLeft
           className="purple-teal"
-          alt="GM Pro real-time transcription feature showing live meeting transcriptions"
+          alt="Better Chat real-time transcription feature showing live meeting transcriptions"
         />
       </FeatureSection>
       {/* Feature 5 - Participants List Shuffler */}
@@ -172,7 +171,7 @@ export const Features = () => {
         <FeatureDemo
           imageSrc="https://lh3.googleusercontent.com/n0b56kch-N8fU1nDux908bHbp3H4to6hQ3DNbLxpym4uNusJCIrmt--fFzNFIpHAcT82DwrUePNj0O2LiJHZRjZX=s1280-w1280-h800"
           className="amber-red"
-          alt="GM Pro participants list shuffler for random attendee selection"
+          alt="Better Chat participants list shuffler for random attendee selection"
         />
       </FeatureSection>
     </>

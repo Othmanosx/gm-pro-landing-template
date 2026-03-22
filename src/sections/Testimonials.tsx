@@ -8,7 +8,6 @@ import { GradientText } from "../components/GradientText";
 import { Section } from "../components/Section";
 import { Title } from "../components/Title";
 
-
 const TestimonialImage = ({ src, alt }: { src: string; alt: string }) => {
   return (
     <div className="absolute mx-auto -top-10">
@@ -63,7 +62,7 @@ export const Testimonials = () => {
           <GradientText className="amber-red">Loved</GradientText> by users
         </Title>
         <Details>
-          5 out of 5 stars • See what our users are saying about GM Pro.
+          5 out of 5 stars • See what our users are saying about Better Chat.
         </Details>
       </div>
       {/* Testimonials */}

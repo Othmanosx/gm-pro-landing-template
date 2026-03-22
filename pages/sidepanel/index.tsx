@@ -8,7 +8,7 @@ import Loading from "@root/src/components/Loading";
 import GoogleButton from "@root/src/components/GoogleButton";
 import useMeetSdk from "@root/src/shared/hooks/useMeetSdk";
 
-// Types matching the GM Pro extension settings
+// Types matching the Better Chat extension settings
 export interface Settings {
   isDark: boolean;
   autoDisableMic: boolean;
@@ -25,7 +25,7 @@ export interface FeatureFlags {
   isSuperChatEnabled: boolean;
 }
 
-// Message types for communication with GM Pro extension
+// Message types for communication with Better Chat extension
 type MessageType =
   | "GM_PRO_ADDON_READY"
   | "GM_PRO_GET_SETTINGS"
@@ -65,7 +65,7 @@ const DEFAULT_FEATURE_FLAGS: FeatureFlags = {
 // Send message to top-level window where extension content script runs
 export const sendMessage = (
   type: MessageType,
-  payload?: Partial<Settings> | string
+  payload?: Partial<Settings> | string,
 ) => {
   const message: AddonMessage = {
     type,
@@ -79,7 +79,7 @@ export const sendMessage = (
       window.top.postMessage(message, "*");
     }
   } catch (e) {
-    console.error("[GM Pro Add-on] Failed to post to top:", e);
+    console.error("[Better Chat Add-on] Failed to post to top:", e);
   }
 };
 
@@ -88,7 +88,7 @@ export default function AddonSidePanel() {
   const { meetingDetails } = useMeetSdk();
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [featureFlags, setFeatureFlags] = useState<FeatureFlags>(
-    DEFAULT_FEATURE_FLAGS
+    DEFAULT_FEATURE_FLAGS,
   );
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -97,7 +97,7 @@ export default function AddonSidePanel() {
 
   // Handle incoming messages from extension
   const handleMessage = useCallback((event: MessageEvent) => {
-    // Validate message is from GM Pro extension
+    // Validate message is from Better Chat extension
     if (event.data?.source !== "gm-pro-extension") return;
 
     const message = event.data as ExtensionMessage;
@@ -105,7 +105,10 @@ export default function AddonSidePanel() {
     switch (message.type) {
       case "GM_PRO_SETTINGS_UPDATE":
         if (message.payload) {
-          console.log("[GM Pro Add-on] Updating settings:", message.payload);
+          console.log(
+            "[Better Chat Add-on] Updating settings:",
+            message.payload,
+          );
           setSettings(message.payload as Settings);
           setIsConnected(true);
           setIsLoading(false);
@@ -117,8 +120,8 @@ export default function AddonSidePanel() {
       case "GM_PRO_FEATURE_FLAGS":
         if (message.payload) {
           console.log(
-            "[GM Pro Add-on] Updating feature flags:",
-            message.payload
+            "[Better Chat Add-on] Updating feature flags:",
+            message.payload,
           );
           setFeatureFlags(message.payload as FeatureFlags);
         }
@@ -150,7 +153,7 @@ export default function AddonSidePanel() {
   // Update a setting
   const updateSetting = <K extends keyof Settings>(
     key: K,
-    value: Settings[K]
+    value: Settings[K],
   ) => {
     const newSettings = { ...settings, [key]: value };
     setSettings(newSettings);
@@ -192,13 +195,15 @@ export default function AddonSidePanel() {
     return (
       <GMProLayout>
         <div style={{ padding: "20px" }}>
-          <h2>GM Pro Add-on Not Found</h2>
+          <h2>Better Chat Add-on Not Found</h2>
           <p>
-            It looks like the GM Pro browser add-on is not installed or enabled
-            for this meeting. Please make sure you have the add-on installed and
-            try again.
+            It looks like the Better Chat browser add-on is not installed or
+            enabled for this meeting. Please make sure you have the add-on
+            installed and try again.
           </p>
-          <p>You can download the GM Pro add-on from the Chrome Web Store.</p>
+          <p>
+            You can download the Better Chat add-on from the Chrome Web Store.
+          </p>
         </div>
       </GMProLayout>
     );

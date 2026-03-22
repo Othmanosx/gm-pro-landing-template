@@ -44,7 +44,7 @@ const useMeetSdk = () => {
         useMeetStore.getState().meetingDetails
       ) {
         console.log(
-          "[GM Pro Add-on] Meet SDK already initialized, skipping init"
+          "[Better Chat Add-on] Meet SDK already initialized, skipping init"
         );
         return;
       }
@@ -59,9 +59,9 @@ const useMeetSdk = () => {
         // Store client in zustand store for use in other components
         setSidePanelClient(client);
 
-        console.log("[GM Pro Add-on] Meet SDK initialized successfully");
+        console.log("[Better Chat Add-on] Meet SDK initialized successfully");
       } catch (error) {
-        console.error("[GM Pro Add-on] Failed to initialize Meet SDK:", error);
+        console.error("[Better Chat Add-on] Failed to initialize Meet SDK:", error);
         // SDK initialization failure is not critical - addon can still work with extension
       }
     }
@@ -78,7 +78,7 @@ const useMeetSdk = () => {
   const startActivity = async () => {
     if (!sidePanelClient) {
       console.warn(
-        "[GM Pro Add-on] startActivity called but sidePanelClient is not initialized"
+        "[Better Chat Add-on] startActivity called but sidePanelClient is not initialized"
       );
       return;
     }
@@ -94,10 +94,10 @@ const useMeetSdk = () => {
           type: "new_chat_message",
         }),
       });
-      console.log("[GM Pro Add-on] Notified participants of new message", res);
+      console.log("[Better Chat Add-on] Notified participants of new message", res);
       return res;
     } catch (error) {
-      console.error("[GM Pro Add-on] Failed to notify activity:", error);
+      console.error("[Better Chat Add-on] Failed to notify activity:", error);
       throw error;
     }
   };

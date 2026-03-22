@@ -108,7 +108,7 @@ interface Props {
 }
 function ChatInput(
   { isLoading, sendMessage, disabled, currentMeetId }: Props,
-  chatContainerRef: React.ForwardedRef<HTMLDivElement>
+  chatContainerRef: React.ForwardedRef<HTMLDivElement>,
 ) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [openGifPicker, setOpenGifPicker] = useState(false);
@@ -123,19 +123,19 @@ function ChatInput(
   const setImage = useZustandStore((state) => state.setImage);
   const value = useZustandStore((state) => state.message);
   const showNewMessageButton = useZustandStore(
-    (state) => state.showNewMessageButton
+    (state) => state.showNewMessageButton,
   );
   const reply = useZustandStore((state) => state.reply);
   const editedMessageId = useZustandStore((state) => state.editedMessageId);
   const setEditedMessageId = useZustandStore(
-    (state) => state.setEditedMessageId
+    (state) => state.setEditedMessageId,
   );
   const setReply = useZustandStore((state) => state.setReply);
   const setMessage = useZustandStore((state) => state.setMessage);
   const message = useZustandStore((state) => state.message);
   const label = reply ? "Send your reply" : "Send a message";
   const { handleTextTransform, applyBoldToText } = useTextTransform(
-    inputRef as React.RefObject<HTMLTextAreaElement>
+    inputRef as React.RefObject<HTMLTextAreaElement>,
   );
   // TODO: extract this from firebase directly
   const { isImageUploadingEnabled } = { isImageUploadingEnabled: true };
@@ -431,8 +431,8 @@ function ChatInput(
                   }}
                 >
                   {editedMessageId
-                    ? "Only GM Pro users can see edited messages."
-                    : "Only GM Pro users will see this message."}
+                    ? "Only Better Chat users can see edited messages."
+                    : "Only Better Chat users will see this message."}
                 </Alert>
               </motion.div>
             )}
@@ -563,8 +563,8 @@ function ChatInput(
               (showUserSuggestions
                 ? participants
                 : showCommandSuggestions
-                ? availableCommands
-                : []) as any
+                  ? availableCommands
+                  : []) as any
             }
             getOptionLabel={(option: any) => {
               if (showUserSuggestions && option.firstName) {
@@ -579,13 +579,13 @@ function ChatInput(
               if (showUserSuggestions) {
                 const query = userQuery.toLowerCase();
                 return options.filter((option: any) =>
-                  option.firstName.toLowerCase().includes(query)
+                  option.firstName.toLowerCase().includes(query),
                 );
               }
               if (showCommandSuggestions) {
                 const query = commandQuery.toLowerCase();
                 return options.filter((option: any) =>
-                  option.command.toLowerCase().includes(query)
+                  option.command.toLowerCase().includes(query),
                 );
               }
               return [];
@@ -625,7 +625,7 @@ function ChatInput(
                     }}
                   >
                     {showUserSuggestions
-                      ? "Mention a GM Pro user"
+                      ? "Mention a Better Chat user"
                       : "Available shortcuts"}
                   </ListSubheader>
                 )}
@@ -830,7 +830,7 @@ function ChatInput(
                     inputRef.current.focus();
                     inputRef.current.setSelectionRange(
                       newMessage.length,
-                      newMessage.length
+                      newMessage.length,
                     );
                   }
                 }, 0);
@@ -858,7 +858,7 @@ function ChatInput(
                     inputRef.current.focus();
                     inputRef.current.setSelectionRange(
                       newMessage.length,
-                      newMessage.length
+                      newMessage.length,
                     );
                   }
                 }, 0);

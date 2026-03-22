@@ -70,7 +70,7 @@ const ReplyContainer = styled("div")<{
       border: "none",
     },
   }),
-  { name: "ReplyContainer" }
+  { name: "ReplyContainer" },
 );
 
 const MsgBox = styled("div", {
@@ -111,16 +111,16 @@ const MessageText = styled(motion.div, {
     userSelect: "text",
     whiteSpace: "pre-wrap",
     borderTopRightRadius: theme.spacing(
-      sameUserLast && side === "right" ? 0.5 : side === "right" ? 0.5 : 2
+      sameUserLast && side === "right" ? 0.5 : side === "right" ? 0.5 : 2,
     ),
     borderTopLeftRadius: theme.spacing(
-      sameUserLast && side === "left" ? 0.5 : side === "left" ? 0.5 : 2
+      sameUserLast && side === "left" ? 0.5 : side === "left" ? 0.5 : 2,
     ),
     borderBottomRightRadius: theme.spacing(
-      sameUserNext && side === "right" ? 0.5 : 2
+      sameUserNext && side === "right" ? 0.5 : 2,
     ),
     borderBottomLeftRadius: theme.spacing(
-      sameUserNext && side === "left" ? 0.5 : 2
+      sameUserNext && side === "left" ? 0.5 : 2,
     ),
     wordBreak: "break-word",
     fontFamily:
@@ -132,8 +132,8 @@ const MessageText = styled(motion.div, {
           ? "hsl(210 79% 35% / 1)"
           : theme.palette.primary.main
         : isDark
-        ? "#35383b"
-        : theme.palette.grey[100],
+          ? "#35383b"
+          : theme.palette.grey[100],
     color:
       side === "right" ? theme.palette.common.white : isDark ? "#fff" : "#000",
     "& a": {
@@ -141,10 +141,10 @@ const MessageText = styled(motion.div, {
         side === "right"
           ? theme.palette.common.white
           : isDark
-          ? "#fff"
-          : "#000",
+            ? "#fff"
+            : "#000",
     },
-  })
+  }),
 );
 
 const UserName = styled(Typography)<{ side?: SideType; isDark: boolean }>(
@@ -155,13 +155,13 @@ const UserName = styled(Typography)<{ side?: SideType; isDark: boolean }>(
     fontSize: 13,
     fontWeight: 600,
     color: isDark ? theme.palette.grey[500] : theme.palette.grey[700],
-  })
+  }),
 );
 
 const ReactionsTooltip = styled(
   ({ className, ...props }: TooltipProps & { isDark: boolean }) => (
     <Tooltip {...props} classes={{ popper: className }} />
-  )
+  ),
 )(({ theme, isDark }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: !isDark ? "#f5f5f9" : "#202124",
@@ -368,7 +368,7 @@ const ChatMsg = ({
                   }}
                   title={
                     <div>
-                      This user is not using the GM Pro extension, you
+                      This user is not using the Better Chat extension, you
                       won&apos;t be able to reply or react to this message.{" "}
                       <br />
                       Encourage others to install the extension to enjoy the
@@ -406,7 +406,7 @@ const ChatMsg = ({
                       emoji.unified,
                       id,
                       localUserID,
-                      currentMeetId
+                      currentMeetId,
                     );
                     setIsEmojiOpen(false);
                   }}
@@ -451,7 +451,7 @@ const ChatMsg = ({
                         onReactionsClick={() => setIsEmojiOpen(true)}
                         copy={() =>
                           navigator.clipboard.writeText(
-                            editedText ?? text ?? image
+                            editedText ?? text ?? image,
                           )
                         }
                         onReplyClick={onReplyClick}
@@ -477,7 +477,7 @@ const ChatMsg = ({
                       <div style={{ marginTop: -7 }}>
                         <InfoIcon sx={{ width: 8, height: 8 }} />{" "}
                         <span style={{ fontSize: 10, filter: "opacity(0.6)" }}>
-                          Sent to GM Pro users only
+                          Sent to Better Chat users only
                         </span>
                       </div>
                     )}

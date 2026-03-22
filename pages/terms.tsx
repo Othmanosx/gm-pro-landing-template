@@ -13,10 +13,10 @@ const TermsOfService = ({
   return (
     <div className="overflow-hidden col text-strong">
       <Head>
-        <title>Terms of Service - GM Pro</title>
+        <title>Terms of Service - Better Chat</title>
         <meta
           name="description"
-          content="Terms of Service for GM Pro Chrome Extension"
+          content="Terms of Service for Better Chat Chrome Extension"
         />
       </Head>
       <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
@@ -27,9 +27,9 @@ const TermsOfService = ({
 
           <p>
             Please read these Terms of Service (&quot;Terms&quot;, &quot;Terms
-            of Service&quot;) carefully before using the GM Pro Chrome extension
-            (the &quot;Service&quot;) operated by GM Pro (&quot;us&quot;,
-            &quot;we&quot;, or &quot;our&quot;).
+            of Service&quot;) carefully before using the Better Chat Chrome
+            extension (the &quot;Service&quot;) operated by Better Chat
+            (&quot;us&quot;, &quot;we&quot;, or &quot;our&quot;).
           </p>
 
           <p>
@@ -50,9 +50,9 @@ const TermsOfService = ({
             1. Description of Service
           </h2>
           <p>
-            GM Pro is a Chrome browser extension designed to enhance your Google
-            Meet experience. The Service provides additional features including
-            but not limited to:
+            Better Chat is a Chrome browser extension designed to enhance your
+            Google Meet experience. The Service provides additional features
+            including but not limited to:
           </p>
           <ul className="list-disc pl-6 space-y-2">
             <li>Enhanced chat interface with persistent message history</li>
@@ -70,8 +70,8 @@ const TermsOfService = ({
             2. Use of Google Services
           </h2>
           <p>
-            GM Pro interacts with Google Meet, a service provided by Google LLC.
-            By using GM Pro, you acknowledge and agree that:
+            Better Chat interacts with Google Meet, a service provided by Google
+            LLC. By using Better Chat, you acknowledge and agree that:
           </p>
           <ul className="list-disc pl-6 space-y-2">
             <li>
@@ -79,16 +79,16 @@ const TermsOfService = ({
               Meet&apos;s terms of use when using our Service.
             </li>
             <li>
-              GM Pro is not affiliated with, endorsed by, or sponsored by Google
-              LLC.
+              Better Chat is not affiliated with, endorsed by, or sponsored by
+              Google LLC.
             </li>
             <li>
               Google Meet and related trademarks are the property of Google LLC.
             </li>
             <li>
               Changes to Google Meet&apos;s platform or policies may affect the
-              functionality of GM Pro, and we are not responsible for any such
-              changes.
+              functionality of Better Chat, and we are not responsible for any
+              such changes.
             </li>
           </ul>
 
@@ -96,13 +96,13 @@ const TermsOfService = ({
             3. User Accounts and Authentication
           </h2>
           <p>
-            Some features of GM Pro may require authentication through your
+            Some features of Better Chat may require authentication through your
             Google account. When you authenticate:
           </p>
           <ul className="list-disc pl-6 space-y-2">
             <li>
-              You authorize GM Pro to access certain information as described in
-              our Privacy Policy.
+              You authorize Better Chat to access certain information as
+              described in our Privacy Policy.
             </li>
             <li>
               You are responsible for maintaining the confidentiality of your
@@ -113,8 +113,8 @@ const TermsOfService = ({
               under your account.
             </li>
             <li>
-              You may revoke GM Pro&apos;s access to your Google account at any
-              time through your Google Account settings.
+              You may revoke Better Chat&apos;s access to your Google account at
+              any time through your Google Account settings.
             </li>
           </ul>
 
@@ -146,13 +146,14 @@ const TermsOfService = ({
           </h2>
           <p>
             The Service and its original content, features, and functionality
-            are and will remain the exclusive property of GM Pro and its
+            are and will remain the exclusive property of Better Chat and its
             licensors. The Service is protected by copyright, trademark, and
             other laws of both Iraq and foreign countries.
           </p>
           <p>
             Our trademarks and trade dress may not be used in connection with
-            any product or service without the prior written consent of GM Pro.
+            any product or service without the prior written consent of Better
+            Chat.
           </p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">6. User Content</h2>
@@ -190,8 +191,8 @@ const TermsOfService = ({
 
           <h2 className="text-2xl font-bold mt-8 mb-4">8. Data Processing</h2>
           <p>
-            GM Pro processes certain data locally on your device to provide its
-            features. This includes:
+            Better Chat processes certain data locally on your device to provide
+            its features. This includes:
           </p>
           <ul className="list-disc pl-6 space-y-2">
             <li>Chat messages for persistent history functionality</li>
@@ -209,7 +210,7 @@ const TermsOfService = ({
           </h2>
           <p>
             The Service is provided on an &quot;AS IS&quot; and &quot;AS
-            AVAILABLE&quot; basis. GM Pro makes no warranties, expressed or
+            AVAILABLE&quot; basis. Better Chat makes no warranties, expressed or
             implied, and hereby disclaims and negates all other warranties
             including, without limitation:
           </p>
@@ -234,8 +235,8 @@ const TermsOfService = ({
           </h2>
           <p>
             To the maximum extent permitted by applicable law, in no event shall
-            GM Pro, its directors, employees, partners, agents, suppliers, or
-            affiliates be liable for any indirect, incidental, special,
+            Better Chat, its directors, employees, partners, agents, suppliers,
+            or affiliates be liable for any indirect, incidental, special,
             consequential, or punitive damages, including without limitation:
           </p>
           <ul className="list-disc pl-6 space-y-2">
@@ -258,11 +259,11 @@ const TermsOfService = ({
 
           <h2 className="text-2xl font-bold mt-8 mb-4">11. Indemnification</h2>
           <p>
-            You agree to defend, indemnify, and hold harmless GM Pro and its
-            licensees, licensors, employees, contractors, agents, officers, and
-            directors from and against any and all claims, damages, obligations,
-            losses, liabilities, costs, or debt, and expenses (including but not
-            limited to attorney&apos;s fees) arising from:
+            You agree to defend, indemnify, and hold harmless Better Chat and
+            its licensees, licensors, employees, contractors, agents, officers,
+            and directors from and against any and all claims, damages,
+            obligations, losses, liabilities, costs, or debt, and expenses
+            (including but not limited to attorney&apos;s fees) arising from:
           </p>
           <ul className="list-disc pl-6 space-y-2">
             <li>Your use of and access to the Service</li>

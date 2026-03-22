@@ -12,7 +12,7 @@ const GMProLayout = ({ children }: Props) => {
     minHeight: "100vh",
     maxWidth: "100%",
     padding: "12px",
-    fontFamily: '"Google Sans", Roboto, Arial, sans-serif',
+    fontFamily: "Roboto, Arial, sans-serif",
     overflowX: "hidden",
     boxSizing: "border-box",
     display: "flex",
@@ -23,7 +23,7 @@ const GMProLayout = ({ children }: Props) => {
   return (
     <div>
       <Head>
-        <title>GM Pro - Meeting Settings</title>
+        <title>Better Chat - Meeting Settings</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
@@ -31,15 +31,15 @@ const GMProLayout = ({ children }: Props) => {
         <meta name="robots" content="noindex, nofollow" />
         <meta
           name="description"
-          content="GM Pro meeting enhancement settings"
+          content="Better Chat meeting enhancement settings"
         />
       </Head>
       <div style={containerStyle}>
         {/* Header with logo and status */}
         <header style={{ textAlign: "center", marginBottom: "12px" }}>
           <img
-            src="https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
-            alt="GM Pro"
+            src="/images/logo.svg"
+            alt="Better Chat"
             width={48}
             height={48}
             style={{ borderRadius: "8px", justifySelf: "center" }}
@@ -47,7 +47,7 @@ const GMProLayout = ({ children }: Props) => {
           <h1
             style={{ fontSize: "16px", margin: "8px 0 4px", fontWeight: 500 }}
           >
-            GM Pro
+            Better Chat
           </h1>
           <p
             style={{

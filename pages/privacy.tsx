@@ -13,16 +13,18 @@ const PrivacyPolicy = ({
   return (
     <div className="overflow-hidden col text-strong">
       <Head>
-        <title>Privacy Policy - GM Pro</title>
+        <title>Privacy Policy - Better Chat</title>
         <meta
           name="description"
-          content="Privacy Policy for GM Pro Chrome Extension"
+          content="Privacy Policy for Better Chat Chrome Extension"
         />
       </Head>
       <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       <main className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <article className="prose dark:prose-invert prose-lg max-w-none">
-          <h1 className="text-4xl font-bold mb-2">Privacy Policy for GM Pro</h1>
+          <h1 className="text-4xl font-bold mb-2">
+            Privacy Policy for Better Chat
+          </h1>
           <p className="text-light mb-8">Last updated: December 14, 2024</p>
 
           <p>
@@ -54,13 +56,13 @@ const PrivacyPolicy = ({
           <p>For the purposes of this Privacy Policy:</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>
-              <strong>Application</strong> refers to GM Pro, the Chrome
+              <strong>Application</strong> refers to Better Chat, the Chrome
               extension provided by the Company.
             </li>
             <li>
               <strong>Company</strong> (referred to as either &quot;the
               Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot;
-              in this Agreement) refers to GM Pro.
+              in this Agreement) refers to Better Chat.
             </li>
             <li>
               <strong>Country</strong> refers to: Iraq
@@ -132,7 +134,7 @@ const PrivacyPolicy = ({
             Data Collected by the Extension
           </h4>
           <p>
-            GM Pro is a Chrome extension that enhances your Google Meet
+            Better Chat is a Chrome extension that enhances your Google Meet
             experience. The extension may collect or process the following types
             of data locally on your device:
           </p>

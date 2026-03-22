@@ -41,14 +41,14 @@ export const Header = ({
     <Link href="/">
       <div className="items-center block gap-2 row">
         <img
-          src="https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
-          alt="GM Pro logo"
+          src="/images/logo.svg"
+          alt="Better Chat logo"
           height="40"
           width="40"
           className="rounded-lg"
         />
         <div className="text-2xl font-bold">
-          <GradientText className="pink-blue">GM Pro</GradientText>
+          <GradientText className="pink-blue">Better Chat</GradientText>
         </div>
       </div>
     </Link>

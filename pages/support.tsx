@@ -42,7 +42,7 @@ export default function Support() {
           rnSubject: formData.subject,
           rnMessage: formData.message,
         },
-        EMAILJS_PUBLIC_KEY
+        EMAILJS_PUBLIC_KEY,
       );
 
       setStatus("success");
@@ -57,10 +57,10 @@ export default function Support() {
   return (
     <>
       <Head>
-        <title>Support - GM Pro</title>
+        <title>Support - Better Chat</title>
         <meta
           name="description"
-          content="Get help with GM Pro Chrome Extension"
+          content="Get help with Better Chat Chrome Extension"
         />
       </Head>
 
@@ -79,8 +79,8 @@ export default function Support() {
           <div style={{ textAlign: "center", marginBottom: "40px" }}>
             <Link href="/">
               <img
-                src="https://lh3.googleusercontent.com/oEMr1ptQCg81T6dBLdb53OfI73whvbqyCvlZ7mt1UAFbRwFchkB29Cn2x_5KdpZURYDuulqGanQu3EfD3Tjmrd0f=s120"
-                alt="GM Pro Logo"
+                src="/images/logo.svg"
+                alt="Better Chat Logo"
                 width={70}
                 height={70}
                 style={{
