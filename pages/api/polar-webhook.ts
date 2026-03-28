@@ -107,6 +107,9 @@ export default async function handler(
         const email: string | undefined = event.data?.customer?.email;
         if (!email) break;
 
+        const interval = event.data?.recurringInterval; // 'month' | 'year'
+        const subscriptionType = interval === "year" ? "yearly" : "monthly";
+
         const uid = await findUidByEmail(email);
         if (!uid) {
           await db
@@ -114,7 +117,7 @@ export default async function handler(
             .doc(email)
             .set({
               subscriptionPlan: "paid",
-              subscriptionType: "subscription",
+              subscriptionType,
               polarCustomerId: event.data?.customerId ?? null,
               polarSubscriptionId: event.data?.id ?? null,
               updatedAt: FieldValue.serverTimestamp(),
@@ -127,12 +130,12 @@ export default async function handler(
           .doc(uid)
           .update({
             subscriptionPlan: "paid",
-            subscriptionType: "subscription",
+            subscriptionType,
             polarCustomerId: event.data?.customerId ?? null,
             polarSubscriptionId: event.data?.id ?? null,
             subscriptionUpdatedAt: FieldValue.serverTimestamp(),
           });
-        console.log(`[polar-webhook] subscription.active → user ${uid}`);
+        console.log(`[polar-webhook] subscription.active (${subscriptionType}) → user ${uid}`);
         break;
       }
 
@@ -159,14 +162,18 @@ export default async function handler(
         const email: string | undefined = event.data?.customer?.email;
         if (!email || event.data?.status !== "active") break;
 
+        const interval = event.data?.recurringInterval;
+        const subscriptionType = interval === "year" ? "yearly" : "monthly";
+
         const uid = await findUidByEmail(email);
         if (!uid) break;
 
         await db.collection("users").doc(uid).update({
           subscriptionPlan: "paid",
+          subscriptionType,
           subscriptionUpdatedAt: FieldValue.serverTimestamp(),
         });
-        console.log(`[polar-webhook] subscription.updated → user ${uid}`);
+        console.log(`[polar-webhook] subscription.updated (${subscriptionType}) → user ${uid}`);
         break;
       }
 
