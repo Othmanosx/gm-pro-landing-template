@@ -203,6 +203,13 @@ export const Pricing = () => {
               <p className="text-sm text-light mt-1">
                 One-time payment. Yours forever.
               </p>
+              <p className="text-sm text-light">
+                🏷️ Use code{" "}
+                <span className="font-bold text-yellow-600 dark:text-yellow-400">
+                  MEET40
+                </span>{" "}
+                for 40% off
+              </p>
             </div>
 
             {/* CTA */}
