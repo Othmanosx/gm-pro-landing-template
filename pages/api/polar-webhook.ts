@@ -65,8 +65,8 @@ export default async function handler(
 
   try {
     switch (event.type) {
-      // One-time payment (lifetime) or first subscription payment
-      case "order.created": {
+      // Fired when payment is confirmed — use order.paid not order.created
+      case "order.paid": {
         const email: string | undefined = event.data?.customer?.email;
         const metadata = event.data?.metadata ?? {};
         if (!email) break;
@@ -81,7 +81,7 @@ export default async function handler(
               subscriptionPlan: "paid",
               subscriptionType:
                 metadata.plan === "lifetime" ? "lifetime" : "subscription",
-              polarCustomerId: event.data?.customer_id ?? null,
+              polarCustomerId: event.data?.customerId ?? null,
               polarOrderId: event.data?.id ?? null,
               updatedAt: FieldValue.serverTimestamp(),
             });
@@ -95,11 +95,11 @@ export default async function handler(
             subscriptionPlan: "paid",
             subscriptionType:
               metadata.plan === "lifetime" ? "lifetime" : "subscription",
-            polarCustomerId: event.data?.customer_id ?? null,
+            polarCustomerId: event.data?.customerId ?? null,
             polarOrderId: event.data?.id ?? null,
             subscriptionUpdatedAt: FieldValue.serverTimestamp(),
           });
-        console.log(`[polar-webhook] order.created → user ${uid} is now paid`);
+        console.log(`[polar-webhook] order.paid → user ${uid} is now paid`);
         break;
       }
 
@@ -115,7 +115,7 @@ export default async function handler(
             .set({
               subscriptionPlan: "paid",
               subscriptionType: "subscription",
-              polarCustomerId: event.data?.customer_id ?? null,
+              polarCustomerId: event.data?.customerId ?? null,
               polarSubscriptionId: event.data?.id ?? null,
               updatedAt: FieldValue.serverTimestamp(),
             });
@@ -128,7 +128,7 @@ export default async function handler(
           .update({
             subscriptionPlan: "paid",
             subscriptionType: "subscription",
-            polarCustomerId: event.data?.customer_id ?? null,
+            polarCustomerId: event.data?.customerId ?? null,
             polarSubscriptionId: event.data?.id ?? null,
             subscriptionUpdatedAt: FieldValue.serverTimestamp(),
           });
