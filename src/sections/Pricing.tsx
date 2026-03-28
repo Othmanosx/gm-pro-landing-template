@@ -135,9 +135,11 @@ export const Pricing = () => {
 
           {/* CTA */}
           <a
-            href="https://www.gm-pro.online/pricing?plan=pro"
-            target="_blank"
-            rel="noopener noreferrer"
+            href={
+              annual
+                ? "/api/polar-checkout?plan=yearly"
+                : "/api/polar-checkout?plan=monthly"
+            }
             className="w-full py-3 px-6 rounded-xl border-2 border-primary-600 text-primary-600 font-bold text-center text-sm hover:bg-primary-600 hover:text-white transition-all duration-200"
           >
             Start Pro Plan
@@ -205,9 +207,7 @@ export const Pricing = () => {
 
             {/* CTA */}
             <a
-              href="https://www.gm-pro.online/pricing?plan=lifetime"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/api/polar-checkout?plan=lifetime"
               className="w-full py-3 px-6 rounded-xl font-bold text-center text-sm text-white hover:opacity-90 transition-opacity duration-200"
               style={{
                 background: "linear-gradient(135deg, #32D873 0%, #138E94 100%)",
