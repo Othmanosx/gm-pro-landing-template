@@ -6,11 +6,11 @@ import { GradientText } from "../components/GradientText";
 import { Section } from "../components/Section";
 import { Title } from "../components/Title";
 
-const MONTHLY_PRICE = 6.99;
-const ANNUAL_PRICE_PER_MONTH = 4.99;
+const MONTHLY_PRICE = 9.99;
+const ANNUAL_PRICE_PER_MONTH = 7.99;
 const ANNUAL_TOTAL = (ANNUAL_PRICE_PER_MONTH * 12).toFixed(2);
-const LIFETIME_ORIGINAL = 149;
-const LIFETIME_PRICE = 99;
+const LIFETIME_ORIGINAL = 249;
+const LIFETIME_PRICE = 149;
 const LIFETIME_SAVE = LIFETIME_ORIGINAL - LIFETIME_PRICE;
 const LIFETIME_OFF_PCT = Math.round((LIFETIME_SAVE / LIFETIME_ORIGINAL) * 100);
 
@@ -41,7 +41,7 @@ const CheckIcon = ({ gradient }: { gradient?: boolean }) => (
 );
 
 export const Pricing = () => {
-  const [annual, setAnnual] = useState(false);
+  const [annual, setAnnual] = useState(true);
 
   const currentPrice = annual ? ANNUAL_PRICE_PER_MONTH : MONTHLY_PRICE;
 
@@ -251,12 +251,6 @@ export const Pricing = () => {
           </span>
           <span className="flex items-center gap-1.5">
             <span>🔒</span> Secure checkout
-          </span>
-          <span className="hidden md:block text-gray-300 dark:text-gray-600">
-            |
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span>↩️</span> 30-day money-back guarantee
           </span>
         </div>
         <p className="text-xs text-extra-light mt-1">

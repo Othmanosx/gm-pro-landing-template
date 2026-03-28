@@ -11,6 +11,8 @@ module.exports = {
       // Necessary color utilities
       transparent: colors.transparent,
       current: colors.current,
+      white: colors.white,
+      black: colors.black,
       // Primary accent color — logo emerald green (buttons, CTAs, focus rings)
       primary: colors.emerald,
       // Grayscale
