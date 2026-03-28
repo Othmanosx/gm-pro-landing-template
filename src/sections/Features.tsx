@@ -44,7 +44,7 @@ const FeatureDemo = (
     <div
       {...divProps}
       className={twMerge(
-        `w-5/6 md:w-1/2 p-4 md:p-12 bg-gradient-to-br rounded-xl ${
+        `w-5/6 md:w-1/2 bg-gradient-to-br rounded-xl ${
           center ? "" : bumpLeft ? "md:-translate-x-14" : "md:translate-x-14"
         }`,
         className,
@@ -141,7 +141,7 @@ export const Features = () => {
       <FeatureSection right>
         <Text>
           <Title size="md">
-            <GradientText className="purple-teal">Real Time</GradientText>
+            <GradientText className="green-teal">Real Time</GradientText>
             <br /> Transcriptions
           </Title>
           <Details>
@@ -152,7 +152,7 @@ export const Features = () => {
         <FeatureDemo
           imageSrc="https://lh3.googleusercontent.com/gmqmXfl9Q7TVwLohOKRdrx1DlTrudu-4SonnK_juRy1WOdEcDWdQ5563MXI5nIBbCfQ0W73V9UbiQ2dkZuPcgB1p=s1280-w1280-h800"
           bumpLeft
-          className="purple-teal"
+          className="green-teal"
           alt="Better Chat real-time transcription feature showing live meeting transcriptions"
         />
       </FeatureSection>

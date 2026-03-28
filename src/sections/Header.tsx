@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useEventListener } from "usehooks-ts";
 
 import { Button } from "../components/Button";
 import { GradientText } from "../components/GradientText";
@@ -22,11 +21,25 @@ export const Header = ({
   const [reloaded, setReloaded] = useState(false);
 
   // Handle scrolling logic
-  const handleScroll = () => {
-    setTop(window.pageYOffset <= 10);
-    setNextSection(window.pageYOffset > window.innerHeight);
-  };
-  useEventListener("scroll", handleScroll);
+  useEffect(() => {
+    const onScroll = () => {
+      // Check both window and document root (Next.js can scroll either)
+      const y =
+        window.scrollY ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0;
+      setTop(y <= 5);
+      setNextSection(y > window.innerHeight);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("scroll", onScroll, { passive: true });
+    onScroll(); // sync on mount
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("scroll", onScroll);
+    };
+  }, []);
 
   // Clean up stale dark mode
   useEffect(() => {
@@ -72,6 +85,9 @@ export const Header = ({
         <li>
           <LinkButton href="#features">Features</LinkButton>
         </li>
+        <li>
+          <LinkButton href="/pricing">Pricing</LinkButton>
+        </li>
         <li className={`transition ${!nextSection && "hidden"}`}>
           <Button onClick={goToChromeStore}>Add to Chrome</Button>
         </li>
@@ -83,7 +99,7 @@ export const Header = ({
     // Colors must be set explicitly since opacity and blur don't work together
     <header
       className={`fixed w-full z-30 transition duration-300 ${
-        !top && "bg-gray-50/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-lg"
+        !top && "bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm"
       }`}
     >
       {/* Header Content */}

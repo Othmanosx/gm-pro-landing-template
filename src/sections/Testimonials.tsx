@@ -38,7 +38,7 @@ const TestimonialText = ({
       <div className="">
         <cite className="not-italic font-bold">— {name}</cite>
         <div className="text-base text-light">
-          <span>{date}</span> <span className="text-amber-500">★★★★★</span>
+          <span>{date}</span> <span className="text-yellow-400">★★★★★</span>
         </div>
       </div>
     </>

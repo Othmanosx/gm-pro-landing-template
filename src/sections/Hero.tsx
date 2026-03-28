@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ScatteredSpheres } from "../svg/ScatteredSpheres";
 import { Title } from "../components/Title";
 import { Details } from "../components/Details";
@@ -26,28 +27,36 @@ export const Hero = () => {
     >
       <Background />
       {/* Text */}
-      <div className="z-10 gap-4 text-center col md:text-left">
+      <div className="z-10 gap-5 text-center col md:text-left">
         <Title size="lg">
           <GradientText className="pink-blue">Supercharge</GradientText>
           <br />
-          Your <GradientText className="purple-teal">Google Meet</GradientText>
+          Your <GradientText className="green-teal">Google Meet</GradientText>
         </Title>
+
         <Details>
-          Enhance chat functionality, streamline communication, and unlock
-          powerful tools for your meetings with Better Chat.
+          Persistent chat history, emoji reactions, image sharing, auto-mute,
+          real-time transcriptions — and more. All in one free extension.
         </Details>
+
         <div
-          className="flex gap-4 justify-center md:justify-start"
+          className="flex flex-wrap gap-3 justify-center md:justify-start"
           data-aos="zoom-y-out"
           data-aos-delay="300"
         >
           <Button onClick={() => window.open(CHROME_STORE_URL, "_blank")}>
-            Add to Chrome — It&apos;s Free
+            Add to Chrome
           </Button>
         </div>
-        <p className="text-sm text-light">
-          ⭐ 5.0 rating • Trusted by users worldwide
-        </p>
+
+        <div
+          className="flex flex-wrap items-center gap-x-5 gap-y-2 justify-center md:justify-start text-xs text-light"
+          data-aos="zoom-y-out"
+          data-aos-delay="400"
+        >
+          <span className="flex items-center gap-1">✓ No account needed</span>
+          <span className="flex items-center gap-1">✓ Works instantly</span>
+        </div>
       </div>
       {/* Image */}
       <Demo

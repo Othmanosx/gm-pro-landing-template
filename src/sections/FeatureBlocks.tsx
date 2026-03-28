@@ -37,7 +37,7 @@ export const FeatureBlocks = () => {
       <div className="gap-4 col">
         <Title size="md">
           Everything you need for{" "}
-          <GradientText className="purple-teal">better meetings</GradientText>
+          <GradientText className="green-teal">better meetings</GradientText>
         </Title>
         <Details>
           Better Chat is packed with features designed to enhance your Google

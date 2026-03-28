@@ -11,20 +11,29 @@ module.exports = {
       // Necessary color utilities
       transparent: colors.transparent,
       current: colors.current,
-      // Primary accent color
-      primary: colors.blue,
+      // Primary accent color — logo emerald green (buttons, CTAs, focus rings)
+      primary: colors.emerald,
       // Grayscale
       gray: colors.zinc,
-      // Gradient colors
+      // Explicit color scales used directly in components
+      green: colors.green,
+      yellow: colors.yellow,
+      violet: colors.violet,
+      // ── Gradient token palette ──────────────────────────────────────────
+      // Mapped to CSS utility classes:
+      //   .pink-blue  → neon.pink  → neon.blue   (brand: green → teal)
+      //   .amber-red  → neon.amber → neon.red    (warm:  amber → orange)
+      //   .green-sky  → neon.green → neon.sky    (cool:  violet → indigo)
+      //   .green-teal → neon.purple→ neon.teal   (fresh: cyan → sky-blue)
       neon: {
-        blue: colors.blue[500],
-        pink: colors.pink[500],
-        purple: colors.purple[500],
-        teal: colors.teal[400],
-        green: colors.green[500],
-        sky: colors.sky[500],
-        amber: colors.amber[500],
-        red: colors.red[500],
+        pink: "#32D873", // logo bright green    (.pink-blue from)
+        blue: "#0D9488", // deep teal            (.pink-blue to)
+        amber: "#F59E0B", // warm amber           (.amber-red from)
+        red: "#EA580C", // vivid orange         (.amber-red to)
+        green: "#8B5CF6", // violet               (.green-sky from)
+        sky: "#6366F1", // indigo               (.green-sky to)
+        purple: "#22D3EE", // bright cyan          (.green-teal from)
+        teal: "#0EA5E9", // sky blue             (.green-teal to)
       },
     },
     extend: {
