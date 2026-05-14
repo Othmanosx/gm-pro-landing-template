@@ -62,9 +62,17 @@ export const Pricing = () => {
         </Title>
 
         <Details>
-          Supercharge your Google Meet experience. No feature caps, no
-          surprises. Upgrade or cancel anytime.
+          Supercharge your Google Meet experience. Start with a{" "}
+          <span className="font-semibold text-strong">
+            30-day free trial
+          </span>
+          {" "}— no credit card required. Upgrade or cancel anytime.
         </Details>
+
+        {/* Free trial badge */}
+        <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30 border border-primary-300 dark:border-primary-700/40 text-primary-700 dark:text-primary-400 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest w-fit">
+          🎁 30 days Free
+        </span>
 
         {/* Billing toggle — animated sliding pill */}
         <div
@@ -130,7 +138,12 @@ export const Pricing = () => {
                 Billed annually · ${ANNUAL_TOTAL} / yr
               </span>
             )}
-            <p className="text-sm text-light mt-1">Cancel anytime.</p>
+            <p className="text-sm text-light mt-1">
+              <span className="font-semibold text-green-600 dark:text-green-400">
+                30-day free trial
+              </span>
+              {" "}· Cancel anytime.
+            </p>
           </div>
 
           {/* CTA */}
