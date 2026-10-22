@@ -26,6 +26,63 @@ async function findUidByEmail(email: string): Promise<string | null> {
   return snap.empty ? null : snap.docs[0].id;
 }
 
+// Prefer the Google account id the extension passed through checkout, since buyers
+// may pay with a different email than their Chrome profile; fall back to email.
+async function findUid(data: Record<string, any>): Promise<string | null> {
+  const userId = data?.metadata?.userId;
+  if (typeof userId === "string" && /^\d{1,32}$/.test(userId)) {
+    const doc = await db.collection("users").doc(userId).get();
+    if (doc.exists) return userId;
+  }
+  const email: string | undefined = data?.customer?.email;
+  return email ? findUidByEmail(email) : null;
+}
+
+// The raw webhook body is snake_case; the camelCase names are kept as a fallback.
+const customerIdOf = (data: Record<string, any>) =>
+  data?.customer_id ?? data?.customerId ?? null;
+const subscriptionTypeOf = (data: Record<string, any>) =>
+  (data?.recurring_interval ?? data?.recurringInterval) === "year"
+    ? "yearly"
+    : "monthly";
+
+// Anyone can pay for any uid, so a purchase must never replace grandfathered access
+// or swap a lifetime plan for a subscription that can later be cancelled.
+async function grantPaid(
+  uid: string,
+  fields: { subscriptionType: string } & Record<string, unknown>,
+): Promise<boolean> {
+  const ref = db.collection("users").doc(uid);
+  const user = (await ref.get()).data() ?? {};
+  if (user.subscriptionPlan === "grandfathered") return false;
+  if (user.subscriptionType === "lifetime" && fields.subscriptionType !== "lifetime")
+    return false;
+  await ref.update({
+    ...fields,
+    subscriptionPlan: "paid",
+    subscriptionUpdatedAt: FieldValue.serverTimestamp(),
+  });
+  return true;
+}
+
+// Only the purchase that granted access may take it away.
+async function downgrade(
+  uid: string,
+  matches: (user: Record<string, any>) => boolean,
+): Promise<boolean> {
+  const ref = db.collection("users").doc(uid);
+  const user = (await ref.get()).data() ?? {};
+  if (user.subscriptionPlan !== "paid" || !matches(user)) return false;
+  await ref.update({
+    subscriptionPlan: "free",
+    subscriptionType: FieldValue.delete(),
+    polarSubscriptionId: FieldValue.delete(),
+    polarOrderId: FieldValue.delete(),
+    subscriptionUpdatedAt: FieldValue.serverTimestamp(),
+  });
+  return true;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -69,111 +126,111 @@ export default async function handler(
       case "order.paid": {
         const email: string | undefined = event.data?.customer?.email;
         const metadata = event.data?.metadata ?? {};
-        if (!email) break;
+        const subscriptionType =
+          metadata.plan === "lifetime" ? "lifetime" : "subscription";
 
-        const uid = await findUidByEmail(email);
+        const uid = await findUid(event.data);
         if (!uid) {
+          if (!email) break;
           // User hasn't signed up yet — store pending so extension can pick it up
           await db
             .collection("pendingSubscriptions")
             .doc(email)
             .set({
               subscriptionPlan: "paid",
-              subscriptionType:
-                metadata.plan === "lifetime" ? "lifetime" : "subscription",
-              polarCustomerId: event.data?.customerId ?? null,
+              subscriptionType,
+              polarCustomerId: customerIdOf(event.data),
               polarOrderId: event.data?.id ?? null,
               updatedAt: FieldValue.serverTimestamp(),
             });
           break;
         }
 
-        await db
-          .collection("users")
-          .doc(uid)
-          .update({
-            subscriptionPlan: "paid",
-            subscriptionType:
-              metadata.plan === "lifetime" ? "lifetime" : "subscription",
-            polarCustomerId: event.data?.customerId ?? null,
-            polarOrderId: event.data?.id ?? null,
-            subscriptionUpdatedAt: FieldValue.serverTimestamp(),
-          });
-        console.log(`[polar-webhook] order.paid → user ${uid} is now paid`);
+        const granted = await grantPaid(uid, {
+          subscriptionType,
+          polarCustomerId: customerIdOf(event.data),
+          polarOrderId: event.data?.id ?? null,
+        });
+        console.log(
+          `[polar-webhook] order.paid → user ${uid} ${granted ? "is now paid" : "kept existing access"}`,
+        );
         break;
       }
 
       case "subscription.active": {
         const email: string | undefined = event.data?.customer?.email;
-        if (!email) break;
+        const subscriptionType = subscriptionTypeOf(event.data);
 
-        const interval = event.data?.recurringInterval; // 'month' | 'year'
-        const subscriptionType = interval === "year" ? "yearly" : "monthly";
-
-        const uid = await findUidByEmail(email);
+        const uid = await findUid(event.data);
         if (!uid) {
+          if (!email) break;
           await db
             .collection("pendingSubscriptions")
             .doc(email)
             .set({
               subscriptionPlan: "paid",
               subscriptionType,
-              polarCustomerId: event.data?.customerId ?? null,
+              polarCustomerId: customerIdOf(event.data),
               polarSubscriptionId: event.data?.id ?? null,
               updatedAt: FieldValue.serverTimestamp(),
             });
           break;
         }
 
-        await db
-          .collection("users")
-          .doc(uid)
-          .update({
-            subscriptionPlan: "paid",
-            subscriptionType,
-            polarCustomerId: event.data?.customerId ?? null,
-            polarSubscriptionId: event.data?.id ?? null,
-            subscriptionUpdatedAt: FieldValue.serverTimestamp(),
-          });
-        console.log(`[polar-webhook] subscription.active (${subscriptionType}) → user ${uid}`);
+        const granted = await grantPaid(uid, {
+          subscriptionType,
+          polarCustomerId: customerIdOf(event.data),
+          polarSubscriptionId: event.data?.id ?? null,
+        });
+        console.log(
+          `[polar-webhook] subscription.active (${subscriptionType}) → user ${uid} ${granted ? "is now paid" : "kept existing access"}`,
+        );
         break;
       }
 
       case "subscription.revoked": {
-        const email: string | undefined = event.data?.customer?.email;
-        if (!email) break;
-
-        const uid = await findUidByEmail(email);
+        const uid = await findUid(event.data);
         if (!uid) break;
 
-        await db.collection("users").doc(uid).update({
-          subscriptionPlan: "free",
-          subscriptionType: FieldValue.delete(),
-          polarSubscriptionId: FieldValue.delete(),
-          subscriptionUpdatedAt: FieldValue.serverTimestamp(),
-        });
+        const downgraded = await downgrade(
+          uid,
+          (user) =>
+            user.subscriptionType !== "lifetime" &&
+            user.polarSubscriptionId === event.data?.id,
+        );
         console.log(
-          `[polar-webhook] subscription.revoked → user ${uid} downgraded`,
+          `[polar-webhook] subscription.revoked → user ${uid} ${downgraded ? "downgraded" : "unchanged (not their active subscription)"}`,
         );
         break;
       }
 
       case "subscription.updated": {
-        const email: string | undefined = event.data?.customer?.email;
-        if (!email || event.data?.status !== "active") break;
+        if (event.data?.status !== "active") break;
 
-        const interval = event.data?.recurringInterval;
-        const subscriptionType = interval === "year" ? "yearly" : "monthly";
+        const subscriptionType = subscriptionTypeOf(event.data);
 
-        const uid = await findUidByEmail(email);
+        const uid = await findUid(event.data);
         if (!uid) break;
 
-        await db.collection("users").doc(uid).update({
-          subscriptionPlan: "paid",
-          subscriptionType,
-          subscriptionUpdatedAt: FieldValue.serverTimestamp(),
-        });
+        await grantPaid(uid, { subscriptionType });
         console.log(`[polar-webhook] subscription.updated (${subscriptionType}) → user ${uid}`);
+        break;
+      }
+
+      // Subscription refunds end with subscription.revoked; this covers one-time lifetime orders.
+      case "order.refunded": {
+        const uid = await findUid(event.data);
+        if (!uid) break;
+
+        const downgraded = await downgrade(
+          uid,
+          (user) =>
+            user.subscriptionType === "lifetime" &&
+            user.polarOrderId === event.data?.id,
+        );
+        console.log(
+          `[polar-webhook] order.refunded → user ${uid} ${downgraded ? "downgraded" : "unchanged"}`,
+        );
         break;
       }
 
