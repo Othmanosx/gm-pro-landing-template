@@ -14,6 +14,11 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const plan = req.query.plan as Plan;
+  // Google account ids are numeric; anything else is dropped rather than used as a doc id.
+  const userId =
+    typeof req.query.uid === "string" && /^\d{1,32}$/.test(req.query.uid)
+      ? req.query.uid
+      : undefined;
 
   if (!PRODUCT_IDS[plan]) {
     res.status(400).json({ error: "Invalid plan" });
@@ -31,9 +36,11 @@ export default async function handler(
     const checkout = await polar.checkouts.create({
       products: [PRODUCT_IDS[plan]],
       successUrl: `${process.env.NEXT_PUBLIC_BASE_URL || "https://gm-pro.online"}/success`,
+      // Polar copies checkout metadata onto the resulting order and subscription.
       metadata: {
         subscriptionType: plan === "lifetime" ? "lifetime" : "subscription",
         plan,
+        ...(userId && { userId }),
       },
     });
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { Details } from "../components/Details";
 import { GradientText } from "../components/GradientText";
@@ -42,6 +43,10 @@ const CheckIcon = ({ gradient }: { gradient?: boolean }) => (
 
 export const Pricing = () => {
   const [annual, setAnnual] = useState(true);
+  // The extension links here with ?uid=<Google account id> so the webhook can find the buyer's record.
+  const { query } = useRouter();
+  const checkoutHref = (plan: "monthly" | "yearly" | "lifetime") =>
+    `/api/polar-checkout?plan=${plan}${typeof query.uid === "string" ? `&uid=${encodeURIComponent(query.uid)}` : ""}`;
 
   const currentPrice = annual ? ANNUAL_PRICE_PER_MONTH : MONTHLY_PRICE;
 
@@ -148,11 +153,7 @@ export const Pricing = () => {
 
           {/* CTA */}
           <a
-            href={
-              annual
-                ? "/api/polar-checkout?plan=yearly"
-                : "/api/polar-checkout?plan=monthly"
-            }
+            href={checkoutHref(annual ? "yearly" : "monthly")}
             className="w-full py-3 px-6 rounded-xl border-2 border-primary-600 text-primary-600 font-bold text-center text-sm hover:bg-primary-600 hover:text-white transition-all duration-200"
           >
             Start Pro Plan
@@ -227,7 +228,7 @@ export const Pricing = () => {
 
             {/* CTA */}
             <a
-              href="/api/polar-checkout?plan=lifetime"
+              href={checkoutHref("lifetime")}
               className="w-full py-3 px-6 rounded-xl font-bold text-center text-sm text-white hover:opacity-90 transition-opacity duration-200"
               style={{
                 background: "linear-gradient(135deg, #32D873 0%, #138E94 100%)",

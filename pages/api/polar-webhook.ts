@@ -26,6 +26,18 @@ async function findUidByEmail(email: string): Promise<string | null> {
   return snap.empty ? null : snap.docs[0].id;
 }
 
+// Prefer the Google account id the extension passed through checkout, since buyers
+// may pay with a different email than their Chrome profile; fall back to email.
+async function findUid(data: Record<string, any>): Promise<string | null> {
+  const userId = data?.metadata?.userId;
+  if (typeof userId === "string" && /^\d{1,32}$/.test(userId)) {
+    const doc = await db.collection("users").doc(userId).get();
+    if (doc.exists) return userId;
+  }
+  const email: string | undefined = data?.customer?.email;
+  return email ? findUidByEmail(email) : null;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -69,10 +81,10 @@ export default async function handler(
       case "order.paid": {
         const email: string | undefined = event.data?.customer?.email;
         const metadata = event.data?.metadata ?? {};
-        if (!email) break;
 
-        const uid = await findUidByEmail(email);
+        const uid = await findUid(event.data);
         if (!uid) {
+          if (!email) break;
           // User hasn't signed up yet — store pending so extension can pick it up
           await db
             .collection("pendingSubscriptions")
@@ -105,13 +117,13 @@ export default async function handler(
 
       case "subscription.active": {
         const email: string | undefined = event.data?.customer?.email;
-        if (!email) break;
 
         const interval = event.data?.recurringInterval; // 'month' | 'year'
         const subscriptionType = interval === "year" ? "yearly" : "monthly";
 
-        const uid = await findUidByEmail(email);
+        const uid = await findUid(event.data);
         if (!uid) {
+          if (!email) break;
           await db
             .collection("pendingSubscriptions")
             .doc(email)
@@ -140,10 +152,7 @@ export default async function handler(
       }
 
       case "subscription.revoked": {
-        const email: string | undefined = event.data?.customer?.email;
-        if (!email) break;
-
-        const uid = await findUidByEmail(email);
+        const uid = await findUid(event.data);
         if (!uid) break;
 
         await db.collection("users").doc(uid).update({
@@ -159,13 +168,12 @@ export default async function handler(
       }
 
       case "subscription.updated": {
-        const email: string | undefined = event.data?.customer?.email;
-        if (!email || event.data?.status !== "active") break;
+        if (event.data?.status !== "active") break;
 
         const interval = event.data?.recurringInterval;
         const subscriptionType = interval === "year" ? "yearly" : "monthly";
 
-        const uid = await findUidByEmail(email);
+        const uid = await findUid(event.data);
         if (!uid) break;
 
         await db.collection("users").doc(uid).update({
