@@ -2,16 +2,32 @@ import type { ReactElement, ReactNode } from "react";
 
 import type { PostMeta } from "./site";
 
-import * as continuousChat from "./content/google-meet-continuous-chat";
-import * as meetChatDisappears from "./content/google-meet-chat-disappears";
-import * as saveMeetChat from "./content/save-google-meet-chat";
+import * as betterChatVsMeetPlus from "./content/better-chat-vs-meet-plus";
+import * as googleMeetAutoJoin from "./content/google-meet-auto-join";
+import * as googleMeetCaptionHistory from "./content/google-meet-caption-history";
+import * as googleMeetChatDisappears from "./content/google-meet-chat-disappears";
+import * as googleMeetContinuousChat from "./content/google-meet-continuous-chat";
+import * as googleMeetEnhancementSuiteAlternatives from "./content/google-meet-enhancement-suite-alternatives";
+import * as googleMeetJoinMuted from "./content/google-meet-join-muted";
+import * as googleMeetLobbyNotification from "./content/google-meet-lobby-notification";
+import * as googleMeetPersonalAccount from "./content/google-meet-personal-account";
+import * as googleMeetReactions from "./content/google-meet-reactions";
+import * as googleMeetShareFiles from "./content/google-meet-share-files";
+import * as googleMeetTranscriptPlans from "./content/google-meet-transcript-plans";
+import * as recurringMeetingChatHistory from "./content/recurring-meeting-chat-history";
+import * as saveGoogleMeetChat from "./content/save-google-meet-chat";
+import * as shuffleStandupOrderGoogleMeet from "./content/shuffle-standup-order-google-meet";
+import * as tactiqVsBetterChat from "./content/tactiq-vs-better-chat";
+import * as tutoringOnGoogleMeet from "./content/tutoring-on-google-meet";
 
 export type Post = {
   meta: PostMeta;
   Body: () => ReactElement<{ children?: ReactNode }>;
 };
 
-const ALL: Post[] = [meetChatDisappears, saveMeetChat, continuousChat].map((m) => ({
+const ALL: Post[] = [
+  betterChatVsMeetPlus, googleMeetAutoJoin, googleMeetCaptionHistory, googleMeetChatDisappears, googleMeetContinuousChat, googleMeetEnhancementSuiteAlternatives, googleMeetJoinMuted, googleMeetLobbyNotification, googleMeetPersonalAccount, googleMeetReactions, googleMeetShareFiles, googleMeetTranscriptPlans, recurringMeetingChatHistory, saveGoogleMeetChat, shuffleStandupOrderGoogleMeet, tactiqVsBetterChat, tutoringOnGoogleMeet,
+].map((m) => ({
   meta: m.meta,
   Body: m.default,
 }));

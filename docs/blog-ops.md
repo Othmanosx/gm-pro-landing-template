@@ -38,7 +38,11 @@ Primary sources opened on that date. Re-check before reusing.
 - Classic Meet chat clears when you leave, late joiners see nothing earlier, recording saves an .SBV chat log: [support.google.com/meet/answer/9308979](https://support.google.com/meet/answer/9308979?hl=en), [9308681](https://support.google.com/meet/answer/9308681?hl=en).
 - Continuous meeting chat: announced Nov 3 2025, Rapid Release Dec 8 2025, Scheduled Release Mar 23 2026; Business, Enterprise, Enterprise Essentials, Frontline only; not instant meetings, waiting rooms, breakout rooms, live streams, huddles, CSE, events without a Meet ID; external guests only see chat while present; no .SBV with recordings ([announcement](https://workspaceupdates.googleblog.com/2025/11/continue-conversations-google-chat-google-meet.html)).
 - Meetings section in Google Chat, Mar 20 2026, opt-in ([post](https://workspaceupdates.googleblog.com/2026/03/introducing-new-meetings-section-in-Google-Chat.html)). Meeting recaps in Chat, Oct 19 2026 ([post](https://workspaceupdates.googleblog.com/2026/10/follow-through-on-your-meeting-tasks-with-meeting-recaps-in-Google-Chat.html)).
-- Caption history: 30-minute scrollback for everyone since Feb 2025 ([post](https://workspaceupdates.googleblog.com/2025/02/google-meet-caption-history.html)). Transcripts exclude chat ([12849897](https://support.google.com/meet/answer/12849897?hl=en)).
+- Caption history: 30-minute scrollback for everyone, rolling out from Feb 18 2025 ([post](https://workspaceupdates.googleblog.com/2025/02/google-meet-caption-history.html)). Transcripts exclude chat and work on computer, laptop or Android ([12849897](https://support.google.com/meet/answer/12849897?hl=en)).
+- Recurring Calendar events get a separate Meeting Conversation per occurrence, named event + date ([9308979](https://support.google.com/meet/answer/9308979?hl=en)). No Google page says whether a recurring series reuses one Meet link; posts tell readers to check their invite.
+- Meeting codes from the Meet homepage or Gmail expire 365 days after last use; Calendar codes after 60 days unused with no future events ([10710509](https://support.google.com/meet/answer/10710509)).
+- Personal accounts without a Meet subscription: 1:1 up to 24 h, 3+ participants up to 60 min (chime at 50), max 100 participants ([7317473](https://support.google.com/meet/answer/7317473?hl=en)).
+- Mute shortcut Ctrl/Command + d ([15738543](https://support.google.com/meet/answer/15738543?hl=en)).
 - Join chime only for the first 5 participants ([9303069](https://support.google.com/meet/answer/9303069?hl=en)).
 - Competitor store data and pricing (Enhancement Suite $5/mo or $60/yr, 7-day trial; Tactiq Pro $8/user/mo annual; Meet Plus pricing not published) as of 2026-10-25.
 - HN threads used: 43440772 (Othman's own 2025 Show HN), 42322595, 24195130, 45188825, 28057969, 41615584.
@@ -52,6 +56,12 @@ Primary sources opened on that date. Re-check before reusing.
 - Whether a knock request plays a sound. Not documented.
 - "Transcriptions: 24-hour persistence" (from the 2025 Show HN). Current code keeps captions in the browser's IndexedDB per meeting code with no 24-hour rule.
 - Better Chat exporting chat. It doesn't; only captions download.
+- Meet transcripts are "computer only". The help page says computer, laptop or Android.
+- "Google improved caption history after the 2025 Show HN." It rolled out Feb to Mar 2025, around the same time.
+- Enhancement Suite chimes on join/leave/new message in its free tier. The vendor lists entry/join chimes as Pro; the store's Basic list says only "Always Play Chimes". Its listing never says "free": say "Basic tier".
+- Meet Plus default mic/camera state, and whether its message history survives a reload. Neither is on its listing or site.
+- Meet Plus trial length: listing says 3 and 5 days, site says 3. State both.
+- A Google page saying recurring Calendar events always share one Meet link. Not found.
 
 ## Decisions
 
@@ -65,9 +75,10 @@ Primary sources opened on that date. Re-check before reusing.
 1. Approve or edit `MARKETING.md`, especially the canonical riffs.
 2. Your origin story for the manifesto post (why you built it, the meeting where it broke). Not written, since I won't invent it.
 3. Landing page says "All in one free extension" in the hero while the product is paid with a trial. Change the hero?
-4. Capture real light and dark screenshots of the chat panel at 2x for posts.
+4. Capture real light and dark screenshots of the chat panel at 2x for posts. Three posts (save chat, reactions, two comparisons) reuse the store composite meanwhile.
+6. Confirm the lobby notifier description: posts say it "plays a sound when someone is waiting to join" (it watches Meet's lobby status element).
 5. Create the deploy hook and dev.to account, add both secrets.
 
 ## Fact audit log
 
-- 2026-10-25: initial sources gathered. Next audit: 2026-11-25.
+- 2026-10-25: initial sources gathered; wave 1 (17 posts, Oct 28 to Dec 1) written against them, competitor listings re-checked that day. Next audit: 2026-11-25 (re-fetch Enhancement Suite, Meet Plus, Tactiq and Shuffler listings and pricing before then).

@@ -12,19 +12,19 @@ Before adding a row: no title may share 60%+ of its content words with an existi
 | 2026-10-30 | save-google-meet-chat | How to Save Google Meet Chat After the Meeting Ends | save google meet chat | [x] written |
 | 2026-11-01 | google-meet-continuous-chat | Google Meet Continuous Chat: Who Gets It and Who Doesn't | continuous meeting chat | [x] written |
 | 2026-11-03 | why-i-built-better-chat | Why I Built a Second Chat for Google Meet (manifesto) | google meet chat extension | [ ] blocked: needs Othman's origin story |
-| 2026-11-05 | google-meet-caption-history | Google Meet Caption History: the 30-Minute Scrollback | google meet caption history | [ ] |
-| 2026-11-07 | google-meet-transcript-plans | Which Workspace Plans Save Google Meet Transcripts? | google meet transcript | [ ] |
-| 2026-11-09 | tutoring-on-google-meet | Running Recurring Tutoring Lessons on Google Meet | google meet tutoring | [ ] persona post |
-| 2026-11-11 | google-meet-join-muted | How to Join Google Meet Muted With Your Camera Off | google meet join muted | [ ] native setting is only "absent", say so |
-| 2026-11-13 | google-meet-reactions | Meet Emoji Reactions vs Reacting to a Chat Message | google meet reactions | [ ] |
-| 2026-11-15 | recurring-meeting-chat-history | Keeping One Chat Across a Weekly Google Meet | recurring google meet chat | [ ] verify whether a recurring Calendar series shares one Chat conversation |
-| 2026-11-17 | google-meet-enhancement-suite-alternatives | Google Meet Enhancement Suite Alternatives | google meet enhancement suite alternative | [ ] comparison, re-fetch pricing |
-| 2026-11-19 | better-chat-vs-meet-plus | Better Chat vs Meet Plus for Google Meet | meet plus alternative | [ ] comparison, Meet Plus pricing unverified |
-| 2026-11-21 | tactiq-vs-better-chat | Tactiq vs Better Chat: Notetaker or Chat Upgrade? | tactiq alternative | [ ] comparison |
-| 2026-11-23 | google-meet-personal-account | Google Meet on a Personal Gmail Account in 2026 | google meet personal account | [ ] |
-| 2026-11-25 | shuffle-standup-order-google-meet | Shuffle Your Standup Speaking Order in Google Meet | google meet shuffle participants | [ ] |
-| 2026-11-27 | google-meet-share-files | Sharing Images, GIFs and Files During a Google Meet Call | google meet share files in chat | [ ] |
-| 2026-11-29 | google-meet-lobby-notification | Get Notified When Someone Asks to Join Your Meet | google meet knock notification | [ ] knock sound unverified |
-| 2026-12-01 | google-meet-auto-join | Auto-Join Scheduled Google Meet Calls | google meet auto join | [ ] |
+| 2026-11-05 | google-meet-caption-history | Google Meet Caption History: What It Keeps and Loses | google meet caption history | [x] written |
+| 2026-11-07 | google-meet-transcript-plans | Google Meet Transcript: Which Plans Save One to Drive | google meet transcript | [x] written |
+| 2026-11-09 | tutoring-on-google-meet | Google Meet Tutoring: A Setup for Recurring Lessons | google meet tutoring | [x] written |
+| 2026-11-11 | google-meet-join-muted | Google Meet Join Muted: Mic and Camera Off on Join | google meet join muted | [x] written |
+| 2026-11-13 | google-meet-reactions | Google Meet Reactions: Video Tiles, Emoji and Chat | google meet reactions | [x] written |
+| 2026-11-15 | recurring-meeting-chat-history | Recurring Google Meet Chat: Keep It Week to Week | recurring google meet chat | [x] written |
+| 2026-11-17 | google-meet-enhancement-suite-alternatives | Google Meet Enhancement Suite Alternatives Compared | google meet enhancement suite alternative | [x] written |
+| 2026-11-19 | better-chat-vs-meet-plus | Meet Plus Alternative: Better Chat vs Meet Plus Compared | meet plus alternative | [x] written |
+| 2026-11-21 | tactiq-vs-better-chat | Tactiq Alternative? Transcripts vs a Meet Chat Upgrade | tactiq alternative | [x] written |
+| 2026-11-23 | google-meet-personal-account | Google Meet Personal Account: What You Get in 2026 | google meet personal account | [x] written |
+| 2026-11-25 | shuffle-standup-order-google-meet | Google Meet Shuffle: Random Standup Speaking Order | google meet shuffle participants | [x] written |
+| 2026-11-27 | google-meet-share-files | How to Share Files in Google Meet Chat | google meet share files in chat | [x] written |
+| 2026-11-29 | google-meet-lobby-notification | Google Meet Knock Notification: Hear Who's Waiting | google meet knock notification | [x] written |
+| 2026-12-01 | google-meet-auto-join | Google Meet Auto Join: Join Scheduled Calls on Time | google meet auto join | [x] written |
 
 After wave 1: stop authoring and let Search Console pick the next moves (striking-distance queries, `docs/blog-ops.md`).
