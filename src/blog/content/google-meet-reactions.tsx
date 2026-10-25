@@ -41,8 +41,8 @@ export default function Body() {
   return (
     <>
       <p>
-        &quot;No way to react or reply properly&quot; was one of the three Meet problems I listed
-        when I launched my extension on{" "}
+        &quot;There&apos;s no way to react or reply properly&quot; was one of the three Meet problems
+        I listed when I posted my extension on{" "}
         <A href="https://news.ycombinator.com/item?id=43440772">Hacker News in March 2025</A>. Since
         then Google has added more reactions, but &quot;Google Meet reactions&quot; now means three
         different features with three different plan lists, and it&apos;s easy to look for the

@@ -40,11 +40,11 @@ export default function Body() {
   return (
     <>
       <p>
-        When I posted the first version of my Google Meet extension on{" "}
+        When I posted my Google Meet extension on{" "}
         <A href="https://news.ycombinator.com/item?id=43440772">Hacker News in March 2025</A>,
-        the first problem I listed was that Meet chat messages vanish when you reload. A year and a
-        half later people still ask me why their chat is gone, and the answer got more complicated,
-        because Google fixed it for some accounts and not for others.
+        the first problem I listed was that Meet chat messages vanish when you reload. Since then
+        Google fixed it for some accounts and not for others, so the answer to where your chat went
+        got more complicated.
       </p>
 
       <Takeaway>
@@ -73,11 +73,11 @@ export default function Body() {
       <h2>Why can&apos;t late joiners see earlier messages?</h2>
       <p>
         Same reason. The classic chat shows you what was sent while you were present, so the person
-        who joins ten minutes late sees nothing from the first ten minutes. In practice this is the
-        part that annoys people most: someone pastes the doc link at the start, a late joiner asks
-        for it, and the link gets pasted again. An{" "}
-        <A href="https://news.ycombinator.com/item?id=42322595">HN commenter</A> put it plainly:
-        when they joined late, none of the earlier chat messages were available in the UI.
+        who joins ten minutes late sees nothing from the first ten minutes. In practice it goes like
+        this: someone pastes the doc link at the start, a late joiner asks for it, and the link gets
+        pasted again. An <A href="https://news.ycombinator.com/item?id=42322595">HN commenter</A>{" "}
+        wrote that when they joined late, none of the previous audio or chat messages were
+        available.
       </p>
 
       <h2>Which accounts keep Meet chat after the call?</h2>
@@ -121,7 +121,7 @@ export default function Body() {
       </p>
 
       <h2>How do you keep the chat if your plan doesn&apos;t?</h2>
-      <p>You have three real options, and none of them is perfect:</p>
+      <p>You have three options:</p>
       <ol>
         <li>
           <strong>Record the meeting.</strong> If your account can record, the chat is saved as an
@@ -130,14 +130,14 @@ export default function Body() {
           Free personal accounts can&apos;t record unless they have a qualifying Google One plan.
         </li>
         <li>
-          <strong>Copy it out before you leave.</strong> Free and reliable, as long as you remember,
-          and you never remember on the call where it mattered.
+          <strong>Copy it out before you leave.</strong> Free and reliable, as long as you remember.
         </li>
         <li>
           <strong>Use an extension that stores the chat.</strong> This is what I build (I make
-          Better Chat, a Chrome extension for this). It keeps chat history per meeting link, so a
-          reload or a late join shows everything sent so far, and a recurring meeting on the same
-          link keeps its chat. The catch you should know about: the extra chat is only visible to
+          Better Chat, a Chrome extension for this). It keeps the last 22 hours of chat for each
+          meeting link, so a reload or a late join shows everything sent so far in that meeting. It
+          doesn&apos;t carry chat over to the next day&apos;s or next week&apos;s call. The catch you
+          should know about: the extra chat is only visible to
           people in the call who also have Better Chat. Everyone else sees each message in
           Meet&apos;s own chat as plain text, with the same disappearing behaviour.
         </li>

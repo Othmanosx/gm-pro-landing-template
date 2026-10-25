@@ -125,7 +125,7 @@ export default function Body() {
             </A>
           </strong>{" "}
           (400,000 users, 4.4 from 132, updated April 17, 2026) runs breakout rooms, and the listing
-          says &quot;Only the teacher needs to install.&quot; For teachers who split a class into
+          says &quot;Only the teacher needs to install this extension.&quot; For teachers who split a class into
           groups.
         </li>
       </ul>
@@ -173,13 +173,13 @@ export default function Body() {
         </li>
         <li>
           <strong>Better Chat</strong> (137 users, 5.0 from 3 ratings, updated October 25, 2026) is
-          mine. It keeps chat history per meeting link, so a reload, a late join or next week&apos;s
-          call on the same link shows what was already sent, and adds replies, reactions, file
-          sharing and a captions tab. The extra chat is only visible to other Better Chat users in
+          mine. It keeps the last 22 hours of chat per meeting link, so a reload or a late join
+          shows what was already sent in that meeting, and adds replies, reactions, file sharing and
+          a captions tab. The extra chat is only visible to other Better Chat users in
           the call; everyone else sees each message in Meet&apos;s own chat as plain text. It&apos;s
           $9.99 a month, $7.99 billed annually or $149 lifetime, after a 30-day free trial. Three
-          ratings tell you very little. For recurring meetings and lessons where the chat should
-          carry over.
+          ratings tell you very little. For calls where people reload or join late and need what
+          was already said.
         </li>
       </ul>
       <p>
@@ -215,9 +215,15 @@ export default function Body() {
         says ratings now weight recent reviews more heavily, which helps.
       </p>
       <p>
-        Then look at the last updated date next to a low rating. Meet Attendance shows 500,000 users
-        but a 2.3 rating and a last update in February 2023. Grid View for Google Meet shows 3.5 and
-        March 2022. Neither number proves anything is broken, since an extension that edits
+        Then look at the last updated date next to a low rating.{" "}
+        <A href="https://chromewebstore.google.com/detail/nenibigflkdikhamlnekfppbganmojlg">
+          Meet Attendance
+        </A>{" "}
+        shows 500,000 users but a 2.3 rating and a last update in February 2023.{" "}
+        <A href="https://chromewebstore.google.com/detail/mgbmfbimbcffegjaagiolbjpfbepjogk">
+          Grid View for Google Meet
+        </A>{" "}
+        shows 3.5 and March 2022. Neither number proves anything is broken, since an extension that edits
         Meet&apos;s page only keeps working while it matches how that page is built, but I&apos;d read
         the recent reviews first.
       </p>
@@ -225,7 +231,7 @@ export default function Body() {
         Don&apos;t lean on badges. The same Google post says the Featured badge program is being
         sunset later this year and self-nominations are closed, so plenty of good extensions will
         never carry one. Listings now show &quot;The publisher has a good record with no history of
-        violations&quot; where an Established publisher badge used to be.
+        violations&quot; in the publisher section.
       </p>
 
       <Faq items={meta.faq} />

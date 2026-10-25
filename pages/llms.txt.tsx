@@ -16,9 +16,10 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     `# Better Chat
 
 > Better Chat is a Chrome extension that adds a second chat layer to Google Meet:
-> chat history kept per meeting link (late joiners see earlier messages), emoji
-> reactions, replies, image, GIF and file sharing, dark mode, auto-mute and
-> camera-off on join, auto-join, a captions scrollback tab, and a lobby chime.
+> the last 22 hours of chat kept per meeting link (reloads and late joiners see
+> earlier messages from that meeting), emoji reactions, replies, image, GIF and
+> file sharing, dark mode, auto-mute and camera-off on join, auto-join, a captions
+> scrollback tab, and a chime for when someone joins while you wait to enter.
 > The extra chat is visible to other Better Chat users in the same call; messages
 > are also posted to Meet's own chat as plain text. Paid, with a free trial of
 > 30 days or 30 meetings, whichever comes first. Built by one person.

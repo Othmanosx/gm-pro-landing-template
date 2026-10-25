@@ -50,9 +50,9 @@ export default function Body() {
         Continuous meeting chat moves Google Meet&apos;s in-call messages into a Google Chat
         conversation that survives the call. It&apos;s on by default for meetings scheduled in
         Google Calendar on Business, Enterprise, Enterprise Essentials and Frontline plans, for
-        invitees inside the host&apos;s organization. Personal accounts, Education plans, instant
-        meetings, meetings with waiting rooms or breakout rooms, and external guests don&apos;t get
-        it.
+        invitees inside the host&apos;s organization. Personal accounts and Education plans
+        aren&apos;t on Google&apos;s list, and instant meetings, meetings with waiting rooms or
+        breakout rooms, and external guests don&apos;t get it.
       </Takeaway>
 
       <h2>What is continuous meeting chat?</h2>
@@ -155,8 +155,10 @@ export default function Body() {
       <h2>What if you don&apos;t have continuous meeting chat?</h2>
       <p>
         Then you&apos;re in the group I build for (I make Better Chat, a Chrome extension that keeps
-        Meet chat per meeting link). It works on any account, including personal Gmail, and on
-        instant meetings, because it stores the chat itself instead of relying on Google Chat. It
+        the last 22 hours of Meet chat per meeting link, so a reload or a late join shows what was
+        sent so far). It works on any account, including personal Gmail, and on instant meetings,
+        because it stores the chat itself instead of relying on Google Chat. It doesn&apos;t keep
+        chat from one week&apos;s meeting to the next, which continuous chat does. It
         only shows its chat to people in the call who also run it; everyone else sees the messages
         in Meet&apos;s own chat as plain text.
       </p>

@@ -57,11 +57,11 @@ Primary sources opened on that date. Re-check before reusing.
 - Meet auto-mutes the sixth person to join. Third-party only.
 - Native replies/threads in Meet's call chat. Not documented.
 - Whether a knock request plays a sound. Not documented.
-- "Transcriptions: 24-hour persistence" (from the 2025 Show HN). Current code keeps captions in the browser's IndexedDB per meeting code with no 24-hour rule.
+- "Transcriptions: 24-hour persistence" (from the 2025 Show HN). Current code keeps captions in the browser's IndexedDB per meeting code and resets them after 22 hours, so the number is 22, not 24.
 - Better Chat exporting chat. It doesn't; only captions download.
 - Meet transcripts are "computer only". The help page says computer, laptop or Android.
 - "Google improved caption history after the 2025 Show HN." It rolled out Feb to Mar 2025, around the same time.
-- Enhancement Suite chimes on join/leave/new message in its free tier. The vendor lists entry/join chimes as Pro; the store's Basic list says only "Always Play Chimes". Its listing never says "free": say "Basic tier".
+- Enhancement Suite chimes on join/leave/new message in its free tier. The store listing puts "Always Play Chimes" (join, leave and new-message chimes) under Basic, but the vendor's pricing page lists entry/join chimes as Pro: state both. Its listing never says "free": say "Basic tier".
 - Meet Plus default mic/camera state, and whether its message history survives a reload. Neither is on its listing or site.
 - Meet Plus trial length: listing says 3 and 5 days, site says 3. State both.
 - A Google page saying recurring Calendar events always share one Meet link. Not found.
@@ -69,7 +69,10 @@ Primary sources opened on that date. Re-check before reusing.
 - A Google label for notetaker bots. "With potential risks" is Fireflies' wording for the review queue, not Google's.
 - An admin setting aimed specifically at third-party notetaker bots. Not found.
 - "Extensions are invisible to other participants." Reasoning only, and Better Chat posts into Meet's chat anyway.
-- Meet add-ons on iOS. Not documented.
+- "Meet add-ons on iOS aren't documented." False: the iPhone & iPad tab of support.google.com/meet/answer/13961388 has steps for joining an activity; non-hosts on mobile can't start one.
+- Better Chat keeps chat across days or weeks. False: chat display and stored captions reset after 22 hours (gm-pro ChatMessages.tsx). Verify product claims against gm-pro origin/master, not the local checkout, which can lag.
+- Lobby notifier alerts hosts to knock requests. False: it plays a sound for someone waiting on the pre-join screen when another person joins.
+- Shuffler reposts when someone leaves. False: only on join.
 
 ## Decisions
 
@@ -90,10 +93,9 @@ Primary sources opened on that date. Re-check before reusing.
 3. Landing page says "All in one free extension" in the hero while the product is paid with a trial. Change the hero?
 4. Capture real light and dark screenshots of the chat panel at 2x for posts. Three posts (save chat, reactions, two comparisons) reuse the store composite meanwhile.
 5. Create the deploy hook and dev.to account, add both secrets.
-6. Confirm the lobby notifier description: posts say it "plays a sound when someone is waiting to join" (it watches Meet's lobby status element).
-7. Better Chat's manifest (`gm-pro/manifest.js`) still matches `https://*.example.com/*` in content_scripts, boilerplate from the template. The store install prompt likely names it. Remove it in the next release; the safety post deliberately doesn't describe Better Chat's prompt.
-8. The auto-join "Are you still there?" handling matches English text (`'Are you still there?'`, `'Keep waiting'`), so it won't fire in other languages.
-9. Review the two founder posts (Dec 11, Dec 15): they quote your April 30 email to the Marketplace reviewer and describe the review timeline.
+6. Better Chat's manifest (`gm-pro/manifest.js`) still matches `https://*.example.com/*` in content_scripts, boilerplate from the template. The store install prompt likely names it. Remove it in the next release; the safety post deliberately doesn't describe Better Chat's prompt.
+7. The auto-join "Are you still there?" handling matches English text (`'Are you still there?'`, `'Keep waiting'`), so it won't fire in other languages.
+8. Review the two founder posts (Dec 11, Dec 15): they quote your April 30 email to the Marketplace reviewer and describe the review timeline.
 
 ## Fact audit log
 

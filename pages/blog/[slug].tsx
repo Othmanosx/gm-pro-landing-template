@@ -59,7 +59,10 @@ const jsonLd = (meta: PostMeta) => {
       acceptedAnswer: { "@type": "Answer", text: f.a },
     })),
   };
-  return JSON.stringify({ "@context": "https://schema.org", "@graph": [article, faq] });
+  return JSON.stringify({ "@context": "https://schema.org", "@graph": [article, faq] }).replace(
+    /</g,
+    "\\u003c"
+  );
 };
 
 const PostPage = ({

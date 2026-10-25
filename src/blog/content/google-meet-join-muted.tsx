@@ -40,10 +40,10 @@ export default function Body() {
   return (
     <>
       <p>
-        Auto-mute on join is one of the toggles I built into Better Chat, and I build each feature
-        myself, so for this one I read Google&apos;s help pages to see what Meet already does when
-        you want to join muted. The short answer is that you can join muted every single time,
-        as long as you remember to click the button every single time.
+        I make Better Chat (a Chrome extension that adds a chat layer to Google Meet), and auto-mute
+        on join is one of its toggles, so I read Google&apos;s help pages to see what Meet already
+        does when you want to join muted. The short answer is that you can join muted every time,
+        but only by clicking the toggles every time.
       </p>
 
       <Takeaway>
@@ -120,8 +120,8 @@ export default function Body() {
         ]}
       />
       <p>
-        Bias disclosed: I make Better Chat (a Chrome extension that adds a chat layer to Google
-        Meet). Its auto-mute mic and auto camera-off toggles are separate and both off by default.
+        Bias disclosed: Better Chat is mine. Its auto-mute mic and auto camera-off toggles are
+        separate and both off by default.
         When you join, it clicks Meet&apos;s own microphone and camera buttons, the same ones you
         would click, so Meet&apos;s controls always show the real state and you unmute the usual
         way. I&apos;d still glance at the mic icon the first few times you use it, the way you would
@@ -132,7 +132,7 @@ export default function Body() {
         join and Auto Video Off as setting video to off on join, both in its Basic feature list
         rather than the Pro one. If joining muted is the only thing you want, it covers that, and
         it adds push-to-talk in the same tier. Better Chat makes more sense if you also want what
-        it&apos;s built around: chat that keeps its history per meeting link, replies, reactions and
+        it&apos;s built around: chat that survives a reload or a late join, replies, reactions and
         file sharing. That chat is only visible to other people in the call who run Better Chat;
         everyone else sees your messages in Meet&apos;s own chat as plain text.
       </p>

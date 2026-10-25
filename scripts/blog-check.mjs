@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const DIR = "src/blog/content";
-const BANNED_CHARS = /—/; // em dash
+const BANNED_CHARS = /\u2014/; // em dash
 // Keep in sync with "Banned claims" in MARKETING.md.
 const BANNED_CLAIMS =
   /never leaves your (browser|computer)|we never store|end-to-end encrypt|private by default|no data (is )?collected|free extension|100% free|free forever|anonymous|thousands of users|loved by|trusted by|supercharge|seamless|game-changer|revolutioni[sz]e|unleash|effortless|ultimate/i;
@@ -80,7 +80,7 @@ if (process.argv.includes("--links")) {
   // Sequential: news.ycombinator.com rejects parallel requests.
   const results = await urls.reduce(async (acc, url) => {
     const done = await acc;
-    const status = await fetch(url, { headers, redirect: "follow" })
+    const status = await fetch(url, { headers, redirect: "follow", signal: AbortSignal.timeout(15000) })
       .then((r) => r.status)
       .catch((e) => e.message);
     return [...done, { url, status }];

@@ -40,8 +40,9 @@ export default function Body() {
   return (
     <>
       <p>
-        Auto-join is one of the features I built into Better Chat, and I build each one myself, so
-        I checked Google&apos;s help pages for a native version first. I couldn&apos;t find one:
+        Auto-join is one of the features in Better Chat (I make Better Chat, a Chrome extension
+        that adds a chat layer and a few call controls to Google Meet), so I checked Google&apos;s
+        help pages for a native version first. I couldn&apos;t find one:
         Google Meet has no documented auto-join. Here&apos;s how extension auto-join works, using
         mine as the example since I know exactly what it does, and what else is out there.
       </p>
@@ -68,8 +69,7 @@ export default function Body() {
 
       <h2>How does Better Chat&apos;s auto-join work?</h2>
       <p>
-        (I make Better Chat, a Chrome extension that adds a chat layer and a few call controls to
-        Google Meet.) Auto-join is a setting with five options: Off, Immediately, or after 1, 2 or
+        Auto-join is a setting with five options: Off, Immediately, or after 1, 2 or
         5 minutes. With it on, the flow goes like this:
       </p>
       <ol>
@@ -82,7 +82,8 @@ export default function Body() {
         </li>
         <li>
           If Meet asks &quot;Are you still there?&quot; while you wait, it clicks Keep waiting, so the
-          page keeps waiting with you.
+          page keeps waiting with you (this part only works when Meet&apos;s interface is in
+          English).
         </li>
       </ol>
       <p>Two rules worth knowing before you rely on it:</p>
@@ -113,9 +114,9 @@ export default function Body() {
         <A href="/blog/google-meet-join-muted">how to join Google Meet muted</A>.
       </p>
       <p>
-        If you&apos;re the host, it also helps to know when someone is waiting to be let in while
-        you&apos;re away from the tab. Better Chat&apos;s lobby notifier plays a sound for that, and
-        I went through what Meet does natively in{" "}
+        If you open the meeting early and wait on the pre-join screen, Better Chat&apos;s lobby
+        notifier plays a sound when someone else joins. What Meet does natively for join sounds is
+        in{" "}
         <A href="/blog/google-meet-lobby-notification">the Google Meet knock notification post</A>.
       </p>
 
@@ -141,7 +142,7 @@ export default function Body() {
       <p>
         It&apos;s a deliberate choice, so make it per meeting. If you&apos;re the person others
         wait for, use Immediately. If you&apos;re one of twenty in a webinar that always opens with
-        five minutes of housekeeping, a delay is reasonable, and if someone notices, own it.
+        five minutes of housekeeping, a delay is reasonable.
       </p>
       <p>
         Auto-join also pairs well with a meeting that keeps its chat: arriving two minutes late

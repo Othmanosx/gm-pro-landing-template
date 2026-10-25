@@ -40,7 +40,7 @@ export default function Body() {
   return (
     <>
       <p>
-        I make Better Chat, a Chrome extension for Google Meet, so I see this question from the
+        I make Better Chat (a Chrome extension for Google Meet), so I see this question from the
         other side: I write the code that asks Chrome for permissions, and every update I ship waits
         in Chrome Web Store review before it reaches anyone. Whether Google Meet extensions are safe
         depends on which one and what it asks for, so here&apos;s the checklist I&apos;d use as a
@@ -146,13 +146,13 @@ export default function Body() {
 
       <h2>Which store signals still mean something?</h2>
       <p>
-        The publisher line. Google&apos;s{" "}
+        The publisher line. Listings now show &quot;The publisher has a good record with no history
+        of violations&quot; in the publisher section. Google&apos;s{" "}
         <A href="https://developer.chrome.com/blog/cws-review-updates-2026">August 2026 update</A>{" "}
-        says listings now show &quot;The publisher has a good record with no history of
-        violations&quot; instead of an Established publisher badge. The same post says the Featured
-        badge program is being sunset later this year, so its absence will soon mean nothing.
+        says the Featured badge program is being sunset later this year, so its absence will soon
+        mean nothing.
         Developers could never{" "}
-        <A href="https://developer.chrome.com/docs/webstore/discovery">pay for either badge</A>.
+        <A href="https://developer.chrome.com/docs/webstore/discovery">pay for Featured or Established publisher badges</A>.
       </p>
       <p>
         After that, the rating count and the last updated date. Ratings now weight recent reviews.

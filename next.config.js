@@ -1,8 +1,11 @@
+// One value for every process that loads this config during a build.
+process.env.BUILD_TIME ??= new Date().toISOString();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
   // Blog posts go live once a deploy's build time passes their publish date.
-  env: { BUILD_TIME: new Date().toISOString() },
+  env: { BUILD_TIME: process.env.BUILD_TIME },
   i18n: {
     locales: ["en"],
     defaultLocale: "en",

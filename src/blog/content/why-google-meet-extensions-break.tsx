@@ -65,7 +65,7 @@ export default function Body() {
         messages in it. It finds them with selectors, small patterns that describe an element.
       </p>
       <p>
-        Here&apos;s the problem. Meet&apos;s markup isn&apos;t written for anyone outside Google to
+        Meet&apos;s markup isn&apos;t written for anyone outside Google to
         read. Mine looks for things like a chat container with the class{" "}
         <code>beTDc</code> or a button with a <code>jsname</code> of <code>A5il2e</code>. Those
         names are generated, they mean nothing to a human, and there&apos;s no public list of them.
@@ -96,10 +96,6 @@ export default function Body() {
           parse them after a layout change.
         </li>
       </ul>
-      <p>
-        None of these were bugs in the usual sense. The code did what it was written to do. The page
-        it was written for had moved.
-      </p>
 
       <h2>Why can&apos;t the developer just push a fix right away?</h2>
       <p>

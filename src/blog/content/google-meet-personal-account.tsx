@@ -76,7 +76,7 @@ export default function Body() {
 
       <h2>How long can a Google Meet call last on a free account?</h2>
       <p>
-        This is the limit people hit first. Google&apos;s{" "}
+        Google&apos;s{" "}
         <A href="https://support.google.com/meet/answer/7317473?hl=en">meeting limits page</A> says
         that without a subscription, on a computer, a one-on-one call can run up to 24 hours, and a
         call with three or more participants is capped at 60 minutes. At 50 minutes everyone hears a
@@ -111,8 +111,8 @@ export default function Body() {
       <h2>Where does an extension help, and where should you upgrade Google?</h2>
       <p>
         Some of these gaps are things a browser extension can fill, and some only Google can. I make
-        Better Chat (a Chrome extension that adds a chat layer to Google Meet), so here&apos;s my
-        honest split.
+        Better Chat (a Chrome extension that adds a chat layer to Google Meet), so here&apos;s where
+        each one helps.
       </p>
       <p>
         Upgrade Google if the 60-minute cap is what hurts, or you need recordings or
@@ -121,9 +121,9 @@ export default function Body() {
         Google&apos;s lists for both recording and transcripts.
       </p>
       <p>
-        An extension helps with the chat and caption gaps. Better Chat keeps chat
-        history per meeting link, so a reload or a late join shows what was already sent, and a
-        recurring lesson on the same link keeps its chat. It adds replies, emoji reactions on
+        An extension helps with the chat and caption gaps. Better Chat keeps the last 22 hours of
+        chat per meeting link, so a reload or a late join shows what was already sent in that
+        meeting. It doesn&apos;t carry chat over to the next lesson. It adds replies, emoji reactions on
         messages and file sharing, and its captions tab keeps Meet&apos;s captions past the
         30-minute window and downloads them as .txt. The extra chat is only visible to people in the
         call who also run Better Chat; everyone else sees each message in Meet&apos;s chat as plain

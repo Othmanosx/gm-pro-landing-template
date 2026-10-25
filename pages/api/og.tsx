@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 import { publishedPosts } from "../../src/blog/posts";
 import { SITE_URL } from "../../src/blog/site";
 
+// ponytail: the edge bundle carries every post body (~90 KB gzip at 24 posts); split metas out if it nears the 1 MB Hobby limit.
 export const config = { runtime: "edge" };
 
 /** Satori has no layout engine, so the size follows the character count. */
@@ -64,7 +65,12 @@ const og = (req: NextRequest) => {
         </div>
       </div>
     ),
-    { width: 1200, height: 630 }
+    {
+      width: 1200,
+      height: 630,
+      // next/og defaults to immutable for a year; headline edits must reach crawlers.
+      headers: { "cache-control": "public, max-age=86400, s-maxage=31536000" },
+    }
   );
 };
 

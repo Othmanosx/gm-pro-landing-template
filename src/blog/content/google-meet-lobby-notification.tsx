@@ -3,10 +3,10 @@ import type { PostMeta } from "../site";
 
 export const meta: PostMeta = {
   slug: "google-meet-lobby-notification",
-  title: "Google Meet Knock Notification: Hear Who's Waiting",
+  title: "Google Meet Knock Notification: Is There a Sound?",
   headline: "Does Google Meet make a sound when someone asks to join?",
   description:
-    "What Google Meet documents about join chimes and knock requests, how hosts limit who can ask to join, and how to hear a sound when someone waits in the lobby.",
+    "What Google Meet documents about join chimes and knock requests, how hosts limit who can ask to join, and what extensions can and can't add.",
   kicker: "how-to",
   publishDate: "2026-11-29",
   readingMin: 5,
@@ -19,7 +19,7 @@ export const meta: PostMeta = {
   faq: [
     {
       q: "Does Google Meet play a sound when someone asks to join?",
-      a: "Google's help pages don't say. They document the join chime, which plays for the first five participants, and they describe the Admit and Deny prompt for join requests, but I couldn't find any page that says whether a request to join plays its own sound. An extension can add one.",
+      a: "Google's help pages don't say. They document the join chime, which plays for the first five participants, and they describe the Admit and Deny prompt for join requests, but I couldn't find any page that says whether a request to join plays its own sound.",
     },
     {
       q: "Why did the Google Meet join sound stop after a few people?",
@@ -40,19 +40,19 @@ export default function Body() {
   return (
     <>
       <p>
-        Better Chat has a lobby notifier, a toggle that plays a sound when someone is waiting to
-        join. I build each feature myself, and for this one I read Google&apos;s help pages to find
-        out what Meet does on its own when someone knocks. The pages are clear about the join chime
-        and the Admit button, and quiet on the one thing I wanted to know, which is whether a knock
-        makes a sound.
+        Better Chat (a Chrome extension I make that adds a chat layer to Google Meet) has a lobby
+        notifier that plays a sound when someone joins a call while you wait on the pre-join
+        screen, so I read Google&apos;s help pages to see what Meet does on its own when someone
+        knocks. The pages are clear about the join chime and the Admit button, and quiet on the one
+        thing I wanted to know, which is whether a knock makes a sound.
       </p>
 
       <Takeaway>
         Google documents a join chime for the first five participants, after which new arrivals get
         a silent notification. Requests to join show an Admit or Deny prompt for the organizer, but
-        Google&apos;s help pages don&apos;t say whether a knock request plays its own sound. If you
-        tab away while waiting for someone, an extension with a lobby sound, such as Better
-        Chat&apos;s lobby notifier, plays one when someone is waiting to join.
+        Google&apos;s help pages don&apos;t say whether a knock request plays its own sound. Hosts
+        can cut down on knocks with the meeting access type, and extensions can add sounds for
+        people joining, but I don&apos;t know of one that chimes on knock requests.
       </Takeaway>
 
       <h2>What sounds does Google Meet play when people join?</h2>
@@ -95,28 +95,29 @@ export default function Body() {
         the student you&apos;re actually waiting for.
       </p>
 
-      <h2>How do you get a sound when someone is waiting to join?</h2>
+      <h2>Can an extension add a sound?</h2>
       <p>
-        With an extension. Two I know of, from their Chrome Web Store listings (checked October 25,
-        2026):
+        For related things, yes. Two I know of, from their Chrome Web Store listings (checked
+        October 25, 2026), and neither is a knock alert:
       </p>
       <p>
-        <strong>Better Chat&apos;s lobby notifier.</strong> I make{" "}
+        <strong>Better Chat&apos;s lobby notifier.</strong> This one is mine (
         <A href="https://chromewebstore.google.com/detail/better-chat-chat-power-up/bfmgohplnhblcajmjhmcimjlikohiomh">
           Better Chat
-        </A>{" "}
-        (a Chrome extension that adds a chat layer to Google Meet). The lobby notifier is a toggle:
-        with it on, Better Chat plays a sound when someone is waiting to join your call. It runs in
-        your Meet tab, so you need to be in the call with the tab open, which as the organizer you
-        are anyway. You still admit people with Meet&apos;s own Admit button.
+        </A>
+        ), and it covers a different moment: if you&apos;re sitting on Meet&apos;s pre-join screen
+        waiting for a call to start, it plays a sound when someone joins. It doesn&apos;t alert a
+        host to knock requests, and it stops once you click Join.
       </p>
       <p>
         <strong>Google Meet Enhancement Suite&apos;s chimes.</strong> Its{" "}
         <A href="https://chromewebstore.google.com/detail/google-meet-enhancement-s/ljojmlmdapmnibgflmmminacbjebjpno">
           listing
         </A>{" "}
-        includes an &quot;Always Play Chimes&quot; feature in its Basic tier, for chime sounds when
-        participants join and leave or when a new chat message arrives. That&apos;s aimed at people
+        puts an &quot;Always Play Chimes&quot; feature in its Basic tier, for chime sounds when
+        participants join and leave or when a new chat message arrives, though its own{" "}
+        <A href="https://www.meetenhancementsuite.com/meetpro">pricing page</A> lists entry and join
+        chimes as Pro. That&apos;s aimed at people
         who are already in, past Meet&apos;s five-person chime limit, rather than people waiting to
         be let in. Its Pro tier also lists automatic admit and deny for new entrants, if you&apos;d
         rather not handle knocks at all. I compared it with other options in{" "}
@@ -126,11 +127,11 @@ export default function Body() {
         .
       </p>
 
-      <h2>Who needs a lobby sound?</h2>
+      <h2>What can a host do in the meantime?</h2>
       <p>
-        Mostly people who open the call early and wait. A tutor who starts the meeting a few minutes
-        before a lesson and answers email in another tab is the clearest case; I wrote about that
-        setup in{" "}
+        Keep the Meet tab where you can see it. A tutor who starts the meeting a few minutes before
+        a lesson and answers email meanwhile can put Meet in its own window next to the inbox, so
+        the Admit prompt stays in view; I wrote about that setup in{" "}
         <A href="/blog/tutoring-on-google-meet">tutoring on Google Meet</A>. Same for a host who
         opens a client call early, or anyone running office hours where people drop in at random
         times.

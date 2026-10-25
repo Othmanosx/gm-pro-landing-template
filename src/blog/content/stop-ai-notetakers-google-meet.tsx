@@ -63,9 +63,10 @@ export default function Body() {
         attendee connects the notetaker to their calendar and it auto-joins their meetings;{" "}
         <A href="https://help.otter.ai/hc/en-us/articles/14288936562199">Otter&apos;s help page</A>{" "}
         describes that. In the other, the bot&apos;s own address is a guest on the event:{" "}
-        <A href="https://guide.fireflies.ai/articles/7098191513">Fireflies&apos; docs</A> say its bot
-        joins when fred@fireflies.ai is on the invite, shows as &quot;Fireflies.ai Notetaker&quot;,
-        and is always visible in the participant list.
+        <A href="https://guide.fireflies.ai/articles/7098191513">Fireflies&apos; docs</A> describe
+        its bot joining when fred@fireflies.ai is on the invite, and{" "}
+        <A href="https://guide.fireflies.ai/articles/9554534786">another Fireflies page</A> says it
+        shows as &quot;Fireflies.ai Notetaker&quot; and is always visible in the participant list.
       </p>
       <p>
         Either way it arrives as a participant, and it generally has to ask to join like any guest
@@ -97,7 +98,7 @@ export default function Body() {
         Fireflies&apos;{" "}
         <A href="https://guide.fireflies.ai/articles/9554534786">own docs</A> tell hosts to look for
         its bot in that queue. If knocks pile up while you&apos;re in another tab, I wrote about{" "}
-        <A href="/blog/google-meet-lobby-notification">getting a sound when someone knocks</A>.
+        <A href="/blog/google-meet-lobby-notification">what Meet does and doesn&apos;t play a sound for</A>.
       </p>
 
       <h2>How do you block notetaker bots before the meeting starts?</h2>
@@ -106,15 +107,18 @@ export default function Body() {
         <A href="https://support.google.com/a/users/answer/12172260">access types page</A> lists
         three. Open lets anyone with the link in without knocking. Trusted lets your organization and
         external guests on the Calendar invite in without knocking. Restricted only lets in Calendar
-        invitees and people invited from inside the meeting. For Trusted and Restricted, unchecking
-        &quot;Anyone with the meeting link can ask to join&quot; declines everyone else
-        automatically.
+        invitees and people invited from inside the meeting. For Trusted and Restricted, turning off
+        the ask-to-join option declines everyone else automatically. The Learning Center page calls
+        it &quot;Anyone with the meeting link can ask to join&quot; for Trusted and &quot;Anyone can
+        ask to join, including people who dial in&quot; for Restricted.
       </p>
       <p>
         That&apos;s the setting the{" "}
         <A href="https://support.google.com/a/users/answer/11989526">Learning Center page</A> means:
         with knocking off, third-party bots, like note takers, that try Ask to join are denied
-        without the host doing anything. The same page says Restricted is not available for consumer
+        without the host doing anything. On that page the steps sit under &quot;Host must join
+        before anyone else&quot;, so I&apos;d turn that on as well. The same page says Restricted is
+        not available for consumer
         users, which is one of several gaps I listed in{" "}
         <A href="/blog/google-meet-personal-account">what a personal account gets</A>. One thing
         I couldn&apos;t confirm in Google&apos;s docs is what happens when the bot&apos;s address is

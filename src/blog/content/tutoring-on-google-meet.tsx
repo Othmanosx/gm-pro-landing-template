@@ -27,7 +27,7 @@ export const meta: PostMeta = {
     },
     {
       q: "Should I use the same Google Meet link for every lesson?",
-      a: "For recurring lessons with one student, it helps. The student bookmarks one link, and tools that key chat to the meeting link keep that student's history together. Google says codes made on the Meet homepage expire 365 days after last use, so a weekly lesson keeps its link alive.",
+      a: "For recurring lessons with one student, it helps. The student bookmarks one link, and you stop sending a new one before each lesson. Google says codes made on the Meet homepage expire 365 days after last use, so a weekly lesson keeps its link alive.",
     },
     {
       q: "Does Google Meet chat work for students on Education accounts?",
@@ -130,13 +130,14 @@ export default function Body() {
       <p>
         In the gap between the doc and the call (I make Better Chat, a Chrome extension that adds a
         chat layer to Google Meet). It stores its chat on its own servers, keyed by the meeting
-        code, so if you keep one link per student, what you sent in the first lesson is still there
-        in the tenth. For tutoring, three parts of it matter:
+        code, and shows the last 22 hours of chat for that link, so a student who reloads or joins
+        late sees everything you already sent in that lesson. It doesn&apos;t carry chat from one
+        week&apos;s lesson to the next; that&apos;s the doc&apos;s job. For tutoring, three parts of
+        it matter:
       </p>
       <ul>
         <li>
-          Chat history per link across lessons, which also covers a student who reloads or joins
-          late.
+          Chat history for the whole lesson, which covers a student who reloads or joins late.
         </li>
         <li>
           File sharing for worksheets, PDFs, Word and PowerPoint files, images, audio and video.
@@ -144,8 +145,8 @@ export default function Body() {
           so it&apos;s for this week&apos;s worksheet. Anything long-lived goes in the doc.
         </li>
         <li>
-          A lobby sound that plays when someone is waiting to join, handy when you&apos;re in another
-          tab between lessons and your student is waiting to be let in.
+          A lobby sound that plays when someone joins the call while you&apos;re still on the
+          pre-join screen, handy if you open the lesson link early in another tab.
         </li>
       </ul>
       <p>

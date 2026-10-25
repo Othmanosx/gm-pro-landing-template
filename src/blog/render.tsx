@@ -16,11 +16,14 @@ const withInlineCta = (post: Post): ReactNode[] => {
   return [...blocks.slice(0, at), <PostCta key="cta" slug={post.meta.slug} cta="inline" />, ...blocks.slice(at)];
 };
 
-export const postHtml = (post: Post) => renderToStaticMarkup(<>{withInlineCta(post)}</>);
+// React 19 hoists <link rel="preload"> for non-lazy images to the top of the markup.
+const stripHoisted = (html: string) => html.replace(/<link [^>]*>/g, "");
+
+export const postHtml = (post: Post) => stripHoisted(renderToStaticMarkup(<>{withInlineCta(post)}</>));
 
 /** Portable HTML for syndication importers: absolute URLs, no div/span/aside/section. */
 export const feedHtml = (post: Post) =>
-  renderToStaticMarkup(<post.Body />)
+  stripHoisted(renderToStaticMarkup(<post.Body />))
     .replace(/<img class="shot-dark"[^>]*>/g, "")
     .replace(/ class="[^"]*"/g, "")
     .replace(/(href|src)="\//g, `$1="${SITE_URL}/`)

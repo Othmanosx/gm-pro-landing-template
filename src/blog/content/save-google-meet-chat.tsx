@@ -41,9 +41,10 @@ export default function Body() {
   return (
     <>
       <p>
-        I make a Chrome extension whose main job is keeping Google Meet chat around, so I get asked
-        how to save Meet chat a lot, often by people who don&apos;t need my extension at all.
-        Depending on your Google plan, you might already have a way that costs nothing. Here are all
+        I make a Chrome extension whose main job is keeping Google Meet chat around, so I&apos;ve
+        read every Google page on saving Meet chat, and plenty of people don&apos;t need my
+        extension at all. Depending on your Google plan, you might already have a way that costs
+        nothing. Here are all
         four options I know of, with what each one actually keeps.
       </p>
 
@@ -104,8 +105,7 @@ export default function Body() {
         <A href="https://news.ycombinator.com/item?id=24195130">
           used Meet chat for anything except sharing a link
         </A>
-        , because it would be lost once the meeting was over. Copy-paste is how people end up
-        treating chat as disposable.
+        , because it would be lost once the meeting was over.
       </p>
 
       <h2>Option 4: use a Chrome extension that stores the chat</h2>
@@ -122,7 +122,7 @@ export default function Body() {
             <A key="bc" href="https://chromewebstore.google.com/detail/better-chat-chat-power-up/bfmgohplnhblcajmjhmcimjlikohiomh">
               Better Chat
             </A>,
-            "Its own chat layer, stored on Better Chat's servers per meeting link",
+            "Its own chat layer, stored on Better Chat's servers per meeting link; shows the last 22 hours",
             "Chat: no. Captions: .txt",
             "30-day free trial, then $9.99/mo or $7.99/mo billed yearly",
           ],
@@ -147,8 +147,9 @@ export default function Body() {
       <p>
         Bias disclosed: I make Better Chat. It works a little differently from the other two.
         Instead of saving Meet&apos;s own chat, it adds a chat layer with replies, reactions and file
-        sharing, and stores that per meeting link, so a late joiner or someone who reloads sees
-        everything sent so far. The tradeoff is that only people who also run Better Chat see that
+        sharing, and stores that per meeting link, so a late joiner or someone who reloads sees the
+        last 22 hours of chat for that link. The tradeoff is that only people who also run Better
+        Chat see that
         layer; everyone else gets each message mirrored into Meet&apos;s chat as plain text. If all
         you want is a personal copy of the chat in a file, Meeting Chat Saver&apos;s export list is
         better than mine, since Better Chat doesn&apos;t export chat at all.
@@ -170,7 +171,7 @@ export default function Body() {
           ["Business or Enterprise plan, scheduled internal meetings", "Continuous meeting chat (already on)"],
           ["Plan that can record, one-off important meeting", "Record it; the chat log lands in Drive"],
           ["Free Gmail, you just need a copy", "Copy before leaving, or a saver extension with export"],
-          ["Recurring calls where late joiners need the history", "An extension that stores chat per meeting link"],
+          ["Calls where late joiners or reloads need what was already sent", "An extension that stores chat per meeting link"],
         ]}
       />
       <p>

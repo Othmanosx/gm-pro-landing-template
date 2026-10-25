@@ -20,7 +20,7 @@ export const meta: PostMeta = {
   faq: [
     {
       q: "Is Google Meet Enhancement Suite free?",
-      a: "Partly. Its site lists a set of basic features outside Pro, such as auto join, auto mute, auto video off and auto captions. Dark mode, Auto Pin Chat, Quick Emoji Reactions, auto admit and saved transcripts are Pro. A single license was $5 a month or $60 a year when I checked in October 2026.",
+      a: "Partly. Its store listing lists a set of basic features outside Pro, such as auto join, auto mute, auto video off and auto captions. Dark mode, Auto Pin Chat, Quick Emoji Reactions, auto admit and saved transcripts are Pro. A single license was $5 a month or $60 a year when I checked in October 2026.",
     },
     {
       q: "Does Google Meet Enhancement Suite keep chat history?",
@@ -51,8 +51,8 @@ export default function Body() {
       <Takeaway>
         Google Meet Enhancement Suite is a broad automation tool: auto join, auto mute, push to talk,
         auto admit, dark mode and dozens more, at $5 a month for a single license. It doesn&apos;t
-        list chat history, replies or file sharing. If chat is the gap, Better Chat keeps chat per
-        meeting link with replies and files, Meet Plus adds its own messenger, and Google&apos;s
+        list chat history, replies or file sharing. If chat is the gap, Better Chat keeps the last 22
+        hours of chat per meeting link with replies and files, Meet Plus adds its own messenger, and Google&apos;s
         continuous meeting chat covers Business and Enterprise plans.
       </Takeaway>
 
@@ -104,7 +104,7 @@ export default function Body() {
           [
             "Chat history after reload or late join",
             "Not listed",
-            "Yes, per meeting link",
+            "Last 22 hours, per meeting link",
             "Listing says history is kept in its messenger panel",
             "Yes, in Google Chat",
           ],
@@ -118,12 +118,13 @@ export default function Body() {
         ]}
       />
       <p>
-        Better Chat stores its chat on its own servers keyed by the meeting code, so a reload, a late
-        join or next week&apos;s call on the same link shows what was sent before. Late joiners see
-        what they missed. It adds replies,
+        Better Chat stores its chat on its own servers keyed by the meeting code and shows the last
+        22 hours of chat for that link, so a reload or a late join shows what was sent so far in
+        that meeting. It doesn&apos;t carry chat over to next week&apos;s call. It adds replies,
         reactions, GIFs and files up to 100 MB for video, and its automation is narrower than
         Enhancement Suite&apos;s: auto mute, camera off, auto join for scheduled meetings, a sound
-        when someone is waiting to join, and an attendee shuffler. The extra chat is only visible to
+        when someone joins while you wait on the pre-join screen, and an attendee shuffler. The
+        extra chat is only visible to
         people in the call who also run Better Chat; everyone else sees each message in Meet&apos;s
         own chat as plain text.
       </p>
@@ -161,9 +162,9 @@ export default function Body() {
           has team license bundles.
         </li>
         <li>
-          <strong>Better Chat</strong> wins if the chat itself is the problem: history per meeting
-          link, replies, file sharing, a captions tab you can download as .txt, and a one-time
-          lifetime plan.
+          <strong>Better Chat</strong> wins if the chat inside a call is the problem: history that
+          survives a reload or a late join, replies, file sharing, a captions tab you can download
+          as .txt, and a one-time lifetime plan. It doesn&apos;t keep chat between meetings.
         </li>
         <li>
           <strong>Meet Plus</strong> wins on private messages, whiteboard and polls.
@@ -175,9 +176,9 @@ export default function Body() {
         </li>
       </ul>
       <p>
-        If you like Enhancement Suite&apos;s controls and only need chat that sticks around, you
+        If you like Enhancement Suite&apos;s controls and only need chat that survives a reload, you
         don&apos;t have to drop one to try the other. Both have auto join and auto mute, so turn
-        those on in only one of them, or they&apos;ll both try to click the same buttons. For more on keeping chat between calls, see{" "}
+        those on in only one of them, or they&apos;ll both try to click the same buttons. For keeping links between calls, see{" "}
         <A href="/blog/recurring-meeting-chat-history">chat history for recurring meetings</A>.
       </p>
 

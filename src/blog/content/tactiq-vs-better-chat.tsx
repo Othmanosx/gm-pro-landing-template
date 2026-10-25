@@ -19,7 +19,7 @@ export const meta: PostMeta = {
   faq: [
     {
       q: "Is Better Chat an AI notetaker like Tactiq?",
-      a: "No. Better Chat has no AI summaries, action items or meeting notes. It adds a chat layer to Google Meet with history per meeting link, replies, reactions and file sharing, plus a captions tab built on Meet's own captions. If you want AI notes after each call, Tactiq does that and Better Chat doesn't.",
+      a: "No. Better Chat has no AI summaries, action items or meeting notes. It adds a chat layer to Google Meet that keeps the last 22 hours of chat per meeting link, with replies, reactions and file sharing, plus a captions tab built on Meet's own captions. If you want AI notes after each call, Tactiq does that and Better Chat doesn't.",
     },
     {
       q: "Does Tactiq have a free plan?",
@@ -31,7 +31,7 @@ export const meta: PostMeta = {
     },
     {
       q: "Can I run Tactiq and Better Chat at the same time?",
-      a: "Mostly they do different jobs: Tactiq writes transcripts and AI notes, and Better Chat adds a chat panel. The overlap is captions. If you use Tactiq for transcripts, leave Better Chat's auto-enable transcriptions setting off and use it only for chat, so you aren't keeping two caption logs of the same call.",
+      a: "Mostly they do different jobs: Tactiq writes transcripts and AI notes, and Better Chat adds a chat panel. The overlap is captions. If you use Tactiq for transcripts, leave Better Chat's Transcriptions (Beta) toggle off and use it only for chat, so you aren't keeping two caption logs of the same call.",
     },
   ],
 };
@@ -50,8 +50,8 @@ export default function Body() {
       <Takeaway>
         Tactiq is a transcription and AI notes tool: it transcribes Google Meet, Zoom and Teams in
         the browser and writes summaries and action items, with a free plan of 10 transcripts a
-        month. Better Chat is a chat upgrade for Google Meet with history per meeting link, replies
-        and file sharing, plus a basic captions tab. Better Chat is not an AI notetaker and has no
+        month. Better Chat is a chat upgrade for Google Meet that keeps the last 22 hours of chat
+        per meeting link, with replies and file sharing, plus a basic captions tab. Better Chat is not an AI notetaker and has no
         summaries. Pick Tactiq for notes, Better Chat for chat, or run both.
       </Takeaway>
 
@@ -86,8 +86,9 @@ export default function Body() {
       <h2>What does Better Chat do?</h2>
       <p>
         It adds its own chat panel to Google Meet. Messages are stored on Better Chat&apos;s servers
-        keyed by the meeting code, so a reload, a late join or the same meeting link next week shows
-        everything sent so far. You get replies, emoji reactions on messages, GIFs, and file sharing
+        keyed by the meeting code and shows the last 22 hours of chat for that link, so a reload or
+        a late join shows everything sent so far in that meeting. You get replies, emoji reactions
+        on messages, GIFs, and file sharing
         (files are deleted a week after upload). The extra chat is only visible to other Better Chat
         users in the call; everyone else sees each message in Meet&apos;s own chat as plain text.
         Around that there&apos;s auto mute, camera off and auto join on scheduled meetings. It
@@ -95,10 +96,10 @@ export default function Body() {
         days or 30 meetings, whichever comes first, with no card.
       </p>
       <p>
-        The captions tab is the only overlap with Tactiq, and it&apos;s basic. With
-        auto-enable transcriptions on, Better Chat turns on Meet&apos;s captions and collects them in
-        a tab you can scroll back through, kept in your browser per meeting code and downloadable as
-        a .txt file. Languages and accuracy are Google&apos;s, because it&apos;s Meet&apos;s own
+        The captions tab is the only overlap with Tactiq, and it&apos;s basic. With its
+        Transcriptions (Beta) toggle on, Better Chat turns on Meet&apos;s captions and collects them
+        in a tab you can scroll back through, kept in your browser per meeting code for 22 hours and
+        downloadable as a .txt file. Languages and accuracy are Google&apos;s, because it&apos;s Meet&apos;s own
         captions. No summaries, no action items, no search across meetings, no Zoom or Teams. It
         runs in the browser too, so no bot joins with either tool.
       </p>
@@ -112,7 +113,7 @@ export default function Body() {
           ["Something free for a handful of meetings a month", "Tactiq's Free plan"],
           ["Chat that's still there after a reload or for late joiners", "Better Chat"],
           ["Replies, reactions and files in the meeting chat", "Better Chat"],
-          ["The same chat across a recurring meeting link", "Better Chat"],
+          ["A record of the chat after the call", "Tactiq (it saves chat into the transcript)"],
         ]}
       />
       <p>
@@ -126,12 +127,13 @@ export default function Body() {
 
       <h2>When does it make sense to use both?</h2>
       <p>
-        When you want the notes and the chat. A tutor or a team lead running a recurring call might
-        use Tactiq for a transcript and summary of what was said, and Better Chat so the links,
-        files and questions typed into chat are still there next week. Tactiq saving chat into its
-        transcript gives you a personal record; Better Chat keeps the chat itself shared with
-        everyone in the call who runs it. If you go this way, turn off Better Chat&apos;s
-        auto-enable transcriptions so you aren&apos;t keeping two caption logs. If 10 transcripts
+        When you want the notes and the chat. A tutor or a team lead might use Tactiq for a
+        transcript and summary of what was said, and Better Chat so the links, files and questions
+        typed into chat are there for someone who reloads or joins late. Tactiq saving chat into its
+        transcript gives you a record after the call; Better Chat keeps the last 22 hours of chat
+        shared with everyone in the call who runs it. If you go this way, turn off Better
+        Chat&apos;s Transcriptions (Beta) toggle so you aren&apos;t keeping two caption logs. If 10
+        transcripts
         a month is enough for you, Tactiq&apos;s Free plan next to Better Chat costs the same as
         Better Chat alone.
       </p>

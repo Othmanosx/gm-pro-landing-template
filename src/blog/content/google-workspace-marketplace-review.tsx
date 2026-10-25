@@ -23,7 +23,7 @@ export const meta: PostMeta = {
     },
     {
       q: "Does a Google Meet add-on need OAuth verification?",
-      a: "Yes, for a public listing. Google's review criteria say the app must have passed OAuth verification and use the narrowest OAuth scopes possible. Sensitive scopes typically take a few business days to verify, and restricted scopes also need a security assessment that has to be repeated at least every 12 months.",
+      a: "Yes, for a public listing. Google's review criteria say the app must have passed OAuth verification and use the narrowest OAuth scopes possible. Google's sensitive scope verification page says that step typically takes 3 to 5 business days.",
     },
     {
       q: "Can an already published Marketplace app be reviewed again?",
@@ -73,12 +73,13 @@ export default function Body() {
         </li>
       </ol>
       <p>
-        Both match what Google publishes on its{" "}
+        Google publishes the same rules. The icon sizes are in its listing requirements, and its{" "}
         <A href="https://developers.google.com/workspace/marketplace/about-app-review">
           app review page
-        </A>
-        , which also asks for icons in color and a name of 50 characters or less. If I&apos;d read
-        that page line by line before the first submission, this round wouldn&apos;t have happened.
+        </A>{" "}
+        says icons must be square, transparent, sized correctly and in color, and the name must
+        match the OAuth consent screen and be 50 characters or less. If I&apos;d read those pages
+        line by line before the first submission, this round wouldn&apos;t have happened.
       </p>
 
       <h2>Why did the listing still say &quot;not approved&quot; after I fixed it?</h2>

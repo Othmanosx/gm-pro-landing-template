@@ -36,6 +36,9 @@ const BlogIndex = ({
           Blog
         </h1>
         <p className="mt-4 body-lg text-light">{BLOG_DESCRIPTION}</p>
+        {posts.length === 0 && (
+          <p className="mt-14 text-light">The first post goes up soon.</p>
+        )}
         <ul className="gap-10 mt-14 col">
           {posts.map((p) => (
             <li key={p.slug}>

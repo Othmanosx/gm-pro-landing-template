@@ -4,12 +4,12 @@ The reference for anything public about Better Chat: blog posts, landing copy, s
 
 ## What Better Chat is
 
-A Chrome extension that adds a second chat layer on top of Google Meet's own chat. It keeps chat history per meeting link (so a recurring meeting keeps its chat, and late joiners see what was said before they arrived), and adds emoji reactions, replies, image, GIF and file sharing, dark mode, auto-mute and camera-off on join, auto-join for scheduled meetings, a scrollback tab for Meet's captions, a lobby chime, and an attendee shuffler.
+A Chrome extension that adds a second chat layer on top of Google Meet's own chat. It keeps the last 22 hours of chat per meeting link (so someone who reloads or joins late sees what was said earlier in that meeting; it does not carry chat over to the next day's or next week's call), and adds emoji reactions, replies, image, GIF and file sharing, dark mode, auto-mute and camera-off on join, auto-join for scheduled meetings, a scrollback tab for Meet's captions, a lobby chime (plays when someone joins while you wait on the pre-join screen), and an attendee shuffler (auto mode reposts the list when someone joins).
 
 How it works, stated plainly because posts must never contradict it:
 
 - The extra chat is visible only to people in the same call who also run Better Chat. Everyone else still sees each message in Meet's own chat as plain text.
-- Messages are stored on Better Chat's servers (Firebase), keyed by the meeting code. Attachments are deleted one week after upload. Uploads are capped at 100 files / 2 GB per user per month.
+- Messages are stored on Better Chat's servers (Firebase), keyed by the meeting code, and the chat panel shows only the last 22 hours of them; stored captions reset after 22 hours too (`gm-pro` `ChatMessages.tsx`, `useTranscriptions.ts`). Never claim day-to-day or week-to-week carryover. Attachments are deleted one week after upload. Uploads are capped at 100 files / 2 GB per user per month.
 - It runs in the browser as an extension. No bot joins the call.
 
 Pricing (source: `src/sections/Pricing.tsx`, `gm-pro/src/shared/hooks/useSubscriptionStatus.ts`): $9.99/month, $7.99/month billed annually, $149 lifetime (shown as reduced from $249). Free trial: 30 days or 30 meetings, whichever comes first, no card.
@@ -70,7 +70,7 @@ Grepped by `scripts/blog-check.mjs`; extend the list there when you add here.
 
 Proposed, from my own writing. Approve, edit or replace before the first wave ships.
 
-- "The chat shouldn't reset every time the call does."
+- "The chat shouldn't reset because someone reloaded or joined late."
 - "Late joiners see what they missed."
 - "It runs inside the Meet you already use."
 - "No bot joins your call."

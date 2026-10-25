@@ -57,7 +57,7 @@ export default function Body() {
       <h2>What&apos;s the difference between a meeting bot and an extension?</h2>
       <p>
         Where the code runs. A bot is a participant. Notetaker vendors document this themselves:{" "}
-        <A href="https://guide.fireflies.ai/articles/7098191513">one</A> says its bot is always
+        <A href="https://guide.fireflies.ai/articles/9554534786">one</A> says its bot is always
         visible in the participant list and has to be admitted if there&apos;s a lobby,{" "}
         <A href="https://www.read.ai/articles/how-to-stop-read-ai-from-joining-my-meetings">
           another
@@ -92,7 +92,7 @@ export default function Body() {
         <A href="https://support.google.com/meet/answer/12849897?hl=en">transcripts</A> on, a
         Transcripts icon shows at the top right for everyone. When Gemini{" "}
         <A href="https://support.google.com/meet/answer/14754931">takes notes</A>, Meet notifies all
-        participants and shows a pencil icon. People find out, and nobody has to admit anything. I
+        participants and shows a pencil icon. Everyone is told, and there&apos;s no extra participant to admit. I
         wrote about which plans get transcripts in{" "}
         <A href="/blog/google-meet-transcript-plans">Google Meet transcript plans</A>.
       </p>
@@ -136,7 +136,7 @@ export default function Body() {
         what was said.
       </p>
 
-      <h2>Does the market agree?</h2>
+      <h2>Do notetaker makers agree?</h2>
       <p>
         Some notetaker makers seem to. Tactiq&apos;s <A href="https://tactiq.io/">site</A> says no
         bot joins the call, and Scribbl&apos;s{" "}

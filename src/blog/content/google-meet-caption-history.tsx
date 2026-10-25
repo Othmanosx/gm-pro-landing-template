@@ -44,8 +44,8 @@ export default function Body() {
         <A href="https://news.ycombinator.com/item?id=43440772">Hacker News in March 2025</A>, one of
         my complaints was that Meet&apos;s transcriptions only showed the last few sentences. You
         looked away for a second, the line you needed scrolled off, and that was it. Google was
-        fixing that around the same time with caption history, and it&apos;s good. It also has a
-        clear edge, and people keep running into it.
+        fixing that around the same time with caption history, and it&apos;s good. It also stops at
+        30 minutes and at the end of the call.
       </p>
 
       <Takeaway>
@@ -77,8 +77,9 @@ export default function Body() {
         the parts of the call where you were there with captions on.
       </p>
       <p>
-        Back in 2020 a deaf{" "}
-        <A href="https://news.ycombinator.com/item?id=24948312">HN commenter</A> said they preferred
+        Back in 2020 an{" "}
+        <A href="https://news.ycombinator.com/item?id=24948312">HN commenter</A> in a thread about
+        captions said they preferred
         running Live Transcribe on a phone over Meet&apos;s captions, because the phone kept a
         history they could look back at. Meet now does a version of that on its own.
       </p>
@@ -118,7 +119,7 @@ export default function Body() {
 
       <h2>When is Google&apos;s built-in caption history enough?</h2>
       <p>
-        Most of the time, honestly. If you only need to catch a sentence you missed, a name someone
+        Most of the time. If you only need to catch a sentence you missed, a name someone
         spelled out, or the number from five minutes ago, caption history does that on every
         account and costs nothing. If you&apos;re on a plan with transcripts and the organizer turns
         them on, you get a saved copy in Drive too. I&apos;d use those before installing anything.
@@ -128,11 +129,11 @@ export default function Body() {
       <p>
         The gaps are calls longer than 30 minutes, reloads in the middle of a call, and personal
         accounts that want a copy of the captions afterwards. That&apos;s what the captions tab in
-        my extension is for (I make Better Chat, a Chrome extension for Google Meet). With
-        &quot;auto-enable transcriptions&quot; switched on, it turns on Meet&apos;s captions and
-        collects them in a tab you can scroll back through, with no 30-minute cut-off. It stores
-        them in your browser per meeting link, so a reload keeps them, and a Download button saves
-        them as a .txt file.
+        my extension is for (I make Better Chat, a Chrome extension for Google Meet). With its
+        Transcriptions (Beta) toggle on, it turns on Meet&apos;s captions and collects them in a
+        tab you can scroll back through, with no 30-minute cut-off. It stores them in your browser
+        per meeting link for 22 hours, so a reload keeps them, and a Download button saves them as
+        a .txt file.
       </p>
       <p>
         It&apos;s built on Meet&apos;s own captions, so caption languages and accuracy are

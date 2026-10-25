@@ -27,7 +27,7 @@ export const meta: PostMeta = {
     },
     {
       q: "What happens when someone joins the standup late?",
-      a: "With a list you made by hand, you add them at the end. The Shuffler extension's listing says late attendees are added to the bottom of its list. Better Chat's auto mode reposts the shuffled list when someone joins or leaves, so the order in chat stays current.",
+      a: "With a list you made by hand, you add them at the end. The Shuffler extension's listing says late attendees are added to the bottom of its list. Better Chat's auto mode adds a late joiner to the bottom and reposts the list.",
     },
     {
       q: "Does everyone need the extension to see the shuffled order?",
@@ -40,9 +40,10 @@ export default function Body() {
   return (
     <>
       <p>
-        I build each Better Chat feature myself, including a participant shuffler, and I read
-        Google&apos;s help pages to know what Meet already does natively. For shuffling participants
-        in Google Meet, I couldn&apos;t find anything. So this post covers the three ways I know to
+        I make Better Chat (a Chrome extension that adds a chat layer to Google Meet), which has a
+        participant shuffler, so I checked Google&apos;s help pages for a native one first. For
+        shuffling participants in Google Meet, I couldn&apos;t find anything. So this post covers
+        the three ways I know to
         get a random standup order, one of which is mine.
       </p>
 
@@ -52,7 +53,7 @@ export default function Body() {
         names into a spreadsheet, sort by =RAND() and post the result in chat, or use a Chrome
         extension that does it inside the call. Shuffler is a small single-purpose extension for
         this, and Better Chat includes a shuffler with a random picker and automatic reposting when
-        people join or leave.
+        someone joins.
       </Takeaway>
 
       <h2>Why shuffle the speaking order in a standup?</h2>
@@ -64,8 +65,7 @@ export default function Body() {
         next, because the order is right there in chat.
       </p>
       <p>
-        It isn&apos;t a fix for a standup that runs too long. If updates are rambling, a random order
-        just randomizes the rambling.
+        It isn&apos;t a fix for a standup that runs too long.
       </p>
 
       <h2>Does Google Meet have a built-in shuffle?</h2>
@@ -98,7 +98,7 @@ export default function Body() {
         rows={[
           ["Posts a shuffled list to Meet's chat", "Yes", "Yes"],
           ["Pick random people", "Yes, /pick 5 picks five", "Yes, picks one participant"],
-          ["Late joiners", "Added to the bottom of the list", "Auto mode reposts the list on join or leave"],
+          ["Late joiners", "Added to the bottom of the list", "Auto mode adds them to the bottom and reposts"],
           ["Other features", "None, single purpose", "Chat history per link, reactions, files, auto-mute and more"],
           ["Store listing", "41 users, 5.0 from 1 rating", "137 users, 5.0 from 3 ratings"],
         ]}
@@ -117,18 +117,20 @@ export default function Body() {
         Bias disclosed: I make{" "}
         <A href="https://chromewebstore.google.com/detail/better-chat-chat-power-up/bfmgohplnhblcajmjhmcimjlikohiomh">
           Better Chat
-        </A>{" "}
-        (a Chrome extension that adds a chat layer to Google Meet). Its shuffler shuffles the
+        </A>
+        . Its shuffler shuffles the
         participant list and posts it to chat, both Meet&apos;s chat and Better Chat&apos;s own, and
-        can pick one random participant. With auto mode on, it reposts the list when someone joins
-        or leaves, so a late joiner doesn&apos;t need to ask where they are in the order. Because
+        can pick one random participant. With auto mode on, it adds anyone who joins late to the
+        bottom and reposts the list, so a late joiner doesn&apos;t need to ask where they are in
+        the order. Because
         the list lands in Meet&apos;s own chat as plain text, everyone in the call can read it.
         Better Chat&apos;s extra chat layer is only visible to people who also run it.
       </p>
       <p>
         The shuffler is a small part of Better Chat, so it makes sense if your standup also has the
-        other problem it&apos;s built for: a daily meeting where the chat starts empty every
-        morning. I wrote about that in{" "}
+        problem it&apos;s built for: links and questions lost when someone reloads or joins late.
+        It keeps the last 22 hours of chat per link, so it won&apos;t carry yesterday&apos;s links
+        into today&apos;s standup; for that, see{" "}
         <A href="/blog/recurring-meeting-chat-history">keeping recurring Google Meet chat</A>. If
         you&apos;re comparing broader Meet extensions, the{" "}
         <A href="/blog/google-meet-enhancement-suite-alternatives">

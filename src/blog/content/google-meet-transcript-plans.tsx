@@ -41,8 +41,8 @@ export default function Body() {
     <>
       <p>
         I build a Chrome extension for Google Meet, and part of it keeps Meet&apos;s captions so you
-        can read them back. That means I get a lot of &quot;wait, doesn&apos;t Meet already do
-        transcripts?&quot; It does, on some plans. Here&apos;s the plan list from Google&apos;s own
+        can read them back, so the obvious question is whether Meet already does transcripts. It
+        does, on some plans. Here&apos;s the plan list from Google&apos;s own
         help page, plus what the Google Meet transcript leaves out and what you can do if your
         account doesn&apos;t have it.
       </p>
@@ -104,7 +104,7 @@ export default function Body() {
 
       <h2>Does the Google Meet transcript include the chat?</h2>
       <p>
-        No, and this one surprises people. The help page says only the spoken words are included,
+        No. The help page says only the spoken words are included,
         and points you to recording if you want the chat. That only works when continuous meeting
         chat is off. I wrote up{" "}
         <A href="/blog/save-google-meet-chat">every way to save Meet chat</A> separately, because
@@ -147,7 +147,8 @@ export default function Body() {
           <strong>Use an extension that keeps the captions.</strong> This is the part I build (I
           make Better Chat, a Chrome extension for Google Meet). Its captions tab turns on
           Meet&apos;s captions, collects them for the whole call, keeps them in your browser per
-          meeting link so a reload doesn&apos;t wipe them, and downloads them as a .txt file.
+          meeting link for 22 hours so a reload doesn&apos;t wipe them, and downloads them as a .txt
+          file.
           It&apos;s built on Meet&apos;s captions, so languages and accuracy are Google&apos;s, and
           no bot joins the call.
         </li>

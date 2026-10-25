@@ -51,8 +51,7 @@ export default function Body() {
         Google Meet: each meeting starts with an empty chat. With continuous meeting chat (Business,
         Enterprise, Enterprise Essentials and Frontline plans), Google keeps the messages, but it
         creates a separate Meeting Conversation in Google Chat for every instance of a recurring
-        Calendar event, named after the event and its date. Last week&apos;s links live in last
-        week&apos;s conversation, not in this week&apos;s call.
+        Calendar event, named after the event and its date.
       </Takeaway>
 
       <h2>What happens to chat in a recurring meeting without continuous chat?</h2>
@@ -96,7 +95,7 @@ export default function Body() {
       </p>
 
       <h2>How do you keep one chat across every week of a recurring meeting?</h2>
-      <p>Three approaches, from free and boring to an extension.</p>
+      <p>Two approaches that work, and a note on extensions.</p>
       <p>
         <strong>Pin a running doc.</strong> One Google Doc for the whole series, linked in the
         Calendar event description, with a dated heading per meeting for the agenda, decisions and
@@ -113,14 +112,15 @@ export default function Body() {
         means one bookmark.
       </p>
       <p>
-        <strong>Store chat per link.</strong> This is what I build (I make Better Chat, a Chrome
-        extension that keeps Meet chat per meeting link). Better Chat stores its chat on its own
-        servers keyed by the meeting code, so if your weekly meeting uses the same link, the chat
-        continues week to week: last Monday&apos;s messages are there this Monday, along with
-        anything sent before a late joiner arrived. Only people in the call who also run Better Chat
-        see that history; everyone else sees each message in Meet&apos;s own chat as plain text.
-        Shared files are deleted a week after upload, so recurring documents still belong in the
-        running doc, and Better Chat doesn&apos;t export chat.
+        <strong>What an extension can and can&apos;t do here.</strong> I make Better Chat (a Chrome
+        extension that keeps Meet chat per meeting link), and it doesn&apos;t solve the
+        week-to-week problem either. It stores its chat on its own servers keyed by the meeting code
+        and shows the last 22 hours of chat for that link, so a reload or a late join shows what was
+        sent so far in that meeting, but last Monday&apos;s messages are gone by this Monday. Only
+        people in the call who also run Better Chat see that history; everyone else sees each
+        message in Meet&apos;s own chat as plain text. Shared files are deleted a week after upload
+        and Better Chat doesn&apos;t export chat, so anything the series needs to remember belongs
+        in the running doc.
       </p>
 
       <h2>Which approach fits your recurring meeting?</h2>
@@ -137,11 +137,11 @@ export default function Body() {
           ],
           [
             "Personal accounts or instant meetings with a fixed link",
-            "A running doc, or an extension that stores chat per link",
+            "A running doc",
           ],
           [
             "Daily standup where links get re-pasted every morning",
-            "Same link every day, with chat stored per link",
+            "Same link every day, plus a running doc with the standing links",
           ],
         ]}
       />

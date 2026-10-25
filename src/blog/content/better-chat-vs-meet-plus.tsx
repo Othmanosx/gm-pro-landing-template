@@ -51,8 +51,8 @@ export default function Body() {
         Meet Plus and Better Chat both put their own messenger on top of Google Meet, visible only
         to people who run the same extension. Meet Plus has private messages, a whiteboard, polls
         and a much larger install base, and doesn&apos;t publish its PRO price. Better Chat keeps
-        chat per meeting link across reloads, late joins and recurring calls, with replies and file
-        sharing, for $9.99 a month or $149 once.
+        the last 22 hours of chat per meeting link, so reloads and late joins see it, with replies
+        and file sharing, for $9.99 a month or $149 once.
       </Takeaway>
 
       <h2>How do the two chat models differ?</h2>
@@ -68,9 +68,10 @@ export default function Body() {
       </p>
       <p>
         Better Chat has one shared room per meeting, no private messages. Its chat is stored on
-        Better Chat&apos;s servers keyed by the meeting code, so someone who reloads or joins late
-        sees everything sent so far, and the same meeting link next week opens with last
-        week&apos;s messages. Only Better Chat users in the call see that layer; every message is
+        Better Chat&apos;s servers keyed by the meeting code and shows the last 22 hours of chat for
+        that link, so someone who reloads or joins late sees everything sent so far in that
+        meeting. It doesn&apos;t carry chat over to next week&apos;s call. Only Better Chat users in
+        the call see that layer; messages are
         also posted into Meet&apos;s own chat as plain text, so people without it can still read it.
       </p>
       <p>
@@ -88,7 +89,7 @@ export default function Body() {
         rows={[
           ["Shared room chat", "Yes (free)", "Yes"],
           ["Private messages", "Yes (free)", "No"],
-          ["History", "Kept in the messenger panel, per its listing", "Per meeting link, across reloads, late joins and recurring calls"],
+          ["History", "Kept in the messenger panel, per its listing", "Last 22 hours per meeting link, across reloads and late joins"],
           ["Replies to messages", "Not listed", "Yes"],
           ["Emoji reactions", "Yes; Super Emojis and multimedia reactions on PRO", "Yes, on messages"],
           ["Files", "Link sharing free; file sharing to selected people on PRO", "Images, GIFs, documents, audio, video; deleted after a week"],
@@ -119,7 +120,7 @@ export default function Body() {
         Meet Plus lists meeting auto joining in its settings, along with a meeting timer and a
         stopwatch. Better Chat&apos;s automation is about the moment you join: separate toggles for
         auto mute and camera off, auto join for scheduled meetings that clicks Join at the
-        scheduled time (or 1, 2 or 5 minutes after), a sound when someone is waiting to join, and a
+        scheduled time (or 1, 2 or 5 minutes after), a sound when someone joins while you wait on the pre-join screen, and a
         shuffler that posts a random speaking order to chat. The mute and camera toggles are
         covered in <A href="/blog/google-meet-join-muted">how to join Google Meet muted</A>.
       </p>
@@ -163,12 +164,12 @@ export default function Body() {
 
       <h2>Where does Better Chat win?</h2>
       <p>
-        Chat that stays with the meeting link. If your call is a recurring lesson or a weekly
-        standup and the problem is that the chat starts empty every time, that&apos;s the job I
-        built it for; I covered the setup in{" "}
-        <A href="/blog/recurring-meeting-chat-history">chat history for recurring meetings</A>. It
-        also has replies, file sharing up to 100 MB for video, a captions tab you can download, and
-        a lifetime plan. If you&apos;re still weighing broader Meet extensions, my{" "}
+        Inside a single meeting: chat that survives a reload or a late join, with replies, file
+        sharing up to 100 MB for video, a captions tab you can download, and a lifetime plan. It
+        keeps the last 22 hours of chat per meeting link, not last week&apos;s, so for a recurring
+        lesson or weekly standup a running doc still does the remembering; I covered that setup in{" "}
+        <A href="/blog/recurring-meeting-chat-history">chat history for recurring meetings</A>. If
+        you&apos;re still weighing broader Meet extensions, my{" "}
         <A href="/blog/google-meet-enhancement-suite-alternatives">
           Enhancement Suite alternatives comparison
         </A>{" "}
