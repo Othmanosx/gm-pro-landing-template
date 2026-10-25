@@ -27,4 +27,18 @@ Before adding a row: no title may share 60%+ of its content words with an existi
 | 2026-11-29 | google-meet-lobby-notification | Google Meet Knock Notification: Hear Who's Waiting | google meet knock notification | [x] written |
 | 2026-12-01 | google-meet-auto-join | Google Meet Auto Join: Join Scheduled Calls on Time | google meet auto join | [x] written |
 
-After wave 1: stop authoring and let Search Console pick the next moves (striking-distance queries, `docs/blog-ops.md`).
+## Wave 2: bots, extensions and add-ons
+
+What people want to do around Meet beyond chat. Founder posts (Dec 11, Dec 15) come from the extension's commit history and the Marketplace review thread.
+
+| Date | Slug | Title | Primary keyword | Status |
+|---|---|---|---|---|
+| 2026-12-03 | stop-ai-notetakers-google-meet | How to Stop AI Notetaker Bots Joining Your Google Meet | stop ai notetaker google meet | [x] written |
+| 2026-12-05 | meeting-bots-vs-extensions | Meeting Bot vs Extension: What Belongs in Your Call? | meeting bot vs extension | [x] written |
+| 2026-12-07 | best-google-meet-extensions | Best Google Meet Extensions in 2026, Grouped by Job | best google meet extensions | [x] written |
+| 2026-12-09 | are-google-meet-extensions-safe | Are Google Meet Extensions Safe? How to Check One | are google meet extensions safe | [x] written |
+| 2026-12-11 | why-google-meet-extensions-break | Why Google Meet Extensions Break After Meet Updates | google meet extension not working | [x] written |
+| 2026-12-13 | google-meet-addons-vs-extensions | Google Meet Add-ons vs Chrome Extensions: Which to Use | google meet add-ons | [x] written |
+| 2026-12-15 | google-workspace-marketplace-review | What Google's Workspace Marketplace Review Asked Me For | google workspace marketplace review | [x] written |
+
+After wave 2: stop authoring and let Search Console pick the next moves (striking-distance queries, `docs/blog-ops.md`).

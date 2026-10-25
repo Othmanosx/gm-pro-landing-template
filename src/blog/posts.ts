@@ -2,7 +2,10 @@ import type { ReactElement, ReactNode } from "react";
 
 import type { PostMeta } from "./site";
 
+import * as areGoogleMeetExtensionsSafe from "./content/are-google-meet-extensions-safe";
+import * as bestGoogleMeetExtensions from "./content/best-google-meet-extensions";
 import * as betterChatVsMeetPlus from "./content/better-chat-vs-meet-plus";
+import * as googleMeetAddonsVsExtensions from "./content/google-meet-addons-vs-extensions";
 import * as googleMeetAutoJoin from "./content/google-meet-auto-join";
 import * as googleMeetCaptionHistory from "./content/google-meet-caption-history";
 import * as googleMeetChatDisappears from "./content/google-meet-chat-disappears";
@@ -14,11 +17,15 @@ import * as googleMeetPersonalAccount from "./content/google-meet-personal-accou
 import * as googleMeetReactions from "./content/google-meet-reactions";
 import * as googleMeetShareFiles from "./content/google-meet-share-files";
 import * as googleMeetTranscriptPlans from "./content/google-meet-transcript-plans";
+import * as googleWorkspaceMarketplaceReview from "./content/google-workspace-marketplace-review";
+import * as meetingBotsVsExtensions from "./content/meeting-bots-vs-extensions";
 import * as recurringMeetingChatHistory from "./content/recurring-meeting-chat-history";
 import * as saveGoogleMeetChat from "./content/save-google-meet-chat";
 import * as shuffleStandupOrderGoogleMeet from "./content/shuffle-standup-order-google-meet";
+import * as stopAiNotetakersGoogleMeet from "./content/stop-ai-notetakers-google-meet";
 import * as tactiqVsBetterChat from "./content/tactiq-vs-better-chat";
 import * as tutoringOnGoogleMeet from "./content/tutoring-on-google-meet";
+import * as whyGoogleMeetExtensionsBreak from "./content/why-google-meet-extensions-break";
 
 export type Post = {
   meta: PostMeta;
@@ -26,7 +33,30 @@ export type Post = {
 };
 
 const ALL: Post[] = [
-  betterChatVsMeetPlus, googleMeetAutoJoin, googleMeetCaptionHistory, googleMeetChatDisappears, googleMeetContinuousChat, googleMeetEnhancementSuiteAlternatives, googleMeetJoinMuted, googleMeetLobbyNotification, googleMeetPersonalAccount, googleMeetReactions, googleMeetShareFiles, googleMeetTranscriptPlans, recurringMeetingChatHistory, saveGoogleMeetChat, shuffleStandupOrderGoogleMeet, tactiqVsBetterChat, tutoringOnGoogleMeet,
+  areGoogleMeetExtensionsSafe,
+  bestGoogleMeetExtensions,
+  betterChatVsMeetPlus,
+  googleMeetAddonsVsExtensions,
+  googleMeetAutoJoin,
+  googleMeetCaptionHistory,
+  googleMeetChatDisappears,
+  googleMeetContinuousChat,
+  googleMeetEnhancementSuiteAlternatives,
+  googleMeetJoinMuted,
+  googleMeetLobbyNotification,
+  googleMeetPersonalAccount,
+  googleMeetReactions,
+  googleMeetShareFiles,
+  googleMeetTranscriptPlans,
+  googleWorkspaceMarketplaceReview,
+  meetingBotsVsExtensions,
+  recurringMeetingChatHistory,
+  saveGoogleMeetChat,
+  shuffleStandupOrderGoogleMeet,
+  stopAiNotetakersGoogleMeet,
+  tactiqVsBetterChat,
+  tutoringOnGoogleMeet,
+  whyGoogleMeetExtensionsBreak,
 ].map((m) => ({
   meta: m.meta,
   Body: m.default,

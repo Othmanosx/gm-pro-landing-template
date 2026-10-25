@@ -47,6 +47,9 @@ Primary sources opened on that date. Re-check before reusing.
 - Competitor store data and pricing (Enhancement Suite $5/mo or $60/yr, 7-day trial; Tactiq Pro $8/user/mo annual; Meet Plus pricing not published) as of 2026-10-25.
 - HN threads used: 43440772 (Othman's own 2025 Show HN), 42322595, 24195130, 45188825, 28057969, 41615584.
 
+- Wave 2 sources (2026-10-26): meeting access types and Google's note-taker sentence (support.google.com/a/users/answer/12172260, /11989526); safeguarded guest admit flow, deny-by-default review queue, Mar 24 2026, all account types; host management (meet/answer/16229038), co-hosts (10885841), waiting rooms (16523457); Take notes for me (14754931); Chrome permission warning strings (developer.chrome.com/docs/extensions/reference/permissions-list); store review applies to every update (developer.chrome.com/docs/webstore/review-process); Featured badge being retired (developer.chrome.com/blog/cws-review-updates-2026, Aug 20 2026); Meet add-ons SDK and usage (developers.google.com/workspace/meet/add-ons, support.google.com/meet/answer/13961388); Marketplace app review (developers.google.com/workspace/marketplace/about-app-review); remote code excludes JSON data (developer.chrome.com/docs/extensions/develop/migrate/remote-hosted-code). Roundup store numbers as of 2026-10-26.
+- Founder material: extension commit history (first commit 2023-11-27; Aug 2025 selector fixes for the People tab and English-label selectors; selectors loaded from Firestore at startup) and the Marketplace review thread (Mar 23 to May 5, 2026; listing still unapproved and last updated Apr 2 as of 2026-10-26).
+
 ## Claims that failed verification (do not reintroduce)
 
 - "Meet has no caption scrollback." False since Feb 2025 (30 minutes). Better Chat's angle is captions kept per meeting link in the browser and downloadable as .txt.
@@ -62,6 +65,11 @@ Primary sources opened on that date. Re-check before reusing.
 - Meet Plus default mic/camera state, and whether its message history survives a reload. Neither is on its listing or site.
 - Meet Plus trial length: listing says 3 and 5 days, site says 3. State both.
 - A Google page saying recurring Calendar events always share one Meet link. Not found.
+- Whether "Take notes for me" adds a participant to the call. Google doesn't say.
+- A Google label for notetaker bots. "With potential risks" is Fireflies' wording for the review queue, not Google's.
+- An admin setting aimed specifically at third-party notetaker bots. Not found.
+- "Extensions are invisible to other participants." Reasoning only, and Better Chat posts into Meet's chat anyway.
+- Meet add-ons on iOS. Not documented.
 
 ## Decisions
 
@@ -70,14 +78,22 @@ Primary sources opened on that date. Re-check before reusing.
 - Competitors may be named only on comparison-style pages with a "where they win" note (`MARKETING.md`).
 - The store listing's marketing composite stands in as the product screenshot until real light/dark captures exist.
 
+## Recheck before these dates
+
+- 2026-12-07 roundup: store user counts, ratings and prices drift; re-fetch.
+- 2026-12-13 and 2026-12-15: both posts say the Better Chat add-on listing "hasn't been approved for Google Meet yet" as of October 2026. If it gets approved or renamed before then, update both posts.
+
 ## Open questions for Othman
 
-1. Approve or edit `MARKETING.md`, especially the canonical riffs.
+1. ~~Approve `MARKETING.md`~~ Approved 2026-10-25.
 2. Your origin story for the manifesto post (why you built it, the meeting where it broke). Not written, since I won't invent it.
 3. Landing page says "All in one free extension" in the hero while the product is paid with a trial. Change the hero?
 4. Capture real light and dark screenshots of the chat panel at 2x for posts. Three posts (save chat, reactions, two comparisons) reuse the store composite meanwhile.
-6. Confirm the lobby notifier description: posts say it "plays a sound when someone is waiting to join" (it watches Meet's lobby status element).
 5. Create the deploy hook and dev.to account, add both secrets.
+6. Confirm the lobby notifier description: posts say it "plays a sound when someone is waiting to join" (it watches Meet's lobby status element).
+7. Better Chat's manifest (`gm-pro/manifest.js`) still matches `https://*.example.com/*` in content_scripts, boilerplate from the template. The store install prompt likely names it. Remove it in the next release; the safety post deliberately doesn't describe Better Chat's prompt.
+8. The auto-join "Are you still there?" handling matches English text (`'Are you still there?'`, `'Keep waiting'`), so it won't fire in other languages.
+9. Review the two founder posts (Dec 11, Dec 15): they quote your April 30 email to the Marketplace reviewer and describe the review timeline.
 
 ## Fact audit log
 

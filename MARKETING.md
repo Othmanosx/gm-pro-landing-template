@@ -110,6 +110,10 @@ Reply to the first commenter, the target voice:
 
 > Glad you're enjoying it! Dark mode was a must-have for me too. Let me know if you run into any issues or have ideas for new features.
 
+### Reply to a Marketplace reviewer (Better Chat add-on, April 30, 2026)
+
+> Apologies, I still don't understand, the app itself is a chat widget, a better alternative to what Meet offers, which is why I simply called it "better chat". What could be a better more aligned name for such addon?
+
 ### Re-engagement email (Better Chat, April 2026)
 
 > I'm Othman, the maker of Better Chat. I noticed you've been using it across a few meetings over the last couple of weeks, really glad it's been useful.
