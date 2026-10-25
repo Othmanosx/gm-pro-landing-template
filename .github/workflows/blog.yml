@@ -1,0 +1,161 @@
+# Blog automation. Scheduled runs only fire from the default branch.
+#
+# - pull_request: the review gate (scripts/blog-check.mjs, external links included).
+# - 08:15 UTC: posts gate at 08:00 UTC on their publishDate, but only a deploy
+#   releases them. Trigger the Vercel deploy hook, wait for today's post to show
+#   in the feed (fail if it doesn't), then ping IndexNow.
+# - 13:00 UTC: after dev.to's RSS import, add cover images to imported drafts and
+#   publish the oldest one.
+#
+# Secrets: VERCEL_DEPLOY_HOOK_URL (Vercel > Project Settings > Git > Deploy Hooks),
+# DEVTO_API_KEY (dev.to > Settings > Extensions). Each job skips with a warning
+# when its secret is missing.
+
+name: blog
+
+on:
+  pull_request:
+    paths: ["src/blog/**", "scripts/blog-check.mjs", "MARKETING.md"]
+  schedule:
+    - cron: "15 8 * * *"
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SITE: https://www.gm-pro.online
+  INDEXNOW_KEY: 919335287357a53ecbe3c535122ce683
+
+jobs:
+  gate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/blog-check.mjs --links
+
+  release:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '15 8 * * *'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trigger Vercel production deploy
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::warning::VERCEL_DEPLOY_HOOK_URL not set; posts only release when something else deploys."
+            exit 0
+          fi
+          curl -sf -X POST "$HOOK" > /dev/null && echo "Deploy triggered."
+
+      - name: Wait for today's post in the feed
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          TODAY_ISO="$(date -u +%F)"
+          if ! grep -rqs "publishDate: \"$TODAY_ISO\"" src/blog/content; then
+            echo "No post scheduled for $TODAY_ISO."
+            exit 0
+          fi
+          if [ -z "$HOOK" ]; then exit 0; fi
+          TODAY="$(date -u '+%a, %d %b %Y')"
+          for i in $(seq 1 30); do
+            curl -sf "$SITE/blog/feed.xml" | grep -q "<pubDate>$TODAY" && { echo "Live after ~$((i * 10))s."; exit 0; }
+            sleep 10
+          done
+          echo "::error::A post is scheduled for $TODAY_ISO but is not in the feed after 5 minutes. Check the Vercel deploy."
+          exit 1
+
+      - name: Ping IndexNow (released today, or lastmod in the last 2 days)
+        run: |
+          SINCE="$(date -u -d '2 days ago' +%F)"
+          TODAY="$(date -u '+%a, %d %b %Y')"
+          NEW="$(curl -sf "$SITE/blog/feed.xml" | awk -v today="$TODAY" '
+            /<item>/    { link=""; pub="" }
+            /<link>/    { gsub(/.*<link>|<\/link>.*/, ""); link=$0 }
+            /<pubDate>/ { gsub(/.*<pubDate>|<\/pubDate>.*/, ""); pub=$0 }
+            /<\/item>/  { if (index(pub, today) == 1 && link != "") print link }')"
+          EDITED="$(curl -sf "$SITE/sitemap.xml" | grep -o '<loc>[^<]*</loc><lastmod>[^<]*</lastmod>' \
+            | sed 's/<loc>\(.*\)<\/loc><lastmod>\(.*\)<\/lastmod>/\2 \1/' | awk -v since="$SINCE" '$1 >= since { print $2 }')"
+          URLS="$(printf '%s\n%s\n' "$NEW" "$EDITED" | grep . | sort -u)"
+          if [ -z "$URLS" ]; then echo "Nothing to ping."; exit 0; fi
+          echo "Pinging IndexNow for:"; echo "$URLS"
+          LIST="$(printf '%s\n' "$URLS" | sed 's/.*/"&"/' | paste -sd, -)"
+          curl -sf -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            -d "{\"host\":\"www.gm-pro.online\",\"key\":\"$INDEXNOW_KEY\",\"keyLocation\":\"$SITE/$INDEXNOW_KEY.txt\",\"urlList\":[$LIST]}" \
+            && echo "IndexNow pinged." || { echo "::error::IndexNow ping failed"; exit 1; }
+
+  devto:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 13 * * *'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add covers to imported drafts, publish the oldest
+        env:
+          KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::warning::DEVTO_API_KEY not set; skipping dev.to."
+            exit 0
+          fi
+          python3 - <<'PY'
+          import json, os, re, urllib.request
+
+          KEY = os.environ['KEY']
+          SITE = os.environ['SITE']
+
+          def api(path, data=None, method='GET'):
+              req = urllib.request.Request(
+                  f'https://dev.to/api{path}',
+                  data=json.dumps(data).encode() if data else None,
+                  method=method,
+                  # dev.to returns 403 to Python's default User-Agent.
+                  headers={'api-key': KEY, 'Content-Type': 'application/json', 'User-Agent': 'betterchat-blog'},
+              )
+              with urllib.request.urlopen(req) as r:
+                  return json.load(r)
+
+          drafts = [a for a in api('/articles/me/unpublished?per_page=100')
+                    if f'{SITE}/blog/' in (a.get('canonical_url') or '')]
+
+          def save(a, body):
+              api(f"/articles/{a['id']}", {'article': {'body_markdown': body}}, 'PUT')
+              a['body_markdown'] = body
+
+          for a in drafts:
+              body = a['body_markdown'] or ''
+              if 'cover_image:' in body:
+                  continue
+              slug = a['canonical_url'].rstrip('/').split('/blog/')[1]
+              cover = f'cover_image: {SITE}/blog/{slug}/og.png'
+              body, n = re.subn(r'^(canonical_url:.*)$', lambda m: f'{m.group(1)}\n{cover}', body, count=1, flags=re.M)
+              if n:
+                  save(a, body)
+                  print(f'cover set: {slug}')
+
+          if not drafts:
+              print('no drafts to publish')
+              raise SystemExit(0)
+
+          def fm_date(a):
+              m = re.search(r'^date: (\S+)', a.get('body_markdown') or '', re.M)
+              return m.group(1) if m else '9999'
+
+          a = sorted(drafts, key=fm_date)[0]
+          body = a['body_markdown']
+          if re.search(r'^tags:\s*$', body, re.M):
+              body = re.sub(r'^tags:\s*$', 'tags: googlemeet, productivity, remote, chrome', body, count=1, flags=re.M)
+          body, n = re.subn(r'^published: false\s*$', 'published: true', body, count=1, flags=re.M)
+          if n == 0:
+              print(f"::warning::no 'published: false' line in {a['canonical_url']}; skipping")
+              raise SystemExit(0)
+          save(a, body)
+          print(f"published: {a['canonical_url']}")
+          PY
