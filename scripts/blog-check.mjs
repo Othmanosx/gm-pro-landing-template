@@ -85,7 +85,14 @@ if (process.argv.includes("--links")) {
       .catch((e) => e.message);
     return [...done, { url, status }];
   }, Promise.resolve([]));
-  results.filter((r) => r.status !== 200).forEach((r) => fail("links", `${r.status} ${r.url}`));
+  // Bot protection answers CI runners with 401/403/429; that's not a dead link.
+  const BLOCKED = new Set([401, 403, 429]);
+  results
+    .filter((r) => BLOCKED.has(r.status))
+    .forEach((r) => console.warn(`! links: ${r.status} ${r.url} (bot-blocked? check by hand)`));
+  results
+    .filter((r) => r.status !== 200 && !BLOCKED.has(r.status))
+    .forEach((r) => fail("links", `${r.status} ${r.url}`));
 }
 
 if (errors.length) {
