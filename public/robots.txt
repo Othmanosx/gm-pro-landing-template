@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /sidepanel
+Disallow: /success
+
+Sitemap: https://www.gm-pro.online/sitemap.xml

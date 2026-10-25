@@ -83,10 +83,13 @@ export const Header = ({
           </li>
         ) : null}
         <li>
-          <LinkButton href="#features">Features</LinkButton>
+          <LinkButton href="/#features">Features</LinkButton>
         </li>
         <li>
           <LinkButton href="/pricing">Pricing</LinkButton>
+        </li>
+        <li>
+          <LinkButton href="/blog">Blog</LinkButton>
         </li>
         <li className={`transition ${!nextSection && "hidden"}`}>
           <Button onClick={goToChromeStore}>Add to Chrome</Button>
