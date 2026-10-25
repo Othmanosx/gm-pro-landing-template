@@ -1,9 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  // Blog posts go live once a deploy's build time passes their publish date.
+  env: { BUILD_TIME: new Date().toISOString() },
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
+  },
+  async rewrites() {
+    return [{ source: "/blog/:slug/og.png", destination: "/api/og?slug=:slug" }];
   },
   async headers() {
     return [

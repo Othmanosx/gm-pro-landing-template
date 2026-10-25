@@ -22,6 +22,12 @@ export const Footer = () => {
         </div>
         <div className="items-center gap-4 row">
           <Link
+            href="/blog"
+            className="text-sm text-light hover:text-gray-300"
+          >
+            Blog
+          </Link>
+          <Link
             href="/privacy"
             className="text-sm text-light hover:text-gray-300"
           >

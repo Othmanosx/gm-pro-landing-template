@@ -69,7 +69,6 @@ const App = ({ Component, pageProps }: AppProps) => {
           href="/icons/apple-touch-icon.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta property="og:image" content="/images/logo-512.png" />
       </Head>
       <NextSeo
         title={siteTitle}
@@ -78,6 +77,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         openGraph={{
           title: siteTitle,
           description: siteDescription,
+          images: [{ url: "https://www.gm-pro.online/images/logo-512.png" }],
         }}
       />
       <Component
