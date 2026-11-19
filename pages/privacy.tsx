@@ -409,10 +409,10 @@ const PrivacyPolicy = ({
             <li>
               By email:{" "}
               <a
-                href="mailto:othman@gm-pro.online"
+                href="mailto:othmanosx@gmail.com"
                 className="text-primary-600 dark:text-primary-400 hover:underline"
               >
-                othman@gm-pro.online
+                othmanosx@gmail.com
               </a>
             </li>
           </ul>
