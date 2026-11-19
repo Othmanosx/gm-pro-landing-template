@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { SITE_URL } from "@root/src/blog/site";
 import {
   meet,
   type MeetingInfo,
@@ -89,7 +90,7 @@ const useMeetSdk = () => {
         return;
       }
       const res = await sidePanelClient.startActivity({
-        sidePanelUrl: "https://www.gm-pro.online/sidepanel",
+        sidePanelUrl: `${SITE_URL}/sidepanel`,
         additionalData: JSON.stringify({
           type: "new_chat_message",
         }),
