@@ -26,7 +26,7 @@ IndexNow key: `919335287357a53ecbe3c535122ce683`, served at `/919335287357a53ecb
 
 ## Accounts
 
-- Google Search Console: `sc-domain:gm-pro.online` expired. Add a URL-prefix property for `https://better-chat.vercel.app` and submit `https://better-chat.vercel.app/sitemap.xml`.
+- Google Search Console: URL-prefix property `https://better-chat.vercel.app/`, verified by `public/google805b14c241f495e5.html` (keep the file). Sitemap `https://better-chat.vercel.app/sitemap.xml` submitted.
 - Bing Webmaster Tools: not set up. Import from Search Console, then submit the sitemap.
 - dev.to: not set up. Settings > Extensions > RSS feed URL `https://better-chat.vercel.app/blog/feed.xml`, mark "canonical URL", then add the API key secret.
 - Analytics: none on the site. Blog conversion is measured through the store's UTM report.
